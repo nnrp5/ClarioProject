@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { ArrowLeft, Check, LoaderCircle } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, supabaseConfigIssue } from '@/lib/supabase';
 
 const goalOptions = [
   { value: 'car', label: 'سيارة' },
@@ -104,7 +104,13 @@ export default function GoalSaver() {
     async function loadGoal() {
       if (!supabase) {
         if (active) {
-          setErrorMessage('إعدادات Supabase غير مكتملة في بيئة التشغيل.');
+          const configMessage =
+            supabaseConfigIssue === 'invalid-url'
+              ? 'رابط Supabase غير صالح. انسخ Project URL كاملة من إعدادات مشروع Clario، وتأكد أنها تبدأ بـ https://.'
+              : supabaseConfigIssue === 'missing-url'
+                ? 'رابط مشروع Supabase غير موجود في أسرار Replit.'
+                : 'مفتاح anon غير موجود في أسرار Replit.';
+          setErrorMessage(configMessage);
           setLoading(false);
         }
         return;
