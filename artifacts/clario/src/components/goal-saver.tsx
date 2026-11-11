@@ -42,7 +42,7 @@ function formatAmount(amount: number, currency: CurrencyCode) {
   }).format(amount);
 }
 
-function getArabicError(error: unknown) {
+function getArabicError(error: unknown, stage: 'auth' | 'goal') {
   const details =
     typeof error === 'object' && error !== null
       ? (error as { message?: unknown; code?: unknown; status?: unknown })
@@ -50,6 +50,8 @@ function getArabicError(error: unknown) {
   const message =
     typeof details.message === 'string' ? details.message.toLowerCase() : '';
   const code = typeof details.code === 'string' ? details.code : '';
+  const status =
+    typeof details.status === 'number' ? details.status : undefined;
 
   if (
     message.includes('anonymous sign-ins are disabled') ||
@@ -58,12 +60,28 @@ function getArabicError(error: unknown) {
     return 'الحفظ الآمن يحتاج تفعيل تسجيل الدخول المجهول من إعدادات Supabase.';
   }
 
+  if (stage === 'auth' && status === 404) {
+    return 'ما لقينا مشروع Supabase عند رابط الاتصال (404). تأكد أن رابط VITE_SUPABASE_URL من مشروع Clario نفسه.';
+  }
+
+  if (stage === 'auth' && (status === 401 || status === 403)) {
+    return 'رابط المشروع وصل، لكن مفتاح VITE_SUPABASE_ANON_KEY لا يطابقه أو يحتاج مراجعة إعدادات المفتاح.';
+  }
+
+  if (stage === 'goal' && (status === 401 || status === 403)) {
+    return 'وصلنا إلى Supabase لكن قراءة الهدف مرفوضة. راجع سياسات الوصول للجدول وإعدادات المفتاح.';
+  }
+
   if (
     code === 'PGRST205' ||
     message.includes('financial_goals') ||
     message.includes('schema cache')
   ) {
     return 'جدول الأهداف ما تجهّز في Supabase للحين. نحتاج إعداد قاعدة البيانات قبل الحفظ.';
+  }
+
+  if (stage === 'goal' && status === 404) {
+    return 'ما لقينا جدول financial_goals في مشروع Supabase المتصل. تأكد أنك أنشأته في مشروع Clario نفسه.';
   }
 
   return 'ما قدرنا نوصل للحفظ الآن. جرّب مرة ثانية بعد قليل.';
@@ -92,6 +110,7 @@ export default function GoalSaver() {
         return;
       }
 
+      let stage: 'auth' | 'goal' = 'auth';
       try {
         const { data: sessionData, error: sessionError } =
           await supabase.auth.getSession();
@@ -110,6 +129,7 @@ export default function GoalSaver() {
           throw new Error('Could not create a secure session.');
         }
 
+        stage = 'goal';
         const { data, error } = await supabase
           .from('financial_goals')
           .select('goal_type, target_amount, currency_code')
@@ -134,7 +154,7 @@ export default function GoalSaver() {
           setCurrencyCode(loadedGoal.currency_code);
         }
       } catch (error) {
-        if (active) setErrorMessage(getArabicError(error));
+        if (active) setErrorMessage(getArabicError(error, stage));
       } finally {
         if (active) setLoading(false);
       }
@@ -192,7 +212,7 @@ export default function GoalSaver() {
       setSavedGoal(nextGoal);
       setSuccessMessage('انحفظ هدفك. تقدر تعدله متى ما بغيت.');
     } catch (error) {
-      setErrorMessage(getArabicError(error));
+      setErrorMessage(getArabicError(error, 'goal'));
     } finally {
       setSaving(false);
     }
