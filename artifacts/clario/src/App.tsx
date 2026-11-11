@@ -20,6 +20,7 @@ import {
   Sparkles,
   WalletCards,
 } from 'lucide-react';
+import GoalSaver from '@/components/goal-saver';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function Home() {
           <nav className="nav-links" aria-label="التنقل الرئيسي">
             <a href="#capabilities" data-testid="link-capabilities">وش يساعدك فيه</a>
             <a href="#how" data-testid="link-how-it-works">كيف الفكرة</a>
+            <a href="#goal" data-testid="link-goal">هدفك الأول</a>
             <span className="nav-note">وضوح أكثر، بدون تعقيد</span>
           </nav>
         </header>
@@ -50,8 +52,8 @@ function Home() {
               كلاريو يساعدك تفهم وضعك المالي بكلام بسيط، وتعرف وش تعني أرقامك لقراراتك اليومية.
             </p>
             <div className="hero-actions reveal delay-2">
-              <a className="button-primary" href="#capabilities" data-testid="link-explore-capabilities">
-                اكتشف كيف يساعدك <ArrowLeft size={16} aria-hidden="true" />
+              <a className="button-primary" href="#goal" data-testid="link-explore-capabilities">
+                احفظ هدفك الأول <ArrowLeft size={16} aria-hidden="true" />
               </a>
               <a className="text-link" href="#how" data-testid="link-learn-more">عن كلاريو</a>
             </div>
@@ -172,6 +174,8 @@ function Home() {
             </article>
           </div>
         </section>
+
+        <GoalSaver />
 
         <aside className="promise" aria-label="مبادئ كلاريو">
           <div className="promise-copy">
