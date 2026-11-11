@@ -38,7 +38,7 @@ function formatAmount(amount: number, currency: CurrencyCode) {
   return new Intl.NumberFormat('ar-KW', {
     style: 'currency',
     currency,
-    maximumFractionDigits: 2,
+    maximumFractionDigits: 3,
   }).format(amount);
 }
 
@@ -256,8 +256,8 @@ export default function GoalSaver() {
             <span>المبلغ المستهدف</span>
             <input
               type="number"
-              min="0.01"
-              step="0.01"
+              min="0.001"
+              step="0.001"
               inputMode="decimal"
               dir="ltr"
               value={amount}
