@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Clario"
+description = "A clear Arabic-first financial insights product for freelancers, small business owners, and employees who want to understand their money and make better decisions."
+version = "1.0.0"
+id = "artifacts/clario"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25238
+
+[services.development]
+run = "pnpm --filter @workspace/clario run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/clario", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/clario/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25238"
+BASE_PATH = "/"
