@@ -1,1 +1,1 @@
-- [Clario design constraints](clario-design-constraints.md) — Preserve the brand and RTL; keep statement files local and never persist them.
+- [Clario design constraints](clario-design-constraints.md) — Keep the navy/orange RTL brand, all three services on both pages, and statement files local-only.

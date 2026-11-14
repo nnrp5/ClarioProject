@@ -330,7 +330,8 @@
   .clario-page .clario-mark { width: 32px; height: 32px; }
   .clario-page .nav-links { gap: 2px; }
   .clario-page .nav-links a { padding: 8px 10px; font-size: 11px; }
-  .clario-page .nav-links a:first-child { display: none; }
+  .clario-page .nav-links a:first-child { display: inline-flex; }
+  .clario-page .nav-links a[data-testid="link-how-it-works"] { display: none; }
   .clario-page .nav-note { display: none; }
   .clario-page .hero { gap: 4px; padding: 49px 0 42px; }
   .clario-page .hero h1 { margin: 18px 0 14px; font-size: clamp(39px, 10vw, 51px); line-height: 1.38; }

@@ -1,0 +1,525 @@
+.clario-dashboard {
+  --dash-ink: #14233b;
+  --dash-ink-deep: #101d32;
+  --dash-ink-raised: #1c2d49;
+  --dash-orange: #f47a2a;
+  --dash-orange-soft: #ff9b55;
+  --dash-paper: #f6f5f1;
+  --dash-card: #fffefa;
+  --dash-text: #f7f7f4;
+  --dash-muted: #b9c4d1;
+  --dash-line: rgba(231, 238, 246, .13);
+  display: flex;
+  min-height: 100dvh;
+  background: var(--dash-paper);
+  color: #17243a;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
+  line-height: 1.65;
+}
+
+.clario-dashboard *,
+.clario-dashboard *::before,
+.clario-dashboard *::after { box-sizing: border-box; }
+
+.clario-dashboard__sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  width: 258px;
+  height: 100dvh;
+  flex: 0 0 258px;
+  flex-direction: column;
+  padding: 28px 18px 23px;
+  background: var(--dash-ink-deep);
+  color: var(--dash-text);
+}
+
+.clario-dashboard__brand {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 11px;
+  padding: 0 10px;
+  color: var(--dash-text);
+  text-decoration: none;
+}
+.clario-dashboard__brand-mark {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--dash-orange);
+  color: var(--dash-ink-deep);
+  font-size: 20px;
+  font-weight: 700;
+}
+.clario-dashboard__brand-word {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -.06em;
+}
+.clario-dashboard__side-caption {
+  margin: 55px 12px 13px;
+  color: #8998aa;
+  font-size: 11px;
+  font-weight: 600;
+}
+.clario-dashboard__nav { display: grid; gap: 7px; }
+.clario-dashboard__nav-link {
+  position: relative;
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #c5ced9;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.clario-dashboard__nav-link:hover,
+.clario-dashboard__nav-link:focus-visible {
+  border-color: rgba(244, 122, 42, .2);
+  background: rgba(244, 122, 42, .08);
+  color: #fff3e9;
+  outline: none;
+}
+.clario-dashboard__nav-link.is-active {
+  border-color: rgba(244, 122, 42, .22);
+  background: rgba(244, 122, 42, .12);
+  color: #ffb17b;
+}
+.clario-dashboard__active-mark {
+  width: 5px;
+  height: 5px;
+  margin-inline-start: auto;
+  border-radius: 50%;
+  background: var(--dash-orange);
+}
+.clario-dashboard__sidebar-bottom { margin-top: auto; }
+.clario-dashboard__trust {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 5px 19px;
+  padding: 13px 11px;
+  border: 1px solid var(--dash-line);
+  border-radius: 12px;
+  color: #c4cfdb;
+  font-size: 11px;
+}
+.clario-dashboard__trust-icon {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(244, 122, 42, .12);
+  color: var(--dash-orange-soft);
+}
+.clario-dashboard__home-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px;
+  color: #a8b4c3;
+  font-size: 12px;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.clario-dashboard__home-link:hover,
+.clario-dashboard__home-link:focus-visible { color: var(--dash-orange-soft); outline: none; }
+
+.clario-dashboard__main { min-width: 0; flex: 1; }
+.clario-dashboard__topbar {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 clamp(25px, 5vw, 76px);
+  border-bottom: 1px solid #e3e3de;
+  background: rgba(255, 254, 250, .74);
+}
+.clario-dashboard__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: #828b98;
+  font-size: 12px;
+}
+.clario-dashboard__breadcrumb-divider { color: #c3c7cc; }
+.clario-dashboard__breadcrumb-current { color: #1b2b43; font-weight: 600; }
+.clario-dashboard__top-note {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #687484;
+  font-size: 11px;
+}
+.clario-dashboard__online-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #78a38c;
+}
+.clario-dashboard__content {
+  width: min(1190px, 100%);
+  margin-inline: auto;
+  padding: 43px clamp(25px, 5vw, 76px) 54px;
+}
+
+.clario-dashboard__welcome {
+  position: relative;
+  display: flex;
+  min-height: 230px;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 38px 44px;
+  border-radius: 18px;
+  background: var(--dash-ink);
+  color: var(--dash-text);
+  isolation: isolate;
+  animation: clario-dash-rise .55s cubic-bezier(.2,.8,.2,1) both;
+}
+.clario-dashboard__welcome::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: radial-gradient(ellipse at 83% 50%, rgba(47, 69, 99, .55), transparent 43%);
+  content: '';
+}
+.clario-dashboard__welcome-copy { position: relative; z-index: 1; }
+.clario-dashboard__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #ffac71;
+  font-size: 12px;
+  font-weight: 600;
+}
+.clario-dashboard__eyebrow span {
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--dash-orange);
+}
+.clario-dashboard__welcome h1 {
+  margin: 15px 0 4px;
+  color: var(--dash-text);
+  font-size: clamp(29px, 3.3vw, 41px);
+  font-weight: 600;
+  letter-spacing: -.04em;
+  line-height: 1.4;
+}
+.clario-dashboard__welcome-copy p {
+  margin: 0;
+  color: #c5cfdb;
+  font-size: 14px;
+}
+.clario-dashboard__welcome-art {
+  position: relative;
+  width: 245px;
+  height: 205px;
+  flex: 0 0 245px;
+  margin-inline-end: 24px;
+}
+.clario-dashboard__art-orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  border: 1px solid rgba(238, 243, 249, .16);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-20deg);
+}
+.clario-dashboard__art-orbit--outer { width: 190px; height: 150px; }
+.clario-dashboard__art-orbit--inner { width: 140px; height: 110px; transform: translate(-50%, -50%) rotate(27deg); }
+.clario-dashboard__art-sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--dash-orange);
+  box-shadow: 0 0 0 11px rgba(244, 122, 42, .13);
+  transform: translate(-50%, -50%);
+}
+.clario-dashboard__art-dot {
+  position: absolute;
+  top: 32px;
+  right: 39px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #e9edf1;
+  box-shadow: 0 0 0 6px rgba(233, 237, 241, .09);
+}
+.clario-dashboard__art-label {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  color: #aab7c7;
+  font-size: 10px;
+}
+
+.clario-dashboard__services-section { margin-top: 42px; }
+.clario-dashboard__section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 18px;
+}
+.clario-dashboard__section-kicker {
+  color: #b9622d;
+  font-size: 11px;
+  font-weight: 600;
+}
+.clario-dashboard__section-heading h2 {
+  margin: 4px 0 0;
+  color: #17243a;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+.clario-dashboard__section-aside {
+  padding-bottom: 4px;
+  color: #8b929b;
+  font-size: 11px;
+}
+.clario-dashboard__services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.clario-dashboard__service-card {
+  display: flex;
+  min-height: 225px;
+  flex-direction: column;
+  padding: 19px 20px 17px;
+  border: 1px solid #e5e4de;
+  border-radius: 15px;
+  background: var(--dash-card);
+  color: inherit;
+  text-decoration: none;
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  animation: clario-dash-rise .55s cubic-bezier(.2,.8,.2,1) both;
+}
+.clario-dashboard__service-card:nth-child(2) { animation-delay: .08s; }
+.clario-dashboard__service-card:nth-child(3) { animation-delay: .16s; }
+.clario-dashboard__service-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(214, 111, 48, .42);
+  box-shadow: 0 13px 28px rgba(29, 42, 62, .08);
+}
+.clario-dashboard__service-card:focus-visible {
+  outline: 3px solid rgba(244, 122, 42, .45);
+  outline-offset: 3px;
+}
+.clario-dashboard__service-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.clario-dashboard__service-number {
+  color: #9aa1a9;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+}
+.clario-dashboard__service-icon {
+  display: grid;
+  width: 41px;
+  height: 41px;
+  place-items: center;
+  border-radius: 12px;
+  background: #f7e9dd;
+  color: #b85d28;
+}
+.clario-dashboard__service-card--hire .clario-dashboard__service-icon { background: #e9edf1; color: #344b69; }
+.clario-dashboard__service-card--goal .clario-dashboard__service-icon { background: #edf0e7; color: #61764d; }
+.clario-dashboard__service-copy { margin-top: 21px; }
+.clario-dashboard__service-copy h3 {
+  margin: 0;
+  color: #1b2b43;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.clario-dashboard__service-copy p {
+  margin: 6px 0 0;
+  color: #737d89;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.clario-dashboard__service-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 17px;
+  color: #aa5526;
+  font-size: 11px;
+  font-weight: 600;
+}
+.clario-dashboard__service-action svg { transition: transform .2s ease; }
+.clario-dashboard__service-card:hover .clario-dashboard__service-action svg { transform: translateX(-3px); }
+
+.clario-dashboard__note {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 15px 17px;
+  overflow: hidden;
+  border: 1px solid #e6e3dc;
+  border-radius: 13px;
+  background: #efeee8;
+}
+.clario-dashboard__note-icon {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  flex: none;
+  place-items: center;
+  border-radius: 10px;
+  background: #fff9f2;
+  color: #b85d28;
+}
+.clario-dashboard__note p {
+  margin: 0;
+  color: #596577;
+  font-size: 12px;
+}
+.clario-dashboard__note p strong { color: #24334a; }
+.clario-dashboard__note-rule {
+  width: 45px;
+  height: 1px;
+  margin-inline-start: auto;
+  background: #d5a27f;
+}
+
+.dashboard-service-surface {
+  min-height: 575px;
+  overflow: hidden;
+  border: 1px solid rgba(16, 29, 50, .1);
+  border-radius: 16px;
+  box-shadow: 0 15px 34px rgba(29, 42, 62, .08);
+}
+.dashboard-service-surface > .clario-container {
+  width: min(100% - 44px, 1060px);
+}
+.dashboard-service-surface .statement-feature {
+  padding-top: 30px;
+  border-top: 0;
+}
+.dashboard-service-surface .statement-feature > .clario-container {
+  width: min(100% - 44px, 1060px);
+}
+.dashboard-service-surface .hire-simulator {
+  min-height: 520px;
+  align-content: center;
+  margin: 0;
+}
+.dashboard-service-surface .goal-section {
+  width: min(100%, 1060px);
+  min-height: 520px;
+  margin: 0 auto;
+}
+
+@keyframes clario-dash-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .clario-dashboard__sidebar { width: 220px; flex-basis: 220px; }
+  .clario-dashboard__content { padding-inline: 30px; }
+  .clario-dashboard__welcome { padding-inline: 32px; }
+  .clario-dashboard__welcome-art { margin-inline-end: 0; transform: scale(.88); }
+  .clario-dashboard__services { gap: 10px; }
+  .clario-dashboard__service-card { padding-inline: 15px; }
+}
+@media (max-width: 700px) {
+  .clario-dashboard { display: block; }
+  .clario-dashboard__sidebar {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    padding: 12px 18px 10px;
+  }
+  .clario-dashboard__brand { padding: 0 2px 10px; }
+  .clario-dashboard__brand-mark { width: 32px; height: 32px; font-size: 18px; }
+  .clario-dashboard__brand-word { font-size: 22px; }
+  .clario-dashboard__side-caption,
+  .clario-dashboard__sidebar-bottom { display: none; }
+  .clario-dashboard__nav {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .clario-dashboard__nav::-webkit-scrollbar { display: none; }
+  .clario-dashboard__nav-link {
+    min-height: 39px;
+    flex: 0 0 auto;
+    gap: 7px;
+    padding: 0 11px;
+    border-radius: 10px;
+    font-size: 11px;
+  }
+  .clario-dashboard__nav-link svg { width: 15px; height: 15px; }
+  .clario-dashboard__active-mark { display: none; }
+  .clario-dashboard__topbar { min-height: 55px; padding-inline: 20px; }
+  .clario-dashboard__content { padding: 24px 19px 35px; }
+  .clario-dashboard__welcome { min-height: 200px; padding: 27px 24px; }
+  .clario-dashboard__welcome-art { position: absolute; left: -9px; width: 175px; opacity: .68; transform: scale(.8); transform-origin: center; }
+  .clario-dashboard__welcome-copy { max-width: 73%; }
+  .clario-dashboard__welcome h1 { font-size: 29px; }
+  .clario-dashboard__services-section { margin-top: 31px; }
+  .clario-dashboard__services { grid-template-columns: 1fr; gap: 10px; }
+  .clario-dashboard__service-card {
+    position: relative;
+    min-height: 150px;
+    padding: 15px 17px;
+  }
+  .clario-dashboard__service-card-top { flex-direction: row-reverse; justify-content: flex-end; gap: 11px; }
+  .clario-dashboard__service-number { order: 2; }
+  .clario-dashboard__service-icon { width: 35px; height: 35px; }
+  .clario-dashboard__service-copy { margin-top: 10px; }
+  .clario-dashboard__service-copy h3 { font-size: 16px; }
+  .clario-dashboard__service-action { position: absolute; left: 17px; align-self: flex-end; margin-top: 0; padding-top: 0; }
+  .clario-dashboard__section-aside { display: none; }
+  .dashboard-service-surface { min-height: 0; border-radius: 13px; }
+  .dashboard-service-surface > .clario-container,
+  .dashboard-service-surface .statement-feature > .clario-container { width: calc(100% - 30px); }
+  .dashboard-service-surface .statement-feature { padding-top: 20px; }
+  .dashboard-service-surface .hire-simulator { min-height: 0; margin: 0; }
+  .dashboard-service-surface .goal-section { min-height: 0; }
+}
+@media (max-width: 390px) {
+  .clario-dashboard__top-note { font-size: 0; }
+  .clario-dashboard__top-note .clario-dashboard__online-dot { width: 8px; height: 8px; }
+  .clario-dashboard__content { padding-inline: 15px; }
+  .clario-dashboard__welcome { padding-inline: 19px; }
+  .clario-dashboard__welcome h1 { font-size: 25px; }
+  .clario-dashboard__welcome-art { left: -31px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clario-dashboard *,
+  .clario-dashboard *::before,
+  .clario-dashboard *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

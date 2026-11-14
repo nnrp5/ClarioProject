@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import {
+  Link,
   Route,
   Switch,
   useLocation,
@@ -15,13 +16,20 @@ import {
   ArrowLeft,
   ChartNoAxesColumnIncreasing,
   Check,
-  FileText,
   Lightbulb,
   Sparkles,
   WalletCards,
 } from 'lucide-react';
 import GoalSaver from '@/components/goal-saver';
+import HireSimulator from '@/components/hire-simulator';
+import {
+  StatementAnalysisProvider,
+} from '@/components/statement-analysis-provider';
 import StatementExperience from '@/components/statement-experience';
+import {
+  DashboardHome,
+  DashboardShell,
+} from '@/pages/dashboard';
 
 const queryClient = new QueryClient();
 
@@ -35,10 +43,10 @@ function Home() {
             <span>clario</span>
           </a>
           <nav className="nav-links" aria-label="التنقل الرئيسي">
-            <a href="#capabilities" data-testid="link-capabilities">وش يساعدك فيه</a>
             <a href="#analysis" data-testid="link-statement-analysis">حلّل كشفك</a>
             <a href="#how" data-testid="link-how-it-works">كيف الفكرة</a>
             <a href="#goal" data-testid="link-goal">هدفك الأول</a>
+            <Link href="/dashboard" data-testid="link-public-dashboard">لوحة التحكم</Link>
             <span className="nav-note">وضوح أكثر، بدون تعقيد</span>
           </nav>
         </header>
@@ -113,38 +121,6 @@ function Home() {
         </section>
       </div>
 
-      <section className="features-section" id="capabilities" aria-labelledby="features-title">
-        <div className="clario-container">
-          <div className="features-heading">
-            <div>
-              <span className="section-kicker">البداية، على قد الحاجة</span>
-              <h2 id="features-title">الصورة تصير أبسط<br />لما تتجمع.</h2>
-            </div>
-            <p>كلاريو يبدأ بالأساسيات اللي تساعدك تشوف وضعك المالي، بدون مصطلحات ثقيلة أو وعود كبيرة.</p>
-          </div>
-          <div className="feature-grid">
-            <article className="feature-card" data-testid="feature-card-summary">
-              <span className="feature-number">٠١</span>
-              <div className="feature-icon"><FileText size={20} aria-hidden="true" /></div>
-              <h3>ملخص مفهوم</h3>
-              <p>نظرة مرتبة على دخلك ومصاريفك والتزاماتك، بكلام يومي وواضح.</p>
-            </article>
-            <article className="feature-card" data-testid="feature-card-insights">
-              <span className="feature-number">٠٢</span>
-              <div className="feature-icon"><Lightbulb size={20} aria-hidden="true" /></div>
-              <h3>معنى الأرقام</h3>
-              <p>مو بس كم دخل وكم صرفت — تفهم وش تعني هالأرقام لوضعك.</p>
-            </article>
-            <article className="feature-card" data-testid="feature-card-decisions">
-              <span className="feature-number">٠٣</span>
-              <div className="feature-icon"><ChartNoAxesColumnIncreasing size={20} aria-hidden="true" /></div>
-              <h3>قرار أهدى</h3>
-              <p>توضيح يساعدك تفكر بخطوتك الجاية، والقرار بالنهاية قرارك.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <div className="clario-container">
         <section className="how-section" id="how" aria-labelledby="how-title">
           <div className="how-intro">
@@ -181,6 +157,7 @@ function Home() {
       <StatementExperience />
 
       <div className="clario-container">
+        <HireSimulator />
         <GoalSaver />
 
         <aside className="promise" aria-label="مبادئ كلاريو">
@@ -206,6 +183,48 @@ function Home() {
   );
 }
 
+function DashboardOverviewPage() {
+  return (
+    <DashboardShell activeRoute="overview">
+      <DashboardHome />
+    </DashboardShell>
+  );
+}
+
+function DashboardAnalysisPage() {
+  return (
+    <DashboardShell activeRoute="analysis">
+      <div className="clario-page dashboard-service-surface" lang="ar" dir="rtl">
+        <StatementExperience />
+      </div>
+    </DashboardShell>
+  );
+}
+
+function DashboardHirePage() {
+  return (
+    <DashboardShell activeRoute="hire">
+      <div className="clario-page dashboard-service-surface" lang="ar" dir="rtl">
+        <div className="clario-container">
+          <HireSimulator />
+        </div>
+      </div>
+    </DashboardShell>
+  );
+}
+
+function DashboardGoalPage() {
+  return (
+    <DashboardShell activeRoute="goal">
+      <div className="clario-page dashboard-service-surface" lang="ar" dir="rtl">
+        <div className="clario-container">
+          <GoalSaver />
+        </div>
+      </div>
+    </DashboardShell>
+  );
+}
+
 function Router() {
   return (
     // Keep a shared shell (sidebar, navbar) outside the boundary so it
@@ -213,6 +232,10 @@ function Router() {
     <RoutedErrorBoundary>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/dashboard" component={DashboardOverviewPage} />
+        <Route path="/dashboard/analysis" component={DashboardAnalysisPage} />
+        <Route path="/dashboard/hire" component={DashboardHirePage} />
+        <Route path="/dashboard/goal" component={DashboardGoalPage} />
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
@@ -228,9 +251,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
+        <StatementAnalysisProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <Router />
+          </WouterRouter>
+        </StatementAnalysisProvider>
         <Toaster />
       </TooltipProvider>
     </QueryClientProvider>

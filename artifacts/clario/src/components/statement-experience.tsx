@@ -18,36 +18,14 @@ import {
   ShieldCheck,
   Sparkles,
   Upload,
-  WalletCards,
 } from 'lucide-react';
+import { categoryLabel } from '@/lib/statement-analysis';
 import {
-  analyzeTransactions,
-  categoryLabel,
-  parseStatementFile,
-  sampleTransactions,
-  type StatementAnalysis,
-} from '@/lib/statement-analysis';
-
-const currencies = [
-  { value: 'KWD', label: 'د.ك — دينار كويتي' },
-  { value: 'SAR', label: 'ر.س — ريال سعودي' },
-  { value: 'AED', label: 'د.إ — درهم إماراتي' },
-  { value: 'QAR', label: 'ر.ق — ريال قطري' },
-  { value: 'BHD', label: 'د.ب — دينار بحريني' },
-  { value: 'OMR', label: 'ر.ع — ريال عُماني' },
-] as const;
-
-type CurrencyCode = (typeof currencies)[number]['value'];
-
-const sampleAnalysis = analyzeTransactions(sampleTransactions);
-
-function formatMoney(value: number, currency: CurrencyCode) {
-  return new Intl.NumberFormat('ar-KW', {
-    style: 'currency',
-    currency,
-    maximumFractionDigits: 2,
-  }).format(value);
-}
+  currencies,
+  formatStatementMoney as formatMoney,
+  useStatementAnalysis,
+  type CurrencyCode,
+} from '@/components/statement-analysis-provider';
 
 function scoreDescription(score: number | null) {
   if (score === null) return 'ما تكفي بيانات الدخل';
@@ -58,13 +36,17 @@ function scoreDescription(score: number | null) {
 
 export default function StatementExperience() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [analysis, setAnalysis] = useState<StatementAnalysis>(sampleAnalysis);
-  const [isSample, setIsSample] = useState(true);
-  const [isProcessing, setIsProcessing] = useState(false);
+  const {
+    analysis,
+    isSample,
+    isProcessing,
+    errorMessage,
+    currency,
+    setCurrency,
+    processFile,
+    showSample,
+  } = useStatementAnalysis();
   const [isDragging, setIsDragging] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [currency, setCurrency] = useState<CurrencyCode>('KWD');
-  const [monthlySalary, setMonthlySalary] = useState('600');
 
   const topCategoryAmount = analysis.categories[0]?.amount ?? 0;
   const summary = useMemo(() => {
@@ -82,30 +64,6 @@ export default function StatementExperience() {
     return `خلال فترة الكشف، دخل ${formatMoney(analysis.income, currency)} وصُرف ${formatMoney(analysis.expenses, currency)}؛ ${remainingText} (${savingsPercent}٪ من الدخل).${categoryText}`;
   }, [analysis, currency]);
 
-  const parsedSalary = Number(monthlySalary);
-  const remainingAfterHire =
-    Number.isFinite(parsedSalary) && parsedSalary > 0
-      ? analysis.monthlySurplus - parsedSalary
-      : null;
-
-  async function processFile(file: File) {
-    setErrorMessage('');
-    setIsProcessing(true);
-    try {
-      const parsed = await parseStatementFile(file);
-      setAnalysis(analyzeTransactions(parsed.transactions, parsed.notices));
-      setIsSample(false);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'ما قدرنا نقرأ الملف. جرّب كشفًا نصيًا أو Excel/CSV.',
-      );
-    } finally {
-      setIsProcessing(false);
-    }
-  }
-
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.currentTarget.files?.[0];
     event.currentTarget.value = '';
@@ -117,12 +75,6 @@ export default function StatementExperience() {
     setIsDragging(false);
     const file = event.dataTransfer.files[0];
     if (file) void processFile(file);
-  }
-
-  function showSample() {
-    setAnalysis(sampleAnalysis);
-    setIsSample(true);
-    setErrorMessage('');
   }
 
   return (
@@ -374,80 +326,6 @@ export default function StatementExperience() {
           </section>
         </div>
 
-        <section className="hire-simulator" id="hire" aria-labelledby="hire-title">
-          <div className="hire-copy">
-            <span className="section-kicker">القرار اللي يفرق</span>
-            <h3 id="hire-title">أقدر أوظف شخص؟</h3>
-            <p>
-              جرّب راتبًا شهريًا وشوف وش يبقى من الفائض حسب أرقام الكشف. غيّر
-              الرقم وشاهد النتيجة فورًا.
-            </p>
-            <div className="hire-trust-note">
-              <WalletCards size={16} aria-hidden="true" />
-              <span>
-                تقدير مبسّط من هذا الكشف، ولا يشمل تكاليف التوظيف الإضافية أو
-                التزامات ما ظهرت فيه.
-              </span>
-            </div>
-          </div>
-
-          <div className="hire-calculator">
-            <label className="hire-salary-field">
-              <span>الراتب الشهري المتوقع</span>
-              <input
-                type="number"
-                min="0"
-                step="50"
-                inputMode="decimal"
-                dir="ltr"
-                value={monthlySalary}
-                onChange={(event) => setMonthlySalary(event.target.value)}
-                placeholder="مثال: 600"
-              />
-            </label>
-            <div className="hire-baseline">
-              <span>الفائض الشهري حسب الكشف</span>
-              <strong>{formatMoney(analysis.monthlySurplus, currency)}</strong>
-            </div>
-            <div
-              className={`hire-outcome${remainingAfterHire !== null && remainingAfterHire >= 0 ? ' is-covered' : ' is-tight'}`}
-              role="status"
-              aria-live="polite"
-            >
-              {remainingAfterHire === null ? (
-                <span>أدخل راتبًا لمعرفة أثره على الفائض.</span>
-              ) : remainingAfterHire >= 0 ? (
-                <>
-                  <span className="hire-outcome-icon" aria-hidden="true">
-                    <Check size={17} />
-                  </span>
-                  <span>
-                    على أرقام الكشف، يبقى تقريبًا{' '}
-                    <strong>{formatMoney(remainingAfterHire, currency)}</strong>{' '}
-                    بعد الراتب كل شهر.
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="hire-outcome-icon" aria-hidden="true">
-                    <CircleAlert size={17} />
-                  </span>
-                  <span>
-                    الراتب يتجاوز الفائض الحالي بـ{' '}
-                    <strong>{formatMoney(Math.abs(remainingAfterHire), currency)}</strong>{' '}
-                    شهريًا.
-                  </span>
-                </>
-              )}
-            </div>
-            {isSample && (
-              <span className="hire-sample-label">
-                <Sparkles size={13} aria-hidden="true" />
-                جرّبها الآن على المثال، أو ارفع كشفك لتحليل أرقامك.
-              </span>
-            )}
-          </div>
-        </section>
       </div>
     </section>
   );
