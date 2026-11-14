@@ -17,6 +17,7 @@ import {
   ChartNoAxesColumnIncreasing,
   Check,
   Lightbulb,
+  Menu,
   Sparkles,
   WalletCards,
 } from 'lucide-react';
@@ -46,8 +47,15 @@ function Home() {
             <a href="#analysis" data-testid="link-statement-analysis">حلّل كشفك</a>
             <a href="#how" data-testid="link-how-it-works">كيف الفكرة</a>
             <a href="#goal" data-testid="link-goal">هدفك الأول</a>
-            <Link href="/dashboard" data-testid="link-public-dashboard">لوحة التحكم</Link>
-            <span className="nav-note">وضوح أكثر، بدون تعقيد</span>
+            <Link
+              className="dashboard-menu-link"
+              href="/dashboard"
+              aria-label="لوحة التحكم"
+              title="لوحة التحكم"
+              data-testid="link-public-dashboard"
+            >
+              <Menu size={20} strokeWidth={1.8} aria-hidden="true" />
+            </Link>
           </nav>
         </header>
 
