@@ -1,1 +1,1 @@
-- [Clario design constraints](clario-design-constraints.md) — Preserve the navy/orange identity, Arabic RTL, existing content, and functionality in future visual refinements.
+- [Clario design constraints](clario-design-constraints.md) — Preserve the brand and RTL; keep statement files local and never persist them.

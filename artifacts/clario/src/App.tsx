@@ -21,6 +21,7 @@ import {
   WalletCards,
 } from 'lucide-react';
 import GoalSaver from '@/components/goal-saver';
+import StatementExperience from '@/components/statement-experience';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function Home() {
           </a>
           <nav className="nav-links" aria-label="التنقل الرئيسي">
             <a href="#capabilities" data-testid="link-capabilities">وش يساعدك فيه</a>
+            <a href="#analysis" data-testid="link-statement-analysis">حلّل كشفك</a>
             <a href="#how" data-testid="link-how-it-works">كيف الفكرة</a>
             <a href="#goal" data-testid="link-goal">هدفك الأول</a>
             <span className="nav-note">وضوح أكثر، بدون تعقيد</span>
@@ -174,7 +176,11 @@ function Home() {
             </article>
           </div>
         </section>
+      </div>
 
+      <StatementExperience />
+
+      <div className="clario-container">
         <GoalSaver />
 
         <aside className="promise" aria-label="مبادئ كلاريو">
