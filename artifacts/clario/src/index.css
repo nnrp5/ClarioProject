@@ -326,12 +326,6 @@
 .scroll-cue { position: absolute; bottom: 28px; right: 0; display: flex; align-items: center; gap: 12px; color: #94a3b8; font-size: 11px; }
 .scroll-cue::after { content: ''; height: 38px; border-left: 1px solid #f97316; }
 .section-kicker { color: #fb923c; font-size: 12px; font-weight: 600; }
-.intro-band { display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 90px; padding: 79px 0 84px; border-top: 1px solid rgba(248,250,252,.14); }
-.intro-band h2 { margin: 14px 0 0; max-width: 430px; color: #f8fafc; font-size: clamp(27px, 3vw, 39px); line-height: 1.55; letter-spacing: -.04em; font-weight: 500; }
-.intro-text { color: #cbd5e1; font-size: 16px; line-height: 2; max-width: 560px; }
-.intro-text p { margin: 0 0 15px; }
-.audience-strip { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
-.audience-strip span { padding: 8px 13px; border: 1px solid rgba(248,250,252,.2); border-radius: 30px; color: #cbd5e1; font-size: 12px; }
 .features-section { padding: 92px 0 101px; background: #111d30; position: relative; }
 .features-section::before { content: ''; position: absolute; width: 390px; height: 390px; left: -165px; top: -160px; border: 1px solid rgba(248,250,252,.1); border-radius: 50%; box-shadow: 0 0 0 25px rgba(248,250,252,.025), 0 0 0 55px rgba(248,250,252,.025); }
 .features-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 53px; }
@@ -377,7 +371,6 @@
   .hero { grid-template-columns: 1fr .86fr; gap: 22px; min-height: 590px; }
   .visual-stage { transform: scale(.88); transform-origin: center right; margin-inline: -22px; }
   .hero h1 { font-size: clamp(42px, 6.5vw, 60px); }
-  .intro-band { gap: 45px; }
   .how-section { gap: 55px; }
 }
 @media (max-width: 650px) {
@@ -409,9 +402,6 @@
   .floating-stamp strong { font-size: 16px; }
   .orbit-label { bottom: 58px; left: 35px; }
   .scroll-cue { bottom: 4px; }
-  .intro-band { grid-template-columns: 1fr; gap: 20px; padding: 58px 0 61px; }
-  .intro-band h2 { font-size: 30px; }
-  .intro-text { font-size: 14px; }
   .features-section { padding: 65px 0 66px; }
   .features-heading { display: block; margin-bottom: 27px; }
   .features-heading h2 { font-size: 34px; }

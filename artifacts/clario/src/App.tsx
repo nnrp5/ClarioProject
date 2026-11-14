@@ -114,19 +114,6 @@ function Home() {
           <div className="scroll-cue" aria-hidden="true">كمّل واكتشف</div>
         </section>
 
-        <section className="intro-band" aria-labelledby="intro-title">
-          <div>
-            <span className="section-kicker">مو لازم تكون خبير</span>
-            <h2 id="intro-title">المال جزء من يومك. فهمه ما يحتاج قاموس.</h2>
-          </div>
-          <div className="intro-text">
-            <p>بين دخل يتغيّر، التزامات، ومصاريف ما توقف — أحيانًا الصورة الكبيرة تضيع. كلاريو يرتّبها لك ويشرحها بلغة قريبة منك.</p>
-            <p>مصمم لأهل الخليج: للمستقل، وصاحب المشروع الصغير، والموظف اللي يبي ياخذ قراره وهو فاهم.</p>
-            <div className="audience-strip" aria-label="لمن صمم كلاريو">
-              <span>للمستقلين</span><span>لأصحاب الأعمال</span><span>للموظفين</span>
-            </div>
-          </div>
-        </section>
       </div>
 
       <div className="clario-container">
@@ -156,6 +143,13 @@ function Home() {
               <div>
                 <h3>تقرر وأنت أهدى</h3>
                 <p>تفهم وضعك أكثر، وتختار بنفسك وش الخطوة المناسبة لك.</p>
+              </div>
+            </article>
+            <article className="step">
+              <span className="step-index">04</span>
+              <div>
+                <h3>مصمم للمستقلين وأصحاب الأعمال والموظفين</h3>
+                <p>عشان تفهم أرقامك وتختار خطوتك الجاية بوضوح.</p>
               </div>
             </article>
           </div>
