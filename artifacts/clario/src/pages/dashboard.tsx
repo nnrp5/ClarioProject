@@ -135,7 +135,11 @@ export function DashboardHome() {
         </div>
       </section>
 
-      <section className="clario-dashboard__services-section" aria-labelledby="dashboard-services-title">
+      <section
+        className="clario-dashboard__services-section"
+        aria-labelledby="dashboard-services-title"
+        data-scroll-reveal
+      >
         <div className="clario-dashboard__section-heading">
           <div>
             <span className="clario-dashboard__section-kicker">اختر خطوتك</span>
@@ -168,7 +172,11 @@ export function DashboardHome() {
         </div>
       </section>
 
-      <aside className="clario-dashboard__note" aria-label="معلومة عن كلاريو">
+      <aside
+        className="clario-dashboard__note"
+        aria-label="معلومة عن كلاريو"
+        data-scroll-reveal
+      >
         <span className="clario-dashboard__note-icon"><CircleHelp size={18} aria-hidden="true" /></span>
         <p><strong>على راحتك.</strong> كلاريو يوضح لك الصورة، والقرار يظل قرارك.</p>
         <span className="clario-dashboard__note-rule" aria-hidden="true" />

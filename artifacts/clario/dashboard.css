@@ -11,7 +11,7 @@
   --dash-line: rgba(231, 238, 246, .13);
   display: flex;
   min-height: 100dvh;
-  background: var(--dash-paper);
+  background: var(--clario-page-background, var(--dash-paper));
   color: #f7f7f4;
   font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
   line-height: 1.65;
@@ -30,7 +30,7 @@
   flex: 0 0 258px;
   flex-direction: column;
   padding: 28px 18px 23px;
-  background: var(--dash-ink-deep);
+  background: linear-gradient(180deg, rgba(16, 29, 50, .93), rgba(16, 29, 50, .76));
   color: var(--dash-text);
 }
 
@@ -566,4 +566,20 @@
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
+}
+
+.clario-dashboard__welcome,
+.clario-dashboard__service-card,
+.clario-dashboard__note,
+.dashboard-service-surface {
+  border-radius: var(--clario-ui-radius, 16px);
+}
+
+.clario-dashboard__nav-link,
+.clario-dashboard .clario-currency-picker--dashboard {
+  border-radius: var(--clario-ui-radius, 16px);
+}
+
+.clario-dashboard__services {
+  gap: var(--clario-layout-gap, 16px);
 }

@@ -1,4 +1,14 @@
 /* Visual refinement layer for the existing Clario page. */
+:root {
+  --clario-page-background:
+    radial-gradient(ellipse at 9% 4%, rgba(244, 122, 42, .085), transparent 31rem),
+    linear-gradient(132deg, #0e192c 0%, #14233b 56%, #1b2c45 100%);
+  --clario-ui-radius: 16px;
+  --clario-layout-gap: 16px;
+}
+
+body { background: var(--clario-page-background); }
+
 .clario-page {
   --clario-ink: #101d32;
   --clario-ink-raised: #172640;
@@ -9,7 +19,7 @@
   --clario-orange: #f47a2a;
   --clario-orange-light: #ff9b55;
   --clario-line: rgba(238, 243, 249, .14);
-  background: var(--clario-ink);
+  background: var(--clario-page-background);
   color: var(--clario-text);
   font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
   line-height: 1.7;
@@ -18,6 +28,16 @@
 .clario-page *,
 .clario-page *::before,
 .clario-page *::after { box-sizing: border-box; }
+
+html.clario-motion-ready [data-scroll-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .65s ease, transform .65s cubic-bezier(.2, .8, .2, 1);
+}
+html.clario-motion-ready [data-scroll-reveal].is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
 
 .clario-page .clario-container { width: min(1160px, calc(100% - 72px)); }
 
@@ -182,6 +202,11 @@
   box-shadow: 0 11px 26px rgba(244, 122, 42, .23);
   transform: translateY(-2px);
 }
+.clario-page .button-primary:active,
+.clario-page .goal-submit:active:not(:disabled) {
+  box-shadow: 0 5px 20px rgba(244, 122, 42, .32);
+  transform: scale(1.02);
+}
 .clario-page .button-primary:focus-visible,
 .clario-page .text-link:focus-visible,
 .clario-page .clario-logo:focus-visible {
@@ -223,6 +248,10 @@
 .clario-page .visual-disc::before,
 .clario-page .visual-disc::after { border-color: rgba(229, 236, 245, .16); }
 .clario-page .sun-orbit { border-color: rgba(229, 236, 245, .22); }
+.clario-page .sun-orbit {
+  transform-origin: center;
+  animation: clario-orbit-turn 30s linear infinite;
+}
 .clario-page .sun-orbit::before { border-color: rgba(229, 236, 245, .18); }
 .clario-page .sun {
   background: var(--clario-orange);
@@ -264,7 +293,7 @@
 .clario-page .section-kicker { color: var(--clario-orange-light); }
 .clario-page .features-section {
   padding: 83px 0 89px;
-  background: #14223a;
+  background: rgba(20, 34, 58, .56);
 }
 .clario-page .features-section::before {
   border-color: rgba(236, 241, 248, .08);
@@ -359,6 +388,83 @@
   box-shadow: 0 0 0 3px rgba(244, 122, 42, .17);
 }
 .clario-page .goal-submit { min-height: 51px; margin-top: 22px; }
+.clario-page .goal-forecast {
+  max-width: 465px;
+  margin-top: 18px;
+  padding: 17px;
+  border: 1px solid rgba(255, 155, 85, .26);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .07), rgba(244, 122, 42, .055));
+  color: #e8edf3;
+}
+.clario-page .goal-forecast-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffb17b;
+  font-size: 12px;
+  font-weight: 600;
+}
+.clario-page .goal-forecast-icon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px;
+  background: rgba(244, 122, 42, .15);
+}
+.clario-page .goal-forecast-result {
+  margin: 13px 0 5px;
+  color: #f8fafc;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.8;
+}
+.clario-page .goal-forecast-result strong {
+  color: #ffad71;
+  font-size: 20px;
+}
+.clario-page .goal-forecast-rate {
+  margin: 0 0 15px;
+  color: #cbd4df;
+  font-size: 13px;
+  line-height: 1.75;
+}
+.clario-page .goal-forecast-rate strong { color: #fff; }
+.clario-page .goal-forecast-progress-copy {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+  color: #cbd4df;
+  font-size: 11px;
+}
+.clario-page .goal-forecast-progress-copy strong { color: #ffb17b; }
+.clario-page .goal-forecast-progress {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .13);
+}
+.clario-page .goal-forecast-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #f47a2a, #ffad71);
+  transition: width .45s ease;
+}
+.clario-page .goal-forecast-message {
+  margin: 13px 0 0;
+  color: #f0d3bd;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.clario-page .goal-forecast-footnote {
+  margin: 12px 0 0;
+  color: #b8c3d1;
+  font-size: 11px;
+  line-height: 1.7;
+}
 
 .clario-page .promise {
   margin-bottom: 78px;
@@ -382,6 +488,9 @@
 @keyframes clario-card-arrive {
   from { opacity: 0; transform: translate(0, 13px) rotate(2deg); }
   to { opacity: 1; transform: translate(0, 0) rotate(2deg); }
+}
+@keyframes clario-orbit-turn {
+  to { transform: rotate(360deg); }
 }
 
 @media (max-width: 900px) {

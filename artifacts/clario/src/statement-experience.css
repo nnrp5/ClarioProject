@@ -95,7 +95,7 @@
 .clario-page .statement-dropzone {
   position: relative;
   display: flex;
-  min-height: 242px;
+  min-height: 294px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -170,6 +170,7 @@
 }
 
 .clario-page .statement-select-button:focus-visible,
+.clario-page .statement-demo-button:focus-visible,
 .clario-page .statement-sample-row button:focus-visible,
 .clario-page .statement-reset-button:focus-visible {
   outline: 3px solid rgba(255, 155, 85, .75);
@@ -182,6 +183,48 @@
   margin-top: 12px;
   color: #96a5b8;
   font-size: 11px;
+}
+
+.clario-page .statement-demo-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(236, 241, 248, .1);
+  color: #c5cfdb;
+  font-size: 11px;
+}
+
+.clario-page .statement-demo-button {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 155, 85, .34);
+  border-radius: 10px;
+  background: rgba(244, 122, 42, .1);
+  color: #ffb17b;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.clario-page .statement-demo-button:hover:not(:disabled) {
+  border-color: rgba(255, 155, 85, .65);
+  background: rgba(244, 122, 42, .17);
+  box-shadow: 0 7px 18px rgba(244, 122, 42, .16);
+}
+
+.clario-page .statement-demo-button:active:not(:disabled),
+.clario-page .statement-select-button:active:not(:disabled) {
+  transform: scale(1.02);
 }
 
 .clario-page .statement-upload-meta {
@@ -724,4 +767,39 @@
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
+}
+
+/* Keep the main surfaces and controls aligned to one radius and spacing scale. */
+.clario-page .report-card,
+.clario-page .feature-card,
+.clario-page .statement-privacy,
+.clario-page .statement-upload-card,
+.clario-page .statement-dropzone,
+.clario-page .statement-result-card,
+.clario-page .insight-note,
+.clario-page .statement-category,
+.clario-page .hire-simulator,
+.clario-page .hire-calculator,
+.clario-page .hire-outcome,
+.clario-page .goal-privacy-note,
+.clario-page .goal-form,
+.clario-page .goal-forecast,
+.clario-page .saved-goal,
+.clario-page .promise {
+  border-radius: var(--clario-ui-radius, 16px);
+}
+
+.clario-page button,
+.clario-page .button-primary,
+.clario-page input:not([type='checkbox']):not([type='radio']),
+.clario-page select,
+.clario-page textarea,
+.clario-page .clario-currency-picker {
+  border-radius: var(--clario-ui-radius, 16px);
+}
+
+.clario-page .feature-grid,
+.clario-page .statement-workspace,
+.clario-page .goal-form-row {
+  gap: var(--clario-layout-gap, 16px);
 }

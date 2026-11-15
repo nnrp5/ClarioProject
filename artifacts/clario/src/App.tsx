@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CurrencySelector from '@/components/currency-selector';
 import { ErrorBoundary } from '@/components/error-boundary';
@@ -132,7 +132,12 @@ function Home() {
       </div>
 
       <div className="clario-container">
-        <section className="how-section" id="how" aria-labelledby="how-title">
+        <section
+          className="how-section"
+          id="how"
+          aria-labelledby="how-title"
+          data-scroll-reveal
+        >
           <div className="how-intro">
             <span className="section-kicker">الفكرة ببساطة</span>
             <h2 id="how-title">من صورة متفرقة، لفهم يطمنّك.</h2>
@@ -177,7 +182,7 @@ function Home() {
         <HireSimulator />
         <GoalSaver />
 
-        <aside className="promise" aria-label="مبادئ كلاريو">
+        <aside className="promise" aria-label="مبادئ كلاريو" data-scroll-reveal>
           <div className="promise-copy">
             <span className="section-kicker">وعدنا لك</span>
             <h2>نوضح لك الصورة. ما نقرر عنك.</h2>
@@ -265,6 +270,52 @@ function RoutedErrorBoundary({ children }: { children: ReactNode }) {
 }
 
 function App() {
+  useEffect(() => {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)
+    ) {
+      return;
+    }
+
+    const observed = new Set<Element>();
+    const root = document.documentElement;
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+    );
+    const observeNewSections = () => {
+      document.querySelectorAll('[data-scroll-reveal]').forEach((target) => {
+        if (observed.has(target)) return;
+        observed.add(target);
+        target.setAttribute('data-reveal-watching', '');
+        revealObserver.observe(target);
+      });
+    };
+    const routeObserver = new MutationObserver(observeNewSections);
+
+    root.classList.add('clario-motion-ready');
+    observeNewSections();
+    routeObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      routeObserver.disconnect();
+      revealObserver.disconnect();
+      observed.forEach((target) => {
+        target.removeAttribute('data-reveal-watching');
+        target.classList.remove('is-revealed');
+      });
+      root.classList.remove('clario-motion-ready');
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

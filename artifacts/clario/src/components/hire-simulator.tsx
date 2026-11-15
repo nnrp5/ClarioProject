@@ -35,7 +35,12 @@ export default function HireSimulator() {
       : null;
 
   return (
-    <section className="hire-simulator" id="hire" aria-labelledby="hire-title">
+    <section
+      className="hire-simulator"
+      id="hire"
+      aria-labelledby="hire-title"
+      data-scroll-reveal
+    >
       <div className="hire-copy">
         <span className="section-kicker">القرار اللي يفرق</span>
         <h3 id="hire-title">أقدر أوظف شخص؟</h3>

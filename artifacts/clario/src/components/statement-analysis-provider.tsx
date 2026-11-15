@@ -271,6 +271,7 @@ export function StatementAnalysisProvider({
   function showSample() {
     setAnalysis(sampleAnalysis);
     setIsSample(true);
+    setStatementCurrency('KWD');
     setErrorMessage('');
   }
 

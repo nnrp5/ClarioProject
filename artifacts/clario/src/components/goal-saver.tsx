@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { ArrowLeft, Check, LoaderCircle } from 'lucide-react';
+import { ArrowLeft, Check, LoaderCircle, TrendingUp } from 'lucide-react';
 import { supabase, supabaseConfigIssue } from '@/lib/supabase';
 import {
   currencies,
@@ -79,7 +79,14 @@ function getArabicError(error: unknown, stage: 'auth' | 'goal') {
 }
 
 export default function GoalSaver() {
-  const { currency, setCurrency, convertBetween } = useStatementAnalysis();
+  const {
+    analysis,
+    isSample,
+    currency,
+    setCurrency,
+    statementCurrency,
+    convertBetween,
+  } = useStatementAnalysis();
   const [userId, setUserId] = useState<string | null>(null);
   const [goalType, setGoalType] = useState<GoalType>('car');
   const [amount, setAmount] = useState('');
@@ -247,9 +254,45 @@ export default function GoalSaver() {
         currency,
       )
     : null;
+  const monthlySavingsDisplayAmount = convertBetween(
+    analysis.monthlySurplus,
+    statementCurrency,
+    currency,
+  );
+  const monthsToGoal =
+    savedGoalDisplayAmount !== null &&
+    monthlySavingsDisplayAmount !== null &&
+    monthlySavingsDisplayAmount > 0
+      ? Math.ceil(savedGoalDisplayAmount / monthlySavingsDisplayAmount)
+      : null;
+  const monthlyGoalProgress =
+    savedGoalDisplayAmount !== null &&
+    monthlySavingsDisplayAmount !== null &&
+    savedGoalDisplayAmount > 0 &&
+    monthlySavingsDisplayAmount > 0
+      ? Math.min(
+          100,
+          Math.round(
+            (monthlySavingsDisplayAmount / savedGoalDisplayAmount) * 100,
+          ),
+        )
+      : 0;
+  const goalMonthLabel =
+    monthsToGoal === 1
+      ? 'شهر'
+      : monthsToGoal === 2
+        ? 'شهرين'
+        : monthsToGoal !== null && monthsToGoal <= 10
+          ? 'شهور'
+          : 'شهر';
 
   return (
-    <section className="goal-section" id="goal" aria-labelledby="goal-title">
+    <section
+      className="goal-section"
+      id="goal"
+      aria-labelledby="goal-title"
+      data-scroll-reveal
+    >
       <div className="goal-copy">
         <span className="section-kicker">خطوة صغيرة وواضحة</span>
         <h2 id="goal-title">وش هدفك المالي الجاي؟</h2>
@@ -277,6 +320,72 @@ export default function GoalSaver() {
                 )}
               </strong>
             </span>
+          </div>
+        )}
+        {savedGoal && (
+          <div
+            className="goal-forecast"
+            data-testid="goal-forecast"
+            aria-live="polite"
+          >
+            <div className="goal-forecast-heading">
+              <span className="goal-forecast-icon" aria-hidden="true">
+                <TrendingUp size={17} />
+              </span>
+              <span>{isSample ? 'على المثال التوضيحي' : 'على حسب كشفك'}</span>
+            </div>
+            {monthsToGoal !== null && monthlySavingsDisplayAmount !== null ? (
+              <>
+                <p className="goal-forecast-result">
+                  بهالمعدل توصل هدفك بعد{' '}
+                  <strong>
+                    {formatArabicNumber(monthsToGoal)} {goalMonthLabel}
+                  </strong>
+                  تقريباً.
+                </p>
+                <p className="goal-forecast-rate">
+                  إذا ادّخرت{' '}
+                  <strong>
+                    {formatStatementMoney(
+                      monthlySavingsDisplayAmount,
+                      currency,
+                    )}
+                  </strong>{' '}
+                  كل شهر.
+                </p>
+                <div className="goal-forecast-progress-copy">
+                  <span>ادخار شهر واحد</span>
+                  <strong>{formatArabicNumber(monthlyGoalProgress)}٪ من الهدف</strong>
+                </div>
+                <div
+                  className="goal-forecast-progress"
+                  data-testid="goal-progress"
+                  role="progressbar"
+                  aria-label="نسبة ادخار شهر واحد من الهدف"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={monthlyGoalProgress}
+                  aria-valuetext={`${formatArabicNumber(monthlyGoalProgress)}٪ من الهدف`}
+                >
+                  <span style={{ width: `${monthlyGoalProgress}%` }} />
+                </div>
+              </>
+            ) : monthlySavingsDisplayAmount === null ||
+              savedGoalDisplayAmount === null ? (
+              <p className="goal-forecast-message">
+                ننتظر سعر الصرف عشان نحسب المدة بعملة هدفك.
+              </p>
+            ) : (
+              <p className="goal-forecast-message">
+                هذا الكشف ما يبيّن فائضًا شهريًا موجبًا، فما نقدر نقدّر مدة
+                الوصول لهدفك للحين.
+              </p>
+            )}
+            <p className="goal-forecast-footnote">
+              {isSample
+                ? 'تقدير المثال للتجربة فقط؛ ما يعكس وضعك الحقيقي.'
+                : 'تقدير على وتيرة هذا الكشف، مو على مبلغ محفوظ فعليًا.'}
+            </p>
           </div>
         )}
       </div>

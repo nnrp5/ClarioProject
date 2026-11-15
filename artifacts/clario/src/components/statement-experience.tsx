@@ -37,6 +37,7 @@ function scoreDescription(score: number | null) {
 
 export default function StatementExperience() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLElement>(null);
   const {
     analysis,
     isSample,
@@ -84,6 +85,17 @@ export default function StatementExperience() {
     if (file) void processFile(file);
   }
 
+  function handleTrySample() {
+    showSample();
+    resultRef.current?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      block: 'center',
+    });
+    resultRef.current?.focus({ preventScroll: true });
+  }
+
   return (
     <section
       className="statement-feature"
@@ -91,7 +103,7 @@ export default function StatementExperience() {
       aria-labelledby="statement-title"
     >
       <div className="clario-container">
-        <div className="statement-heading">
+        <div className="statement-heading" data-scroll-reveal>
           <span className="section-kicker">صورة أوضح من كشف واحد</span>
           <h2 id="statement-title">خلّنا نرتّب أرقامك.</h2>
           <p>
@@ -110,7 +122,11 @@ export default function StatementExperience() {
         </div>
 
         <div className="statement-workspace">
-          <section className="statement-upload-card" aria-label="رفع كشف حساب">
+          <section
+            className="statement-upload-card"
+            aria-label="رفع كشف حساب"
+            data-scroll-reveal
+          >
             <div className="statement-card-eyebrow">
               <span className="statement-upload-icon" aria-hidden="true">
                 <Upload size={19} />
@@ -154,18 +170,32 @@ export default function StatementExperience() {
                 {!isProcessing && <ArrowLeft size={15} aria-hidden="true" />}
               </button>
               <span className="statement-drop-hint">أو اسحب الملف إلى هنا</span>
+              <div className="statement-demo-action">
+                <span>ما تبي ترفع ملفك؟</span>
+                <button
+                  type="button"
+                  className="statement-demo-button"
+                  onClick={handleTrySample}
+                  disabled={isProcessing}
+                  data-testid="button-try-sample"
+                >
+                  <Sparkles size={15} aria-hidden="true" />
+                  جرّب بكشف تجريبي
+                </button>
+              </div>
             </div>
 
             <div className="statement-upload-meta">
               <span>حتى ١٠ ميغابايت</span>
               <label className="statement-currency">
-                عملة الكشف
+                {isSample ? 'عملة المثال' : 'عملة الكشف'}
                 <span>
                   <select
                     value={statementCurrency}
                     onChange={(event) =>
                       setStatementCurrency(event.target.value as CurrencyCode)
                     }
+                    disabled={isSample}
                     aria-label="العملة الأصلية للمبالغ في الكشف"
                   >
                     {currencies.map((item) => (
@@ -179,12 +209,14 @@ export default function StatementExperience() {
               </label>
             </div>
 
-            <div className="statement-sample-row">
-              <span>ما أنت متأكد من الرفع؟</span>
-              <button type="button" onClick={showSample}>
-                {isSample ? 'أنت تشوف مثالًا الآن' : 'اعرض مثالًا بدل كشفك'}
-              </button>
-            </div>
+            {!isSample && (
+              <div className="statement-sample-row">
+                <span>تقدر ترجع للمثال متى ما بغيت.</span>
+                <button type="button" onClick={showSample}>
+                  اعرض مثالًا بدل كشفك
+                </button>
+              </div>
+            )}
 
             {errorMessage && (
               <p className="statement-error" role="alert">
@@ -198,6 +230,9 @@ export default function StatementExperience() {
             className="statement-result-card"
             aria-labelledby="statement-result-title"
             aria-live="polite"
+            data-scroll-reveal
+            tabIndex={-1}
+            ref={resultRef}
           >
             <div className="statement-result-header">
               <div>
