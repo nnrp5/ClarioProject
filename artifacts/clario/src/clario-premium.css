@@ -107,32 +107,50 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
 .clario-currency-picker {
   position: relative;
   display: inline-flex;
-  min-width: 94px;
-  height: 38px;
+  min-width: 96px;
+  height: 40px;
   flex: none;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 0 10px;
+  gap: 8px;
+  padding: 0 12px;
   overflow: hidden;
   border: 1px solid rgba(238, 243, 249, .2);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, .045);
+  border-radius: var(--clario-ui-radius, 16px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .035));
   color: #f4f6f8;
   cursor: pointer;
-  transition: border-color .2s ease, background .2s ease, color .2s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+  transition: border-color .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
 }
 .clario-currency-picker:hover,
 .clario-currency-picker:focus-within {
   border-color: rgba(244, 122, 42, .55);
   background: rgba(244, 122, 42, .1);
   color: #ffb17b;
+  box-shadow: 0 5px 17px rgba(244, 122, 42, .1), inset 0 1px 0 rgba(255, 255, 255, .07);
+}
+.clario-currency-picker__flag {
+  display: grid;
+  flex: none;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
 }
 .clario-currency-picker__code {
   font-family: 'DM Sans', sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: .02em;
+}
+.clario-currency-picker__chevron {
+  flex: none;
+  color: #aab7c7;
+  transition: transform .2s ease, color .2s ease;
+}
+.clario-currency-picker:focus-within .clario-currency-picker__chevron {
+  color: #ffb17b;
+  transform: rotate(180deg);
 }
 .clario-currency-picker select {
   position: absolute;
@@ -513,14 +531,16 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .nav-note { display: none; }
   .clario-page .nav-links .dashboard-menu-link { width: 34px; height: 34px; padding: 0; }
   .clario-page .nav-links .clario-currency-picker {
-    min-width: 67px;
+    min-width: 78px;
     height: 34px;
-    gap: 4px;
-    padding: 0 6px;
-    border-radius: 10px;
+    gap: 5px;
+    padding: 0 7px;
+    border-radius: var(--clario-ui-radius, 16px);
   }
   .clario-page .nav-links .clario-currency-picker svg { width: 14px; height: 14px; }
+  .clario-page .nav-links .clario-currency-picker__flag { font-size: 13px; }
   .clario-page .nav-links .clario-currency-picker__code { font-size: 9px; }
+  .clario-page .nav-links .clario-currency-picker__chevron { width: 11px; height: 11px; }
   .clario-page .hero { gap: 4px; padding: 49px 0 42px; }
   .clario-page .hero h1 { margin: 18px 0 14px; font-size: clamp(39px, 10vw, 51px); line-height: 1.38; }
   .clario-page .hero h1 span::after { height: 8px; bottom: 2px; }

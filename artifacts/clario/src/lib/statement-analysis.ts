@@ -84,6 +84,51 @@ export const sampleTransactions: StatementTransaction[] = [
   transaction('مصروفات متنوعة', -340, 'other'),
 ];
 
+export const sampleStatements = [
+  {
+    title: 'موظف بدخل ثابت',
+    transactions: sampleTransactions,
+  },
+  {
+    title: 'مستقل بدخل متغير',
+    transactions: [
+      transaction('دفعة مشروع أول', 1800, 'payroll'),
+      transaction('دفعة مشروع ثاني', 1350, 'payroll'),
+      transaction('إيجار السكن', -850, 'housing'),
+      transaction('اشتراك أدوات العمل', -310, 'business'),
+      transaction('مشتريات البقالة', -380, 'food'),
+      transaction('تنقلات', -240, 'transport'),
+      transaction('اتصالات وإنترنت', -150, 'utilities'),
+      transaction('مصروفات متنوعة', -100, 'other'),
+    ],
+  },
+  {
+    title: 'مشروع بمبيعات ومصاريف',
+    transactions: [
+      transaction('مبيعات المتجر', 4700, 'payroll'),
+      transaction('مبيعات إلكترونية', 2550, 'payroll'),
+      transaction('رواتب الفريق', -2100, 'payroll'),
+      transaction('إيجار المحل', -900, 'housing'),
+      transaction('شراء بضاعة', -1550, 'business'),
+      transaction('خدمات توصيل', -320, 'transport'),
+      transaction('خدمات واتصالات', -240, 'utilities'),
+      transaction('تسويق', -400, 'business'),
+    ],
+  },
+  {
+    title: 'شهر مصاريفه عالية',
+    transactions: [
+      transaction('راتب شهري', 2600, 'payroll'),
+      transaction('إيجار السكن', -900, 'housing'),
+      transaction('مشتريات البقالة', -530, 'food'),
+      transaction('تنقلات', -340, 'transport'),
+      transaction('خدمات واتصالات', -200, 'utilities'),
+      transaction('مشتريات منزلية', -610, 'shopping'),
+      transaction('مصروفات متنوعة', -330, 'other'),
+    ],
+  },
+];
+
 function transaction(
   description: string,
   amount: number,

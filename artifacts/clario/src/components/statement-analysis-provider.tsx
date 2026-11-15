@@ -9,17 +9,17 @@ import {
 import {
   analyzeTransactions,
   parseStatementFile,
-  sampleTransactions,
+  sampleStatements,
   type StatementAnalysis,
 } from '@/lib/statement-analysis';
 
 export const currencies = [
-  { value: 'KWD', label: 'د.ك — دينار كويتي' },
-  { value: 'SAR', label: 'ر.س — ريال سعودي' },
-  { value: 'AED', label: 'د.إ — درهم إماراتي' },
-  { value: 'QAR', label: 'ر.ق — ريال قطري' },
-  { value: 'BHD', label: 'د.ب — دينار بحريني' },
-  { value: 'OMR', label: 'ر.ع — ريال عُماني' },
+  { value: 'KWD', label: 'د.ك — دينار كويتي', flag: '🇰🇼' },
+  { value: 'SAR', label: 'ر.س — ريال سعودي', flag: '🇸🇦' },
+  { value: 'AED', label: 'د.إ — درهم إماراتي', flag: '🇦🇪' },
+  { value: 'QAR', label: 'ر.ق — ريال قطري', flag: '🇶🇦' },
+  { value: 'BHD', label: 'د.ب — دينار بحريني', flag: '🇧🇭' },
+  { value: 'OMR', label: 'ر.ع — ريال عُماني', flag: '🇴🇲' },
 ] as const;
 
 export type CurrencyCode = (typeof currencies)[number]['value'];
@@ -113,11 +113,12 @@ export function formatStatementMoney(value: number, currency: CurrencyCode) {
   }).format(value);
 }
 
-const sampleAnalysis = analyzeTransactions(sampleTransactions);
+const sampleAnalysis = analyzeTransactions(sampleStatements[0].transactions);
 
 type StatementAnalysisContextValue = {
   analysis: StatementAnalysis;
   isSample: boolean;
+  sampleName: string;
   isProcessing: boolean;
   errorMessage: string;
   currency: CurrencyCode;
@@ -134,7 +135,7 @@ type StatementAnalysisContextValue = {
   monthlySalary: string;
   setMonthlySalary: (salary: string) => void;
   processFile: (file: File) => Promise<void>;
-  showSample: () => void;
+  showNextSample: () => void;
 };
 
 const StatementAnalysisContext =
@@ -147,6 +148,8 @@ export function StatementAnalysisProvider({
 }) {
   const [analysis, setAnalysis] = useState<StatementAnalysis>(sampleAnalysis);
   const [isSample, setIsSample] = useState(true);
+  const [sampleIndex, setSampleIndex] = useState(0);
+  const [sampleName, setSampleName] = useState(sampleStatements[0].title);
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currency, setCurrency] = useState<CurrencyCode>('KWD');
@@ -268,8 +271,12 @@ export function StatementAnalysisProvider({
     }
   }
 
-  function showSample() {
-    setAnalysis(sampleAnalysis);
+  function showNextSample() {
+    const nextIndex = (sampleIndex + 1) % sampleStatements.length;
+    const nextSample = sampleStatements[nextIndex];
+    setAnalysis(analyzeTransactions(nextSample.transactions));
+    setSampleIndex(nextIndex);
+    setSampleName(nextSample.title);
     setIsSample(true);
     setStatementCurrency('KWD');
     setErrorMessage('');
@@ -280,6 +287,7 @@ export function StatementAnalysisProvider({
       value={{
         analysis,
         isSample,
+        sampleName,
         isProcessing,
         errorMessage,
         currency,
@@ -292,7 +300,7 @@ export function StatementAnalysisProvider({
         monthlySalary,
         setMonthlySalary,
         processFile,
-        showSample,
+        showNextSample,
       }}
     >
       {children}

@@ -41,6 +41,7 @@ export default function StatementExperience() {
   const {
     analysis,
     isSample,
+    sampleName,
     isProcessing,
     errorMessage,
     currency,
@@ -48,7 +49,7 @@ export default function StatementExperience() {
     setStatementCurrency,
     convertBetween,
     processFile,
-    showSample,
+    showNextSample,
   } = useStatementAnalysis();
   const [isDragging, setIsDragging] = useState(false);
 
@@ -86,7 +87,7 @@ export default function StatementExperience() {
   }
 
   function handleTrySample() {
-    showSample();
+    showNextSample();
     resultRef.current?.scrollIntoView({
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'auto'
@@ -177,9 +178,11 @@ export default function StatementExperience() {
                   className="statement-demo-button"
                   onClick={handleTrySample}
                   disabled={isProcessing}
+                  aria-label="اعرض كشفاً تجريبياً جديداً"
+                  title="بدّل المثال التجريبي"
                   data-testid="button-try-sample"
                 >
-                  <Sparkles size={15} aria-hidden="true" />
+                  <RotateCcw size={15} aria-hidden="true" />
                   جرّب بكشف تجريبي
                 </button>
               </div>
@@ -212,8 +215,8 @@ export default function StatementExperience() {
             {!isSample && (
               <div className="statement-sample-row">
                 <span>تقدر ترجع للمثال متى ما بغيت.</span>
-                <button type="button" onClick={showSample}>
-                  اعرض مثالًا بدل كشفك
+                <button type="button" onClick={showNextSample}>
+                  جرّب كشفًا تجريبيًا آخر
                 </button>
               </div>
             )}
@@ -237,7 +240,7 @@ export default function StatementExperience() {
             <div className="statement-result-header">
               <div>
                 <span className="statement-result-kicker">
-                  {isSample ? 'بيانات افتراضية' : 'نتيجة كشفك'}
+                    {isSample ? `بيانات افتراضية · ${sampleName}` : 'نتيجة كشفك'}
                 </span>
                 <h3 id="statement-result-title">ملخصك المالي</h3>
               </div>
@@ -363,7 +366,7 @@ export default function StatementExperience() {
               <button
                 className="statement-reset-button"
                 type="button"
-                onClick={showSample}
+                onClick={showNextSample}
               >
                 <RotateCcw size={14} aria-hidden="true" />
                 امسح النتيجة وارجع للمثال

@@ -1,4 +1,4 @@
-import { Coins } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import {
   currencies,
   useStatementAnalysis,
@@ -16,6 +16,8 @@ export default function CurrencySelector({
     isExchangeRateLoading,
     exchangeRateUpdatedAt,
   } = useStatementAnalysis();
+  const selectedCurrency =
+    currencies.find((item) => item.value === currency) ?? currencies[0];
   const ratesAvailable = exchangeRateUpdatedAt !== null;
   const title = isExchangeRateLoading
     ? 'جاري تحديث أسعار الصرف'
@@ -32,8 +34,16 @@ export default function CurrencySelector({
       title={title}
       data-testid="control-display-currency"
     >
-      <Coins size={16} aria-hidden="true" />
+      <span className="clario-currency-picker__flag" aria-hidden="true">
+        {selectedCurrency.flag}
+      </span>
       <span className="clario-currency-picker__code">{currency}</span>
+      <ChevronDown
+        className="clario-currency-picker__chevron"
+        size={13}
+        strokeWidth={2}
+        aria-hidden="true"
+      />
       <select
         value={currency}
         onChange={(event) => setCurrency(event.target.value as CurrencyCode)}
@@ -42,7 +52,7 @@ export default function CurrencySelector({
       >
         {currencies.map((item) => (
           <option key={item.value} value={item.value}>
-            {item.label}
+            {item.flag} {item.label}
           </option>
         ))}
       </select>
