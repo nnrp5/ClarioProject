@@ -5,7 +5,9 @@ import {
   WalletCards,
 } from 'lucide-react';
 import {
+  formatEditableAmount,
   formatStatementMoney,
+  parseLocalizedNumber,
   useStatementAnalysis,
 } from '@/components/statement-analysis-provider';
 
@@ -14,13 +16,22 @@ export default function HireSimulator() {
     analysis,
     isSample,
     currency,
+    statementCurrency,
+    convertBetween,
     monthlySalary,
     setMonthlySalary,
   } = useStatementAnalysis();
-  const parsedSalary = Number(monthlySalary);
+  const parsedSalary = parseLocalizedNumber(monthlySalary);
+  const monthlySurplusInDisplayCurrency = convertBetween(
+    analysis.monthlySurplus,
+    statementCurrency,
+    currency,
+  );
   const remainingAfterHire =
-    Number.isFinite(parsedSalary) && parsedSalary > 0
-      ? analysis.monthlySurplus - parsedSalary
+    Number.isFinite(parsedSalary) &&
+    parsedSalary > 0 &&
+    monthlySurplusInDisplayCurrency !== null
+      ? monthlySurplusInDisplayCurrency - parsedSalary
       : null;
 
   return (
@@ -45,21 +56,27 @@ export default function HireSimulator() {
         <label className="hire-salary-field">
           <span>الراتب الشهري المتوقع</span>
           <input
-            type="number"
-            min="0"
-            step="50"
+            type="text"
             inputMode="decimal"
             dir="ltr"
             value={monthlySalary}
             onChange={(event) => setMonthlySalary(event.target.value)}
-            placeholder="مثال: 600"
+            onBlur={(event) => {
+              const enteredSalary = parseLocalizedNumber(event.currentTarget.value);
+              if (Number.isFinite(enteredSalary) && enteredSalary >= 0) {
+                setMonthlySalary(formatEditableAmount(enteredSalary, currency));
+              }
+            }}
+            placeholder="مثال: ٦٠٠"
             data-testid="input-hire-salary"
           />
         </label>
         <div className="hire-baseline">
           <span>الفائض الشهري حسب الكشف</span>
           <strong>
-            {formatStatementMoney(analysis.monthlySurplus, currency)}
+            {monthlySurplusInDisplayCurrency === null
+              ? '—'
+              : formatStatementMoney(monthlySurplusInDisplayCurrency, currency)}
           </strong>
         </div>
         <div
@@ -78,7 +95,7 @@ export default function HireSimulator() {
               <span>
                 على أرقام الكشف، يبقى تقريبًا{' '}
                 <strong>
-                  {formatStatementMoney(remainingAfterHire, currency)}
+                    {formatStatementMoney(remainingAfterHire, currency)}
                 </strong>{' '}
                 بعد الراتب كل شهر.
               </span>

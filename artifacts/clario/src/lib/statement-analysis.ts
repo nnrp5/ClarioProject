@@ -139,11 +139,11 @@ export function analyzeTransactions(
     reasons.push('ما لقينا دخلًا واضحًا في الكشف؛ راجع تصنيف الإيداعات والمدفوعات.');
   } else if (net >= 0) {
     reasons.push(
-      `بقي لك ${Math.round(savingsRate * 100)}٪ من الدخل بعد المصاريف في فترة الكشف.`,
+      `بقي لك ${new Intl.NumberFormat('ar-KW', { maximumFractionDigits: 0 }).format(Math.round(savingsRate * 100))}٪ من الدخل بعد المصاريف في فترة الكشف.`,
     );
   } else {
     reasons.push(
-      `المصاريف تجاوزت الدخل بمقدار ${formatPlainAmount(Math.abs(net))} في فترة الكشف.`,
+      'المصاريف تجاوزت الدخل في فترة الكشف.',
     );
   }
 
@@ -582,8 +582,3 @@ export function categoryLabel(category: TransactionCategory) {
   return labels[category];
 }
 
-function formatPlainAmount(value: number) {
-  return new Intl.NumberFormat('ar-KW', {
-    maximumFractionDigits: 2,
-  }).format(value);
-}

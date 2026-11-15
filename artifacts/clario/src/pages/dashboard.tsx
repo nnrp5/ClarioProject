@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   ShieldCheck,
 } from 'lucide-react';
+import CurrencySelector from '@/components/currency-selector';
 import '../../dashboard.css';
 
 type DashboardRoute = 'overview' | 'analysis' | 'hire' | 'goal';
@@ -20,10 +21,10 @@ interface DashboardShellProps {
 }
 
 const navigation = [
-  { route: 'overview' as const, href: '/dashboard', label: 'نظرة عامة', Icon: LayoutDashboard },
-  { route: 'analysis' as const, href: '/dashboard/analysis', label: 'تحليل كشفك', Icon: FileChartColumnIncreasing },
-  { route: 'hire' as const, href: '/dashboard/hire', label: 'قرار التوظيف', Icon: BriefcaseBusiness },
-  { route: 'goal' as const, href: '/dashboard/goal', label: 'هدفك المالي', Icon: Goal },
+  { route: 'overview' as const, href: '/dashboard', label: 'نظرة عامة', mobileLabel: 'الرئيسية', Icon: LayoutDashboard },
+  { route: 'analysis' as const, href: '/dashboard/analysis', label: 'تحليل كشفك', mobileLabel: 'تحليل', Icon: FileChartColumnIncreasing },
+  { route: 'hire' as const, href: '/dashboard/hire', label: 'قرار التوظيف', mobileLabel: 'التوظيف', Icon: BriefcaseBusiness },
+  { route: 'goal' as const, href: '/dashboard/goal', label: 'هدفك المالي', mobileLabel: 'الهدف', Icon: Goal },
 ];
 
 export function DashboardShell({ activeRoute, children }: DashboardShellProps) {
@@ -37,7 +38,7 @@ export function DashboardShell({ activeRoute, children }: DashboardShellProps) {
 
         <div className="clario-dashboard__side-caption">مساحتك المالية</div>
         <nav className="clario-dashboard__nav" aria-label="التنقل">
-          {navigation.map(({ route, href, label, Icon }) => (
+          {navigation.map(({ route, href, label, mobileLabel, Icon }) => (
             <Link
               key={route}
               href={href}
@@ -46,7 +47,8 @@ export function DashboardShell({ activeRoute, children }: DashboardShellProps) {
               data-testid={`link-dashboard-${route}`}
             >
               <Icon size={18} strokeWidth={1.8} aria-hidden="true" />
-              <span>{label}</span>
+              <span className="clario-dashboard__nav-label">{label}</span>
+              <span className="clario-dashboard__nav-label-mobile">{mobileLabel}</span>
               {activeRoute === route && <span className="clario-dashboard__active-mark" aria-hidden="true" />}
             </Link>
           ))}
@@ -77,6 +79,7 @@ export function DashboardShell({ activeRoute, children }: DashboardShellProps) {
             <span className="clario-dashboard__online-dot" aria-hidden="true" />
             <span>مساحتك، على راحتك</span>
           </div>
+          <CurrencySelector className="clario-currency-picker--dashboard" />
         </header>
         <main className="clario-dashboard__content">{children}</main>
       </div>

@@ -4,7 +4,7 @@
   --dash-ink-raised: #1c2d49;
   --dash-orange: #f47a2a;
   --dash-orange-soft: #ff9b55;
-  --dash-paper: #f6f5f1;
+  --dash-paper: #101d32;
   --dash-card: #fffefa;
   --dash-text: #f7f7f4;
   --dash-muted: #b9c4d1;
@@ -12,7 +12,7 @@
   display: flex;
   min-height: 100dvh;
   background: var(--dash-paper);
-  color: #17243a;
+  color: #f7f7f4;
   font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
   line-height: 1.65;
 }
@@ -93,6 +93,7 @@
   background: rgba(244, 122, 42, .12);
   color: #ffb17b;
 }
+.clario-dashboard__nav-label-mobile { display: none; }
 .clario-dashboard__active-mark {
   width: 5px;
   height: 5px;
@@ -142,24 +143,44 @@
   justify-content: space-between;
   gap: 20px;
   padding: 0 clamp(25px, 5vw, 76px);
-  border-bottom: 1px solid #e3e3de;
-  background: rgba(255, 254, 250, .74);
+  border-bottom: 1px solid rgba(231, 238, 246, .13);
+  background: rgba(16, 29, 50, .92);
 }
 .clario-dashboard__breadcrumb {
   display: flex;
   align-items: center;
   gap: 11px;
-  color: #828b98;
+  color: #b7c2cf;
   font-size: 12px;
 }
-.clario-dashboard__breadcrumb-divider { color: #c3c7cc; }
-.clario-dashboard__breadcrumb-current { color: #1b2b43; font-weight: 600; }
+.clario-dashboard__breadcrumb-divider { color: #718096; }
+.clario-dashboard__breadcrumb-current { color: #f7f7f4; font-weight: 600; }
 .clario-dashboard__top-note {
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #687484;
+  color: #c1cbd7;
   font-size: 11px;
+}
+.clario-currency-picker--dashboard {
+  border-color: rgba(238, 243, 249, .2);
+  background: rgba(255, 255, 255, .045);
+  color: #f4f6f8;
+}
+.clario-dashboard .clario-dashboard__topbar .clario-currency-picker--dashboard {
+  border-color: rgba(238, 243, 249, .2);
+  background: rgba(255, 255, 255, .045);
+  color: #f4f6f8;
+  opacity: 1;
+}
+.clario-currency-picker--dashboard:hover,
+.clario-currency-picker--dashboard:focus-within {
+  border-color: rgba(244, 122, 42, .55);
+  background: rgba(244, 122, 42, .1);
+  color: #ffb17b;
+}
+.clario-dashboard .clario-dashboard__topbar .clario-currency-picker--dashboard:has(select:disabled) {
+  opacity: .88;
 }
 .clario-dashboard__online-dot {
   width: 7px;
@@ -278,20 +299,20 @@
   margin-bottom: 18px;
 }
 .clario-dashboard__section-kicker {
-  color: #b9622d;
+  color: #ffad71;
   font-size: 11px;
   font-weight: 600;
 }
 .clario-dashboard__section-heading h2 {
   margin: 4px 0 0;
-  color: #17243a;
+  color: #f4f6f8;
   font-size: 22px;
   font-weight: 600;
   letter-spacing: -.025em;
 }
 .clario-dashboard__section-aside {
   padding-bottom: 4px;
-  color: #8b929b;
+  color: #b1bdcb;
   font-size: 11px;
 }
 .clario-dashboard__services {
@@ -379,9 +400,9 @@
   margin-top: 24px;
   padding: 15px 17px;
   overflow: hidden;
-  border: 1px solid #e6e3dc;
+  border: 1px solid rgba(231, 238, 246, .15);
   border-radius: 13px;
-  background: #efeee8;
+  background: #172740;
 }
 .clario-dashboard__note-icon {
   display: grid;
@@ -390,26 +411,26 @@
   flex: none;
   place-items: center;
   border-radius: 10px;
-  background: #fff9f2;
-  color: #b85d28;
+  background: rgba(244, 122, 42, .12);
+  color: #ffad71;
 }
 .clario-dashboard__note p {
   margin: 0;
-  color: #596577;
+  color: #d2dbe5;
   font-size: 12px;
 }
-.clario-dashboard__note p strong { color: #24334a; }
+.clario-dashboard__note p strong { color: #fff; }
 .clario-dashboard__note-rule {
   width: 45px;
   height: 1px;
   margin-inline-start: auto;
-  background: #d5a27f;
+  background: rgba(255, 173, 113, .45);
 }
 
 .dashboard-service-surface {
   min-height: 575px;
   overflow: hidden;
-  border: 1px solid rgba(16, 29, 50, .1);
+  border: 1px solid rgba(231, 238, 246, .12);
   border-radius: 16px;
   box-shadow: 0 15px 34px rgba(29, 42, 62, .08);
 }
@@ -462,25 +483,47 @@
   .clario-dashboard__side-caption,
   .clario-dashboard__sidebar-bottom { display: none; }
   .clario-dashboard__nav {
+    position: fixed;
+    z-index: 20;
+    right: 0;
+    bottom: 0;
+    left: 0;
     display: flex;
-    gap: 5px;
-    overflow-x: auto;
-    padding-bottom: 2px;
-    scrollbar-width: none;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 2px;
+    padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+    border-top: 1px solid rgba(231, 238, 246, .15);
+    background: rgba(16, 29, 50, .97);
+    box-shadow: 0 -10px 28px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(14px);
   }
-  .clario-dashboard__nav::-webkit-scrollbar { display: none; }
   .clario-dashboard__nav-link {
-    min-height: 39px;
-    flex: 0 0 auto;
-    gap: 7px;
-    padding: 0 11px;
+    min-width: 0;
+    min-height: 58px;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 2px;
     border-radius: 10px;
-    font-size: 11px;
+    font-size: 10px;
   }
   .clario-dashboard__nav-link svg { width: 15px; height: 15px; }
   .clario-dashboard__active-mark { display: none; }
+  .clario-dashboard__nav-label { display: none; }
+  .clario-dashboard__nav-label-mobile {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .clario-dashboard__topbar { min-height: 55px; padding-inline: 20px; }
-  .clario-dashboard__content { padding: 24px 19px 35px; }
+  .clario-currency-picker--dashboard { min-width: 84px; height: 34px; }
+  .clario-dashboard__content {
+    padding: 24px 19px calc(96px + env(safe-area-inset-bottom));
+  }
   .clario-dashboard__welcome { min-height: 200px; padding: 27px 24px; }
   .clario-dashboard__welcome-art { position: absolute; left: -9px; width: 175px; opacity: .68; transform: scale(.8); transform-origin: center; }
   .clario-dashboard__welcome-copy { max-width: 73%; }
@@ -509,6 +552,7 @@
 @media (max-width: 390px) {
   .clario-dashboard__top-note { font-size: 0; }
   .clario-dashboard__top-note .clario-dashboard__online-dot { width: 8px; height: 8px; }
+  .clario-currency-picker--dashboard { min-width: 75px; padding-inline: 7px; }
   .clario-dashboard__content { padding-inline: 15px; }
   .clario-dashboard__welcome { padding-inline: 19px; }
   .clario-dashboard__welcome h1 { font-size: 25px; }

@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import CurrencySelector from '@/components/currency-selector';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -17,6 +18,7 @@ import {
   ChartNoAxesColumnIncreasing,
   Check,
   Lightbulb,
+  LockKeyhole,
   Menu,
   Sparkles,
   WalletCards,
@@ -24,7 +26,9 @@ import {
 import GoalSaver from '@/components/goal-saver';
 import HireSimulator from '@/components/hire-simulator';
 import {
+  formatStatementMoney,
   StatementAnalysisProvider,
+  useStatementAnalysis,
 } from '@/components/statement-analysis-provider';
 import StatementExperience from '@/components/statement-experience';
 import {
@@ -35,6 +39,12 @@ import {
 const queryClient = new QueryClient();
 
 function Home() {
+  const { currency, convertBetween } = useStatementAnalysis();
+  const formatSampleAmount = (amount: number) => {
+    const converted = convertBetween(amount, 'SAR', currency);
+    return converted === null ? '—' : formatStatementMoney(converted, currency);
+  };
+
   return (
     <main className="clario-page" dir="rtl" lang="ar">
       <div className="clario-container">
@@ -56,6 +66,7 @@ function Home() {
             >
               <Menu size={20} strokeWidth={1.8} aria-hidden="true" />
             </Link>
+            <CurrencySelector />
           </nav>
         </header>
 
@@ -70,10 +81,14 @@ function Home() {
               كلاريو يساعدك تفهم وضعك المالي بكلام بسيط، وتعرف وش تعني أرقامك لقراراتك اليومية.
             </p>
             <div className="hero-actions reveal delay-2">
-              <a className="button-primary" href="#goal" data-testid="link-explore-capabilities">
-                احفظ هدفك الأول <ArrowLeft size={16} aria-hidden="true" />
+              <a className="button-primary" href="#analysis" data-testid="link-explore-capabilities">
+                ارفع كشفك وشوف النتيجة <ArrowLeft size={16} aria-hidden="true" />
               </a>
               <a className="text-link" href="#how" data-testid="link-learn-more">عن كلاريو</a>
+            </div>
+            <div className="hero-privacy-badge reveal delay-2">
+              <LockKeyhole size={16} aria-hidden="true" />
+              <span><strong>كشفك ما يغادر جهازك</strong> — نحلّله داخل متصفحك فقط.</span>
             </div>
             <p className="hero-footnote reveal delay-2">معلومة مفهومة. قرارك يظل لك.</p>
           </div>
@@ -96,11 +111,11 @@ function Home() {
               <div className="report-rule" />
               <div className="report-line">
                 <span className="report-label"><i className="mini-icon"><WalletCards size={13} /></i> الدخل</span>
-                <span className="report-value">12,400 ر.س</span>
+                <span className="report-value">{formatSampleAmount(12400)}</span>
               </div>
               <div className="report-line">
                 <span className="report-label"><i className="mini-icon"><ChartNoAxesColumnIncreasing size={13} /></i> المصاريف</span>
-                <span className="report-value">8,260 ر.س</span>
+                <span className="report-value">{formatSampleAmount(8260)}</span>
               </div>
               <div className="insight-note">
                 <Lightbulb size={14} aria-hidden="true" />
@@ -125,28 +140,28 @@ function Home() {
           </div>
           <div className="steps">
             <article className="step">
-              <span className="step-index">01</span>
+               <span className="step-index">٠١</span>
               <div>
                 <h3>نجمع لك الصورة</h3>
                 <p>تشوف المعلومات المهمة في مكان واحد بدل ما تظل متفرقة في بالك.</p>
               </div>
             </article>
             <article className="step">
-              <span className="step-index">02</span>
+               <span className="step-index">٠٢</span>
               <div>
                 <h3>نشرحها بلغة قريبة</h3>
                 <p>المعنى يجيك بكلام واضح، مو مصطلحات مالية تزيد الحيرة.</p>
               </div>
             </article>
             <article className="step">
-              <span className="step-index">03</span>
+               <span className="step-index">٠٣</span>
               <div>
                 <h3>تقرر وأنت أهدى</h3>
                 <p>تفهم وضعك أكثر، وتختار بنفسك وش الخطوة المناسبة لك.</p>
               </div>
             </article>
             <article className="step">
-              <span className="step-index">04</span>
+               <span className="step-index">٠٤</span>
               <div>
                 <h3>مصمم للمستقلين وأصحاب الأعمال والموظفين</h3>
                 <p>عشان تفهم أرقامك وتختار خطوتك الجاية بوضوح.</p>

@@ -35,9 +35,9 @@
   border: 1px solid rgba(244, 122, 42, .25);
   border-radius: 13px;
   background: rgba(244, 122, 42, .075);
-  color: #dbe2ea;
-  font-size: 12px;
-  line-height: 1.85;
+  color: #eef2f6;
+  font-size: 14px;
+  line-height: 1.8;
 }
 
 .clario-page .statement-privacy strong { color: #fff; }
@@ -335,7 +335,7 @@
 
 .clario-page .statement-score-ring strong {
   color: #172237;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
   font-size: 22px;
   line-height: 1;
 }
@@ -399,7 +399,7 @@
 .clario-page .statement-metrics strong {
   overflow-wrap: anywhere;
   color: #172237;
-  font-family: 'DM Sans', 'IBM Plex Sans Arabic', sans-serif;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 700;
 }
@@ -459,7 +459,7 @@
 
 .clario-page .statement-category strong {
   color: #26364c;
-  font-family: 'DM Sans', 'IBM Plex Sans Arabic', sans-serif;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
   font-size: 10px;
   text-align: left;
 }
@@ -634,22 +634,22 @@
   justify-content: space-between;
   gap: 10px;
   color: #adb9c7;
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .clario-page .hire-baseline strong {
   color: #fff;
-  font-family: 'DM Sans', 'IBM Plex Sans Arabic', sans-serif;
-  font-size: 11px;
+  font-family: 'IBM Plex Sans Arabic', 'DM Sans', sans-serif;
+  font-size: 15px;
 }
 
 .clario-page .hire-outcome {
   display: flex;
-  align-items: flex-start;
-  gap: 9px;
-  padding: 12px;
-  border-radius: 10px;
-  font-size: 11px;
+  align-items: center;
+  gap: 12px;
+  padding: 17px;
+  border-radius: 13px;
+  font-size: 15px;
   line-height: 1.8;
 }
 
@@ -664,14 +664,18 @@
 }
 
 .clario-page .hire-outcome-icon { display: grid; flex: none; place-items: center; }
-.clario-page .hire-outcome strong { color: #fff; }
+.clario-page .hire-outcome strong {
+  color: #fff;
+  font-size: 22px;
+  white-space: nowrap;
+}
 
 .clario-page .hire-sample-label {
   display: flex;
   align-items: center;
   gap: 6px;
   color: #aebacc;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .clario-page .hire-sample-label svg { flex: none; color: var(--clario-orange-light); }
@@ -692,7 +696,7 @@
   .clario-page .statement-heading { margin-bottom: 23px; }
   .clario-page .statement-heading h2 { font-size: 31px; }
   .clario-page .statement-heading > p { font-size: 13px; }
-  .clario-page .statement-privacy { gap: 9px; margin-top: 16px; padding: 12px; font-size: 10px; }
+  .clario-page .statement-privacy { gap: 9px; margin-top: 16px; padding: 12px; font-size: 13px; }
   .clario-page .statement-workspace { grid-template-columns: 1fr; gap: 13px; }
   .clario-page .statement-upload-card { padding: 16px; }
   .clario-page .statement-dropzone { min-height: 215px; padding: 18px; }
@@ -707,6 +711,9 @@
   .clario-page .hire-simulator { grid-template-columns: 1fr; gap: 17px; margin: 16px 0 52px; padding: 19px 16px; }
   .clario-page .hire-copy h3 { font-size: 28px; }
   .clario-page .hire-calculator { padding: 15px; }
+  .clario-page .hire-outcome { gap: 10px; padding: 14px; font-size: 15px; }
+  .clario-page .hire-outcome strong { font-size: 20px; }
+  .clario-page .hire-sample-label { font-size: 11px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

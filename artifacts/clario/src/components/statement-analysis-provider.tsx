@@ -1,7 +1,9 @@
 import {
   createContext,
   useContext,
+  useEffect,
   useState,
+  useCallback,
   type ReactNode,
 } from 'react';
 import {
@@ -22,11 +24,92 @@ export const currencies = [
 
 export type CurrencyCode = (typeof currencies)[number]['value'];
 
+function currencyFractionDigits(currency: CurrencyCode) {
+  return new Intl.NumberFormat('en', {
+    style: 'currency',
+    currency,
+  }).resolvedOptions().maximumFractionDigits;
+}
+
+export function formatArabicNumber(value: number, maximumFractionDigits = 0) {
+  return new Intl.NumberFormat('ar-KW', {
+    maximumFractionDigits,
+  }).format(value);
+}
+
+export function formatEditableAmount(value: number, currency: CurrencyCode) {
+  const fractionDigits = currencyFractionDigits(currency);
+  return new Intl.NumberFormat('ar-KW', {
+    useGrouping: false,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(value);
+}
+
+export function parseLocalizedNumber(value: string) {
+  const westernDigits = value
+    .replace(/[٠-٩]/g, (digit) =>
+      String('٠١٢٣٤٥٦٧٨٩'.indexOf(digit)),
+    )
+    .replace(/[۰-۹]/g, (digit) =>
+      String('۰۱۲۳۴۵۶۷۸۹'.indexOf(digit)),
+    )
+    .replace(/[٬,]/g, '')
+    .replace(/[٫]/g, '.')
+    .replace(/[−–]/g, '-')
+    .replace(/\s/g, '');
+  if (!westernDigits) return Number.NaN;
+  const parsed = Number(westernDigits);
+  return Number.isFinite(parsed) ? parsed : Number.NaN;
+}
+
+type ExchangeRates = Record<string, number>;
+
+const currencyPreferenceKey = 'clario-display-currency';
+const ratesCacheKey = 'clario-exchange-rates-v1';
+const ratesCacheMaxAge = 24 * 60 * 60 * 1000;
+
+function isCurrencyCode(value: unknown): value is CurrencyCode {
+  return typeof value === 'string' &&
+    currencies.some((currency) => currency.value === value);
+}
+
+function readCachedRates(): { rates: ExchangeRates; updatedAt: number } | null {
+  try {
+    const raw = localStorage.getItem(ratesCacheKey);
+    if (!raw) return null;
+    const cached = JSON.parse(raw) as {
+      rates?: unknown;
+      updatedAt?: unknown;
+    };
+    if (
+      typeof cached.rates !== 'object' ||
+      cached.rates === null ||
+      typeof cached.updatedAt !== 'number'
+    ) {
+      return null;
+    }
+    const rates = cached.rates as ExchangeRates;
+    if (
+      !currencies.every(
+        ({ value }) => Number.isFinite(rates[value]) && rates[value] > 0,
+      )
+    ) {
+      return null;
+    }
+    return { rates, updatedAt: cached.updatedAt };
+  } catch {
+    return null;
+  }
+}
+
 export function formatStatementMoney(value: number, currency: CurrencyCode) {
+  const fractionDigits = currencyFractionDigits(currency);
   return new Intl.NumberFormat('ar-KW', {
     style: 'currency',
     currency,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
   }).format(value);
 }
 
@@ -39,6 +122,15 @@ type StatementAnalysisContextValue = {
   errorMessage: string;
   currency: CurrencyCode;
   setCurrency: (currency: CurrencyCode) => void;
+  statementCurrency: CurrencyCode;
+  setStatementCurrency: (currency: CurrencyCode) => void;
+  convertBetween: (
+    amount: number,
+    from: CurrencyCode,
+    to: CurrencyCode,
+  ) => number | null;
+  isExchangeRateLoading: boolean;
+  exchangeRateUpdatedAt: number | null;
   monthlySalary: string;
   setMonthlySalary: (salary: string) => void;
   processFile: (file: File) => Promise<void>;
@@ -58,7 +150,105 @@ export function StatementAnalysisProvider({
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currency, setCurrency] = useState<CurrencyCode>('KWD');
-  const [monthlySalary, setMonthlySalary] = useState('600');
+  const [statementCurrency, setStatementCurrency] =
+    useState<CurrencyCode>('KWD');
+  const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(null);
+  const [exchangeRateUpdatedAt, setExchangeRateUpdatedAt] = useState<number | null>(null);
+  const [isExchangeRateLoading, setIsExchangeRateLoading] = useState(true);
+  const [monthlySalary, setMonthlySalary] = useState(
+    formatEditableAmount(600, 'KWD'),
+  );
+
+  useEffect(() => {
+    let active = true;
+    const savedCurrency = localStorage.getItem(currencyPreferenceKey);
+    const cached = readCachedRates();
+    if (cached) {
+      setExchangeRates(cached.rates);
+      setExchangeRateUpdatedAt(cached.updatedAt);
+      setIsExchangeRateLoading(false);
+      if (isCurrencyCode(savedCurrency)) setCurrency(savedCurrency);
+    }
+
+    async function loadExchangeRates() {
+      try {
+        const response = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (!response.ok) throw new Error('Exchange-rate service unavailable.');
+        const result = (await response.json()) as {
+          result?: string;
+          time_last_update_unix?: number;
+          rates?: ExchangeRates;
+        };
+        if (
+          result.result !== 'success' ||
+          !result.rates ||
+          !currencies.every(
+            ({ value }) =>
+              Number.isFinite(result.rates?.[value]) &&
+              (result.rates?.[value] ?? 0) > 0,
+          )
+        ) {
+          throw new Error('Exchange-rate response is incomplete.');
+        }
+
+        const updatedAt = (result.time_last_update_unix ?? Date.now() / 1000) * 1000;
+        if (!active) return;
+        setExchangeRates(result.rates);
+        setExchangeRateUpdatedAt(updatedAt);
+        setIsExchangeRateLoading(false);
+        if (isCurrencyCode(savedCurrency)) setCurrency(savedCurrency);
+        localStorage.setItem(
+          ratesCacheKey,
+          JSON.stringify({ rates: result.rates, updatedAt }),
+        );
+      } catch {
+        if (active) setIsExchangeRateLoading(false);
+      }
+    }
+
+    const cacheIsFresh =
+      cached !== null && Date.now() - cached.updatedAt < ratesCacheMaxAge;
+    if (!cacheIsFresh) void loadExchangeRates();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const convertBetween = useCallback(
+    (amount: number, from: CurrencyCode, to: CurrencyCode) => {
+      if (from === to) return amount;
+      if (!exchangeRates) return null;
+      const sourceRate = exchangeRates[from];
+      const targetRate = exchangeRates[to];
+      if (!Number.isFinite(sourceRate) || !Number.isFinite(targetRate)) {
+        return null;
+      }
+      return amount * (targetRate / sourceRate);
+    },
+    [exchangeRates],
+  );
+
+  const changeDisplayCurrency = useCallback(
+    (nextCurrency: CurrencyCode) => {
+      if (nextCurrency !== currency && exchangeRates) {
+        const salaryAmount = parseLocalizedNumber(monthlySalary);
+        if (Number.isFinite(salaryAmount) && salaryAmount > 0) {
+          const convertedSalary = convertBetween(
+            salaryAmount,
+            currency,
+            nextCurrency,
+          );
+          if (convertedSalary !== null) {
+            setMonthlySalary(formatEditableAmount(convertedSalary, nextCurrency));
+          }
+        }
+      }
+      setCurrency(nextCurrency);
+      localStorage.setItem(currencyPreferenceKey, nextCurrency);
+    },
+    [convertBetween, currency, exchangeRates, monthlySalary],
+  );
 
   async function processFile(file: File) {
     setErrorMessage('');
@@ -92,7 +282,12 @@ export function StatementAnalysisProvider({
         isProcessing,
         errorMessage,
         currency,
-        setCurrency,
+        setCurrency: changeDisplayCurrency,
+        statementCurrency,
+        setStatementCurrency,
+        convertBetween,
+        isExchangeRateLoading,
+        exchangeRateUpdatedAt,
         monthlySalary,
         setMonthlySalary,
         processFile,

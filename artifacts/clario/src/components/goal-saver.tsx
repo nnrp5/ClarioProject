@@ -1,6 +1,15 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { ArrowLeft, Check, LoaderCircle } from 'lucide-react';
 import { supabase, supabaseConfigIssue } from '@/lib/supabase';
+import {
+  currencies,
+  formatArabicNumber,
+  formatEditableAmount,
+  formatStatementMoney,
+  parseLocalizedNumber,
+  useStatementAnalysis,
+  type CurrencyCode,
+} from '@/components/statement-analysis-provider';
 
 const goalOptions = [
   { value: 'car', label: 'سيارة' },
@@ -8,17 +17,7 @@ const goalOptions = [
   { value: 'expansion', label: 'توسّع' },
 ] as const;
 
-const currencies = [
-  { value: 'KWD', label: 'د.ك — دينار كويتي' },
-  { value: 'SAR', label: 'ر.س — ريال سعودي' },
-  { value: 'AED', label: 'د.إ — درهم إماراتي' },
-  { value: 'QAR', label: 'ر.ق — ريال قطري' },
-  { value: 'BHD', label: 'د.ب — دينار بحريني' },
-  { value: 'OMR', label: 'ر.ع — ريال عُماني' },
-] as const;
-
 type GoalType = (typeof goalOptions)[number]['value'];
-type CurrencyCode = (typeof currencies)[number]['value'];
 
 type SavedGoal = {
   goal_type: GoalType;
@@ -32,14 +31,6 @@ function isGoalType(value: string): value is GoalType {
 
 function isCurrencyCode(value: string): value is CurrencyCode {
   return currencies.some((currency) => currency.value === value);
-}
-
-function formatAmount(amount: number, currency: CurrencyCode) {
-  return new Intl.NumberFormat('ar-KW', {
-    style: 'currency',
-    currency,
-    maximumFractionDigits: 3,
-  }).format(amount);
 }
 
 function getArabicError(error: unknown, stage: 'auth' | 'goal') {
@@ -88,15 +79,29 @@ function getArabicError(error: unknown, stage: 'auth' | 'goal') {
 }
 
 export default function GoalSaver() {
+  const { currency, setCurrency, convertBetween } = useStatementAnalysis();
   const [userId, setUserId] = useState<string | null>(null);
   const [goalType, setGoalType] = useState<GoalType>('car');
   const [amount, setAmount] = useState('');
-  const [currencyCode, setCurrencyCode] = useState<CurrencyCode>('KWD');
+  const [amountCurrency, setAmountCurrency] = useState<CurrencyCode>('KWD');
   const [savedGoal, setSavedGoal] = useState<SavedGoal | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const parsedAmount = parseLocalizedNumber(amount);
+  const amountInDisplayCurrency =
+    amount === '' || !Number.isFinite(parsedAmount)
+      ? null
+      : convertBetween(parsedAmount, amountCurrency, currency);
+  const displayAmount =
+    amount === ''
+      ? ''
+      : amountCurrency === currency
+        ? amount
+        : amountInDisplayCurrency === null
+        ? ''
+        : formatEditableAmount(amountInDisplayCurrency, currency);
 
   useEffect(() => {
     let active = true;
@@ -156,8 +161,13 @@ export default function GoalSaver() {
           };
           setSavedGoal(loadedGoal);
           setGoalType(loadedGoal.goal_type);
-          setAmount(String(loadedGoal.target_amount));
-          setCurrencyCode(loadedGoal.currency_code);
+          setAmount(
+            formatEditableAmount(
+              loadedGoal.target_amount,
+              loadedGoal.currency_code,
+            ),
+          );
+          setAmountCurrency(loadedGoal.currency_code);
         }
       } catch (error) {
         if (active) setErrorMessage(getArabicError(error, stage));
@@ -182,9 +192,13 @@ export default function GoalSaver() {
       return;
     }
 
-    const targetAmount = Number(amount);
+    const targetAmount = parseLocalizedNumber(displayAmount);
     if (!Number.isFinite(targetAmount) || targetAmount <= 0) {
-      setErrorMessage('اكتب مبلغاً أكبر من صفر.');
+      setErrorMessage(
+        amount !== '' && displayAmount === ''
+          ? 'ننتظر تحديث أسعار الصرف لتحويل مبلغ هدفك.'
+          : 'اكتب مبلغاً أكبر من صفر.',
+      );
       return;
     }
 
@@ -198,7 +212,7 @@ export default function GoalSaver() {
             user_id: userId,
             goal_type: goalType,
             target_amount: targetAmount,
-            currency_code: currencyCode,
+            currency_code: currency,
           },
           { onConflict: 'user_id' },
         )
@@ -226,6 +240,13 @@ export default function GoalSaver() {
 
   const selectedGoalLabel =
     goalOptions.find((option) => option.value === savedGoal?.goal_type)?.label ?? '';
+  const savedGoalDisplayAmount = savedGoal
+    ? convertBetween(
+        savedGoal.target_amount,
+        savedGoal.currency_code,
+        currency,
+      )
+    : null;
 
   return (
     <section className="goal-section" id="goal" aria-labelledby="goal-title">
@@ -248,7 +269,12 @@ export default function GoalSaver() {
             <span>
               هدفك الحالي: <strong>{selectedGoalLabel}</strong> —{' '}
               <strong>
-                {formatAmount(savedGoal.target_amount, savedGoal.currency_code)}
+                {formatStatementMoney(
+                  savedGoalDisplayAmount ?? savedGoal.target_amount,
+                  savedGoalDisplayAmount === null
+                    ? savedGoal.currency_code
+                    : currency,
+                )}
               </strong>
             </span>
           </div>
@@ -258,7 +284,7 @@ export default function GoalSaver() {
       <form className="goal-form" onSubmit={handleSubmit} data-testid="form-save-goal">
         <div className="goal-form-heading">
           <span className="section-kicker">هدف واحد كبداية</span>
-          <span className="goal-count">01 / 01</span>
+          <span className="goal-count">{formatArabicNumber(1)} / {formatArabicNumber(1)}</span>
         </div>
 
         <label className="goal-field">
@@ -281,26 +307,30 @@ export default function GoalSaver() {
           <label className="goal-field">
             <span>المبلغ المستهدف</span>
             <input
-              type="number"
-              min="0.001"
-              step="0.001"
+              type="text"
               inputMode="decimal"
               dir="ltr"
-              value={amount}
-              onChange={(event) => setAmount(event.target.value)}
-              placeholder="مثال: 2500"
+              value={displayAmount}
+              onChange={(event) => {
+                setAmount(event.target.value);
+                setAmountCurrency(currency);
+              }}
+              placeholder="مثال: ٢٥٠٠"
               required
-              disabled={loading || saving || Boolean(errorMessage)}
+              disabled={
+                loading ||
+                saving ||
+                Boolean(errorMessage) ||
+                (amount !== '' && displayAmount === '')
+              }
               data-testid="input-goal-amount"
             />
           </label>
           <label className="goal-field">
             <span>العملة</span>
             <select
-              value={currencyCode}
-              onChange={(event) =>
-                setCurrencyCode(event.target.value as CurrencyCode)
-              }
+              value={currency}
+              onChange={(event) => setCurrency(event.target.value as CurrencyCode)}
               disabled={loading || saving || Boolean(errorMessage)}
               data-testid="select-goal-currency"
             >

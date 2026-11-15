@@ -22,6 +22,7 @@ import {
 import { categoryLabel } from '@/lib/statement-analysis';
 import {
   currencies,
+  formatArabicNumber,
   formatStatementMoney as formatMoney,
   useStatementAnalysis,
   type CurrencyCode,
@@ -42,13 +43,19 @@ export default function StatementExperience() {
     isProcessing,
     errorMessage,
     currency,
-    setCurrency,
+    statementCurrency,
+    setStatementCurrency,
+    convertBetween,
     processFile,
     showSample,
   } = useStatementAnalysis();
   const [isDragging, setIsDragging] = useState(false);
 
   const topCategoryAmount = analysis.categories[0]?.amount ?? 0;
+  const formatDisplayMoney = (amount: number) => {
+    const converted = convertBetween(amount, statementCurrency, currency);
+    return converted === null ? '—' : formatMoney(converted, currency);
+  };
   const summary = useMemo(() => {
     if (analysis.income <= 0) {
       return 'ما قدرنا نحدد دخلًا واضحًا من هذا الكشف. راجع تصنيف الإيداعات ثم جرّب مرة ثانية.';
@@ -56,13 +63,13 @@ export default function StatementExperience() {
     const savingsPercent = Math.round((analysis.net / analysis.income) * 100);
     const remainingText =
       analysis.net >= 0
-        ? `وبقي لك ${formatMoney(analysis.net, currency)}`
-        : `وتجاوزت مصاريفك دخلك بـ ${formatMoney(Math.abs(analysis.net), currency)}`;
+        ? `وبقي لك ${formatDisplayMoney(analysis.net)}`
+        : `وتجاوزت مصاريفك دخلك بـ ${formatDisplayMoney(Math.abs(analysis.net))}`;
     const categoryText = analysis.categories[0]
       ? ` أكبر بند صرف كان ${categoryLabel(analysis.categories[0].category)}.`
       : '';
-    return `خلال فترة الكشف، دخل ${formatMoney(analysis.income, currency)} وصُرف ${formatMoney(analysis.expenses, currency)}؛ ${remainingText} (${savingsPercent}٪ من الدخل).${categoryText}`;
-  }, [analysis, currency]);
+    return `خلال فترة الكشف، دخل ${formatDisplayMoney(analysis.income)} وصُرف ${formatDisplayMoney(analysis.expenses)}؛ ${remainingText} (${formatArabicNumber(savingsPercent)}٪ من الدخل).${categoryText}`;
+  }, [analysis, currency, statementCurrency, convertBetween]);
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.currentTarget.files?.[0];
@@ -150,16 +157,16 @@ export default function StatementExperience() {
             </div>
 
             <div className="statement-upload-meta">
-              <span>حتى 10 ميغابايت</span>
+              <span>حتى ١٠ ميغابايت</span>
               <label className="statement-currency">
-                العملة
+                عملة الكشف
                 <span>
                   <select
-                    value={currency}
+                    value={statementCurrency}
                     onChange={(event) =>
-                      setCurrency(event.target.value as CurrencyCode)
+                      setStatementCurrency(event.target.value as CurrencyCode)
                     }
-                    aria-label="عملة المبالغ في التحليل"
+                    aria-label="العملة الأصلية للمبالغ في الكشف"
                   >
                     {currencies.map((item) => (
                       <option key={item.value} value={item.value}>
@@ -215,12 +222,16 @@ export default function StatementExperience() {
                 aria-label={
                   analysis.score === null
                     ? 'لا تتوفر درجة كافية'
-                    : `درجة الصحة المالية ${analysis.score} من 100`
+                    : `درجة الصحة المالية ${formatArabicNumber(analysis.score)} من ${formatArabicNumber(100)}`
                 }
               >
                 <div>
-                  <strong>{analysis.score ?? '—'}</strong>
-                  <span>من 100</span>
+                  <strong>
+                    {analysis.score === null
+                      ? '—'
+                      : formatArabicNumber(analysis.score)}
+                  </strong>
+                  <span>من {formatArabicNumber(100)}</span>
                 </div>
               </div>
               <div className="statement-score-copy">
@@ -235,15 +246,15 @@ export default function StatementExperience() {
             <div className="statement-metrics" aria-label="ملخص الأرقام">
               <div>
                 <span>الدخل</span>
-                <strong>{formatMoney(analysis.income, currency)}</strong>
+                  <strong>{formatDisplayMoney(analysis.income)}</strong>
               </div>
               <div>
                 <span>المصاريف</span>
-                <strong>{formatMoney(analysis.expenses, currency)}</strong>
+                  <strong>{formatDisplayMoney(analysis.expenses)}</strong>
               </div>
               <div className={analysis.net >= 0 ? 'is-positive' : 'is-negative'}>
                 <span>المتبقي</span>
-                <strong>{formatMoney(analysis.net, currency)}</strong>
+                  <strong>{formatDisplayMoney(analysis.net)}</strong>
               </div>
             </div>
 
@@ -275,7 +286,7 @@ export default function StatementExperience() {
                         }}
                       />
                     </span>
-                    <strong>{formatMoney(item.amount, currency)}</strong>
+                    <strong>{formatDisplayMoney(item.amount)}</strong>
                   </div>
                 ))}
               </div>
@@ -290,7 +301,7 @@ export default function StatementExperience() {
 
             <details className="statement-transactions">
               <summary>
-                راجع الحركات المقروءة ({analysis.transactions.length})
+                راجع الحركات المقروءة ({formatArabicNumber(analysis.transactions.length)})
               </summary>
               <ul>
                 {analysis.transactions.slice(0, 8).map((item, index) => (
@@ -301,14 +312,14 @@ export default function StatementExperience() {
                     </span>
                     <b className={item.amount > 0 ? 'is-income' : 'is-expense'}>
                       {item.amount > 0 ? '+' : '−'}
-                      {formatMoney(Math.abs(item.amount), currency)}
+                      {formatDisplayMoney(Math.abs(item.amount))}
                     </b>
                   </li>
                 ))}
               </ul>
               {analysis.transactions.length > 8 && (
                 <span className="statement-transactions-foot">
-                  أول 8 حركات من أصل {analysis.transactions.length}
+                  أول {formatArabicNumber(8)} حركات من أصل {formatArabicNumber(analysis.transactions.length)}
                 </span>
               )}
             </details>
