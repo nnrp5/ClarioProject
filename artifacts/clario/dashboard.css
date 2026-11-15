@@ -162,24 +162,24 @@
   color: #c1cbd7;
   font-size: 11px;
 }
-.clario-currency-picker--dashboard {
-  border-color: rgba(238, 243, 249, .2);
-  background: linear-gradient(145deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .035));
+.clario-currency-picker--dashboard .clario-currency-picker__trigger {
+  border-color: rgba(255, 173, 113, .28);
+  background: linear-gradient(135deg, rgba(244, 122, 42, .14), rgba(255, 255, 255, .045));
   color: #f4f6f8;
 }
-.clario-dashboard .clario-dashboard__topbar .clario-currency-picker--dashboard {
-  border-color: rgba(238, 243, 249, .2);
-  background: linear-gradient(145deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .035));
+.clario-dashboard .clario-dashboard__topbar .clario-currency-picker--dashboard .clario-currency-picker__trigger {
+  border-color: rgba(255, 173, 113, .28);
+  background: linear-gradient(135deg, rgba(244, 122, 42, .14), rgba(255, 255, 255, .045));
   color: #f4f6f8;
   opacity: 1;
 }
-.clario-currency-picker--dashboard:hover,
-.clario-currency-picker--dashboard:focus-within {
+.clario-currency-picker--dashboard .clario-currency-picker__trigger:hover:not(:disabled),
+.clario-currency-picker--dashboard .clario-currency-picker__trigger[aria-expanded="true"] {
   border-color: rgba(244, 122, 42, .55);
   background: rgba(244, 122, 42, .1);
   color: #ffb17b;
 }
-.clario-dashboard .clario-dashboard__topbar .clario-currency-picker--dashboard:has(select:disabled) {
+.clario-dashboard .clario-dashboard__topbar .clario-currency-picker--dashboard:has(.clario-currency-picker__trigger:disabled) {
   opacity: .88;
 }
 .clario-dashboard__online-dot {
@@ -520,7 +520,7 @@
     white-space: nowrap;
   }
   .clario-dashboard__topbar { min-height: 55px; padding-inline: 20px; }
-  .clario-currency-picker--dashboard { min-width: 90px; height: 34px; }
+  .clario-currency-picker--dashboard .clario-currency-picker__trigger { min-width: 90px; height: 34px; }
   .clario-dashboard__content {
     padding: 24px 19px calc(96px + env(safe-area-inset-bottom));
   }
@@ -552,7 +552,7 @@
 @media (max-width: 390px) {
   .clario-dashboard__top-note { font-size: 0; }
   .clario-dashboard__top-note .clario-dashboard__online-dot { width: 8px; height: 8px; }
-  .clario-currency-picker--dashboard { min-width: 82px; padding-inline: 7px; }
+  .clario-currency-picker--dashboard .clario-currency-picker__trigger { min-width: 82px; padding-inline: 7px; }
   .clario-dashboard__content { padding-inline: 15px; }
   .clario-dashboard__welcome { padding-inline: 19px; }
   .clario-dashboard__welcome h1 { font-size: 25px; }
@@ -576,7 +576,8 @@
 }
 
 .clario-dashboard__nav-link,
-.clario-dashboard .clario-currency-picker--dashboard {
+.clario-dashboard .clario-currency-picker--dashboard,
+.clario-dashboard .clario-currency-picker__trigger {
   border-radius: var(--clario-ui-radius, 16px);
 }
 
