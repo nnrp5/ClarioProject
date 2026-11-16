@@ -65,6 +65,39 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   border-color: rgba(244, 122, 42, .26);
   outline: none;
 }
+.clario-language-switcher {
+  display: inline-grid;
+  min-width: 44px;
+  height: 38px;
+  flex: none;
+  place-items: center;
+  padding: 0 10px;
+  border: 1px solid rgba(238, 243, 249, .18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .045);
+  color: #f4f6f8;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, color .2s ease, transform .2s ease;
+}
+.clario-language-switcher:hover,
+.clario-language-switcher:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(244, 122, 42, .52);
+  background: rgba(244, 122, 42, .11);
+  color: #ffb17b;
+  outline: none;
+}
+.clario-page .nav-links .clario-language-switcher {
+  min-width: 42px;
+  height: 38px;
+}
+.clario-dashboard__topbar .clario-language-switcher {
+  min-width: 42px;
+  height: 38px;
+}
 .clario-page .nav-note {
   margin-inline-start: 10px;
   padding-inline-start: 20px;
@@ -267,6 +300,35 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   padding-block: 68px 88px;
 }
 .clario-page .hero-copy { max-width: 590px; }
+.clario-page .hero-sample-button {
+  display: inline-flex;
+  min-height: 45px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 18px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 177, 123, .5);
+  border-radius: 13px;
+  background: linear-gradient(135deg, #f47a2a, #ff9b55);
+  color: #14233b;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 8px 22px rgba(244, 122, 42, .2);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.clario-page .hero-sample-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(244, 122, 42, .28);
+  filter: brightness(1.04);
+}
+.clario-page .hero-sample-button:focus-visible {
+  outline: 3px solid rgba(255, 177, 123, .75);
+  outline-offset: 3px;
+}
+.clario-page .hero-sample-button:disabled { cursor: wait; opacity: .7; }
 .clario-page .eyebrow {
   color: var(--clario-orange-light);
   font-size: 14px;
@@ -700,6 +762,7 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .clario-logo { font-size: 22px; }
   .clario-page .nav-links { gap: 2px; }
   .clario-page .nav-links a { padding: 8px 10px; font-size: 11px; }
+  .clario-page .nav-links .clario-language-switcher { min-width: 38px; height: 34px; padding-inline: 7px; }
   .clario-page .nav-links a:first-child { display: inline-flex; }
   .clario-page .nav-links a[data-testid="link-how-it-works"] { display: none; }
   .clario-page .nav-note { display: none; }
@@ -716,6 +779,7 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .nav-links .clario-currency-picker__flag { font-size: 13px; }
   .clario-page .nav-links .clario-currency-picker__code { font-size: 9px; }
   .clario-page .hero { gap: 4px; padding: 49px 0 42px; }
+  .clario-page .hero-sample-button { min-height: 43px; margin-bottom: 15px; font-size: 12px; }
   .clario-page .hero h1 { margin: 18px 0 14px; font-size: clamp(39px, 10vw, 51px); line-height: 1.38; }
   .clario-page .hero h1 span::after { height: 8px; bottom: 2px; }
   .clario-page .hero-lede { font-size: 15px; line-height: 1.9; }
@@ -767,6 +831,13 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .promise-mark svg { width: 26px; height: 26px; }
   .clario-page .footer-main { align-items: flex-start; gap: 13px; flex-direction: column; }
 }
+
+.clario-page[lang="en"],
+.clario-dashboard[lang="en"] {
+  font-family: 'DM Sans', 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.clario-page[lang="en"] .visual-stage { transform-origin: center left; }
 
 @media (prefers-reduced-motion: reduce) {
   .clario-page *,

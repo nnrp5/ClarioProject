@@ -14,6 +14,7 @@ import {
   YAxis,
 } from 'recharts';
 import { Lightbulb, TrendingDown, TrendingUp } from 'lucide-react';
+import { useLanguage } from '@/components/language-provider';
 import {
   formatArabicNumber,
   formatStatementMoney,
@@ -21,6 +22,7 @@ import {
   type CurrencyCode,
 } from '@/components/statement-analysis-provider';
 import type { StatementTransaction } from '@/lib/statement-analysis';
+import { formatLocaleNumber } from '@/lib/localization';
 import './statement-insights.css';
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
@@ -50,6 +52,7 @@ function buildWeeklySpending(
   transactions: StatementTransaction[],
   fromCurrency: CurrencyCode,
   toCurrency: CurrencyCode,
+  language: 'ar' | 'en',
   convertBetween: (
     amount: number,
     from: CurrencyCode,
@@ -76,7 +79,7 @@ function buildWeeklySpending(
   );
   const rawData = [4, 3, 2, 1].map((week) => ({
     week,
-    label: `أسبوع ${formatArabicNumber(week)}`,
+    label: `${language === 'ar' ? 'أسبوع' : 'Week'} ${formatArabicNumber(week, 0, language)}`,
     rawAmount: 0,
   }));
 
@@ -128,6 +131,7 @@ function buildWeeklySpending(
 }
 
 export default function StatementInsights() {
+  const { language, t } = useLanguage();
   const {
     analysis,
     isSample,
@@ -142,9 +146,10 @@ export default function StatementInsights() {
         analysis.transactions,
         statementCurrency,
         currency,
+        language,
         convertBetween,
       ),
-    [analysis.transactions, statementCurrency, currency, convertBetween],
+    [analysis.transactions, statementCurrency, currency, language, convertBetween],
   );
   const monthlySurplus = convertBetween(
     analysis.monthlySurplus,
@@ -160,11 +165,12 @@ export default function StatementInsights() {
     monthlySurplus === null
       ? []
       : [
-          { label: '١٢ شهر', amount: monthlySurplus * 12 },
-          { label: '٦ أشهر', amount: monthlySurplus * 6 },
-          { label: 'شهرين', amount: monthlySurplus * 2 },
-          { label: 'الحين', amount: 0 },
+          { label: language === 'ar' ? '١٢ شهر' : '12 months', amount: monthlySurplus * 12 },
+          { label: language === 'ar' ? '٦ أشهر' : '6 months', amount: monthlySurplus * 6 },
+          { label: language === 'ar' ? 'شهرين' : '2 months', amount: monthlySurplus * 2 },
+          { label: language === 'ar' ? 'الحين' : 'Now', amount: 0 },
         ];
+  const currentLabel = language === 'ar' ? 'الحين' : 'Now';
   const projectionColor =
     monthlySurplus === null
       ? '#61A9BD'
@@ -185,13 +191,13 @@ export default function StatementInsights() {
   return (
     <section
       className="statement-insights"
-      aria-label="توزيع المصاريف والتوقع المالي"
+      aria-label={t('توزيع المصاريف والتوقع المالي')}
     >
       <article className="statement-insight-card">
         <header className="statement-insight-header">
           <div>
-            <span className="statement-insight-kicker">آخر ٤ أسابيع من الكشف</span>
-            <h3>متى تصرف أكثر؟</h3>
+            <span className="statement-insight-kicker">{t('آخر ٤ أسابيع من الكشف')}</span>
+            <h3>{t('متى تصرف أكثر؟')}</h3>
           </div>
           {!isSample && (
             <span className="statement-insight-badge">من كشفك</span>
@@ -203,7 +209,9 @@ export default function StatementInsights() {
             <div
               className="statement-insight-chart"
               role="img"
-              aria-label={`إجمالي المصاريف بآخر أربعة أسابيع ${formatStatementMoney(weeklySpending.totalAmount, currency)}. أعلى صرف في ${weeklySpending.highestWeek}.`}
+              aria-label={language === 'ar'
+                ? `إجمالي المصاريف بآخر أربعة أسابيع ${formatStatementMoney(weeklySpending.totalAmount, currency, language)}. أعلى صرف في ${weeklySpending.highestWeek}.`
+                : `Total expenses over the last four weeks: ${formatStatementMoney(weeklySpending.totalAmount, currency, language)}. Highest spending was in ${weeklySpending.highestWeek}.`}
             >
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -232,12 +240,12 @@ export default function StatementInsights() {
                     }}
                     labelStyle={{ color: '#cbd5e1' }}
                     formatter={(value) =>
-                      formatStatementMoney(Number(value ?? 0), currency)
+                      formatStatementMoney(Number(value ?? 0), currency, language)
                     }
                   />
                   <Bar
                     dataKey="amount"
-                    name="المصاريف"
+                    name={t('المصاريف')}
                     radius={[8, 8, 0, 0]}
                     maxBarSize={64}
                   >
@@ -248,7 +256,7 @@ export default function StatementInsights() {
                       fontSize={11}
                       formatter={(value: unknown) =>
                         Number(value) > 0
-                          ? formatArabicNumber(Number(value))
+                          ? formatArabicNumber(Number(value), 0, language)
                           : ''
                       }
                     />
@@ -269,7 +277,7 @@ export default function StatementInsights() {
             <div className="statement-insight-note">
               <Lightbulb size={17} aria-hidden="true" />
               <span>
-                {weeklySpending.highestShare}٪ من مصاريف الفترة كانت في{' '}
+                {formatLocaleNumber(weeklySpending.highestShare, language)}{language === 'ar' ? '٪' : '%'} {t('من مصاريف الفترة كانت في')}{' '}
                 <strong>{weeklySpending.highestWeek}</strong>.
               </span>
             </div>
@@ -277,10 +285,10 @@ export default function StatementInsights() {
         ) : (
           <div className="statement-insight-empty" role="status">
             {weeklySpending.state === 'no-conversion'
-              ? 'تعذر تحويل المصاريف إلى العملة المختارة حاليًا.'
+              ? t('تعذر تحويل المصاريف إلى العملة المختارة حاليًا.')
               : weeklySpending.state === 'no-spending'
-                ? 'ما ظهرت مصاريف مؤرخة في آخر أربعة أسابيع من الكشف.'
-                : 'ما لقينا تواريخ كافية في الكشف لعرض الصرف حسب الأسابيع.'}
+                ? t('ما ظهرت مصاريف مؤرخة في آخر أربعة أسابيع من الكشف.')
+                : t('ما لقينا تواريخ كافية في الكشف لعرض الصرف حسب الأسابيع.')}
           </div>
         )}
       </article>
@@ -288,8 +296,8 @@ export default function StatementInsights() {
       <article className="statement-insight-card statement-insight-card--forecast">
         <header className="statement-insight-header">
           <div>
-            <span className="statement-insight-kicker">توقع تقديري</span>
-            <h3>لو استمريت بنفس الوتيرة</h3>
+            <span className="statement-insight-kicker">{t('توقع تقديري')}</span>
+            <h3>{t('لو استمريت بنفس الوتيرة')}</h3>
           </div>
           <span className="statement-insight-forecast-icon" aria-hidden="true">
             {monthlySurplus !== null && monthlySurplus < 0 ? (
@@ -305,14 +313,14 @@ export default function StatementInsights() {
             <strong className={monthlySurplus !== null && monthlySurplus < 0 ? 'is-negative' : 'is-positive'}>
               {annualProjection === null
                 ? '—'
-                : formatStatementMoney(Math.abs(annualProjection), currency)}
+                : formatStatementMoney(Math.abs(annualProjection), currency, language)}
             </strong>
             <span>
               {annualProjection === null
-                ? 'التوقع غير متاح بهذه العملة'
+                ? t('التوقع غير متاح بهذه العملة')
                 : annualProjection < 0
-                  ? 'عجز تراكمي محتمل خلال سنة'
-                  : 'فائض محتمل خلال سنة'}
+                  ? t('عجز تراكمي محتمل خلال سنة')
+                  : t('فائض محتمل خلال سنة')}
             </span>
           </div>
           <p>
@@ -320,12 +328,12 @@ export default function StatementInsights() {
             <b>
               {monthlySurplus === null
                 ? '—'
-                : formatStatementMoney(Math.abs(monthlySurplus), currency)}
+                : formatStatementMoney(Math.abs(monthlySurplus), currency, language)}
             </b>{' '}
             {monthlySurplus !== null && monthlySurplus < 0
-              ? 'عجز'
-              : 'فائض'}{' '}
-            شهري.
+              ? t('عجز')
+              : t('فائض')}{' '}
+            {t('شهري.')}
           </p>
         </div>
 
@@ -333,7 +341,9 @@ export default function StatementInsights() {
           <div
             className="statement-insight-chart statement-insight-chart--forecast"
             role="img"
-            aria-label={`توقع خطي للفائض خلال ١٢ شهرًا. ${datedTransactions ? 'مبني على تواريخ الكشف.' : 'يفترض أن الكشف يمثل شهرًا واحدًا.'}`}
+            aria-label={language === 'ar'
+              ? `توقع خطي للفائض خلال ١٢ شهرًا. ${datedTransactions ? 'مبني على تواريخ الكشف.' : 'يفترض أن الكشف يمثل شهرًا واحدًا.'}`
+              : `Projected surplus over 12 months. ${datedTransactions ? 'Based on statement dates.' : 'Assumes the statement represents one month.'}`}
           >
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
@@ -353,7 +363,7 @@ export default function StatementInsights() {
                 />
                 <YAxis hide domain={['auto', 'auto']} />
                 <ReferenceLine
-                  x="الحين"
+                  x={currentLabel}
                   stroke="rgba(214, 225, 238, .32)"
                   strokeDasharray="3 4"
                 />
@@ -370,13 +380,13 @@ export default function StatementInsights() {
                     color: '#f4f7fb',
                   }}
                   labelStyle={{ color: '#cbd5e1' }}
-                  formatter={(value) =>
-                    formatStatementMoney(Number(value ?? 0), currency)
-                  }
+                    formatter={(value) =>
+                      formatStatementMoney(Number(value ?? 0), currency, language)
+                    }
                 />
                 <Area
                   dataKey="amount"
-                  name="التقدير"
+                  name={t('التقدير')}
                   type="monotone"
                   baseValue={0}
                   stroke={projectionColor}
@@ -392,14 +402,14 @@ export default function StatementInsights() {
           </div>
         ) : (
           <div className="statement-insight-empty" role="status">
-            ما توفرت أسعار تحويل كافية لعرض التوقع بهذه العملة.
+            {t('ما توفرت أسعار تحويل كافية لعرض التوقع بهذه العملة.')}
           </div>
         )}
 
         <p className="statement-forecast-disclaimer">
           {datedTransactions
-            ? 'يفترض ثبات متوسط الفائض، ولا يتوقع تغير الدخل أو المصروفات.'
-            : 'تواريخ الكشف غير واضحة؛ التقدير يفترض أن الكشف يمثل شهرًا واحدًا.'}
+            ? t('يفترض ثبات متوسط الفائض، ولا يتوقع تغير الدخل أو المصروفات.')
+            : t('تواريخ الكشف غير واضحة؛ التقدير يفترض أن الكشف يمثل شهرًا واحدًا.')}
         </p>
       </article>
     </section>

@@ -5,6 +5,11 @@ import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import ClarioWordmark from '@/components/clario-wordmark';
+import {
+  LanguageProvider,
+  LanguageSwitcher,
+  useLanguage,
+} from '@/components/language-provider';
 import NotFound from '@/pages/not-found';
 import {
   Link,
@@ -16,12 +21,14 @@ import {
 import {
   ArrowDown,
   ArrowLeft,
+  ArrowRight,
   BriefcaseBusiness,
   ChartNoAxesColumnIncreasing,
   Check,
   Goal,
   Lightbulb,
   LockKeyhole,
+  ListChecks,
   Menu,
   Sparkles,
   WalletCards,
@@ -33,6 +40,7 @@ import {
   StatementAnalysisProvider,
   useStatementAnalysis,
 } from '@/components/statement-analysis-provider';
+import { formatLocaleNumber } from '@/lib/localization';
 import StatementExperience from '@/components/statement-experience';
 import {
   DashboardHome,
@@ -42,92 +50,127 @@ import {
 const queryClient = new QueryClient();
 
 function Home() {
-  const { currency, convertBetween } = useStatementAnalysis();
+  const {
+    currency,
+    convertBetween,
+    isProcessing,
+    showNextSample,
+  } = useStatementAnalysis();
+  const { language, direction, t } = useLanguage();
   const formatSampleAmount = (amount: number) => {
     const converted = convertBetween(amount, 'KWD', currency);
-    return converted === null ? '—' : formatStatementMoney(converted, currency);
+    return converted === null
+      ? '—'
+      : formatStatementMoney(converted, currency, language);
   };
+  function handleHeroSample() {
+    showNextSample();
+    window.setTimeout(() => {
+      const result = document.querySelector<HTMLElement>(
+        '.clario-public-home .statement-result-card',
+      );
+      result?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          ? 'auto'
+          : 'smooth',
+        block: 'center',
+      });
+      result?.focus({ preventScroll: true });
+    }, 80);
+  }
 
   return (
-    <main className="clario-page clario-public-home" dir="rtl" lang="ar">
+    <main className="clario-page clario-public-home" dir={direction} lang={language}>
       <div className="clario-container">
         <header className="clario-nav" data-testid="header-navigation">
-          <a className="clario-logo" href="/" aria-label="كلاريو، بداية الصفحة" data-testid="link-home">
+          <a className="clario-logo" href="/" aria-label={t('كلاريو، بداية الصفحة')} data-testid="link-home">
             <ClarioWordmark />
           </a>
-          <nav className="nav-links" aria-label="التنقل الرئيسي">
-            <a href="#analysis" data-testid="link-statement-analysis">حلّل كشفك</a>
-            <a href="#how" data-testid="link-how-it-works">كيف الفكرة</a>
-            <a href="#goal" data-testid="link-goal">هدفك الأول</a>
+          <nav className="nav-links" aria-label={t('التنقل الرئيسي')}>
+            <a href="#analysis" data-testid="link-statement-analysis">{t('حلّل كشفك')}</a>
+            <a href="#how" data-testid="link-how-it-works">{t('كيف الفكرة')}</a>
+            <a href="#goal" data-testid="link-goal">{t('هدفك الأول')}</a>
             <Link
               className="dashboard-menu-link"
               href="/dashboard"
-              aria-label="لوحة التحكم"
-              title="لوحة التحكم"
+              aria-label={t('لوحة التحكم')}
+              title={t('لوحة التحكم')}
               data-testid="link-public-dashboard"
             >
               <Menu size={20} strokeWidth={1.8} aria-hidden="true" />
             </Link>
             <CurrencySelector />
+            <LanguageSwitcher />
           </nav>
         </header>
 
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <div className="eyebrow reveal">فلوسك، بسوالف واضحة</div>
+            <button
+              type="button"
+              className="hero-sample-button reveal"
+              onClick={handleHeroSample}
+              disabled={isProcessing}
+              aria-label={t('جرّب بكشف تجريبي')}
+              data-testid="button-hero-try-sample"
+            >
+              <Sparkles size={16} aria-hidden="true" />
+              {t('جرّب بكشف تجريبي')}
+            </button>
+            <div className="eyebrow reveal">{t('فلوسك، بسوالف واضحة')}</div>
             <h1 className="reveal delay-1" id="hero-title">
-              قراراتك المالية<br />
-              تصير <span>أوضح وأسهل.</span>
+              {t('قراراتك المالية')}<br />
+              {t('تصير ')}<span>{t('أوضح وأسهل.')}</span>
             </h1>
             <p className="hero-lede reveal delay-2">
-              كلاريو يساعدك تفهم وضعك المالي بكلام بسيط، وتعرف وش تعني أرقامك لقراراتك اليومية.
+              {t('كلاريو يساعدك تفهم وضعك المالي بكلام بسيط، وتعرف وش تعني أرقامك لقراراتك اليومية.')}
             </p>
             <div className="hero-actions reveal delay-2">
               <a className="button-primary" href="#analysis" data-testid="link-explore-capabilities">
-                ارفع كشفك وشوف النتيجة <ArrowLeft size={16} aria-hidden="true" />
+                {t('ارفع كشفك وشوف النتيجة')}{language === 'ar' ? <ArrowLeft size={16} aria-hidden="true" /> : <ArrowRight size={16} aria-hidden="true" />}
               </a>
-              <a className="text-link" href="#how" data-testid="link-learn-more">عن كلاريو</a>
+              <a className="text-link" href="#how" data-testid="link-learn-more">{t('عن كلاريو')}</a>
             </div>
             <div className="hero-privacy-badge reveal delay-2">
               <LockKeyhole size={16} aria-hidden="true" />
-              <span><strong>كشفك ما يغادر جهازك</strong> — نحلّله داخل متصفحك فقط.</span>
+              <span><strong>{t('كشفك ما يغادر جهازك')}</strong>{t(' — نحلّله داخل متصفحك فقط.')}</span>
             </div>
-            <p className="hero-footnote reveal delay-2">معلومة مفهومة. قرارك يظل لك.</p>
+            <p className="hero-footnote reveal delay-2">{t('معلومة مفهومة. قرارك يظل لك.')}</p>
           </div>
 
-          <div className="visual-stage" aria-label="تصوير توضيحي لطريقة كلاريو في تبسيط الأرقام">
+          <div className="visual-stage" aria-label={t('تصوير توضيحي لطريقة كلاريو في تبسيط الأرقام')}>
             <div className="visual-disc" aria-hidden="true">
               <div className="sun-orbit">
                 <div className="sun" />
                 <span className="orbit-dot" />
               </div>
             </div>
-            <article className="report-card" aria-label="مثال توضيحي لملخص مالي">
+            <article className="report-card" aria-label={t('مثال توضيحي لملخص مالي')}>
               <div className="report-top">
-                <span><i className="status-dot" /> مثال توضيحي</span>
+                <span><i className="status-dot" /> {t('مثال توضيحي')}</span>
                 <Sparkles size={15} aria-hidden="true" />
               </div>
-              <h2 className="report-title">ملخص وضعك</h2>
-              <p className="report-subtitle">نظرة بسيطة على الشهر</p>
+              <h2 className="report-title">{t('ملخص وضعك')}</h2>
+              <p className="report-subtitle">{t('نظرة بسيطة على الشهر')}</p>
               <div className="report-rule" />
               <div className="report-line">
-                <span className="report-label"><i className="mini-icon"><WalletCards size={13} /></i> الدخل</span>
+                <span className="report-label"><i className="mini-icon"><WalletCards size={13} /></i> {t('الدخل')}</span>
                 <span className="report-value">{formatSampleAmount(850)}</span>
               </div>
               <div className="report-line">
-                <span className="report-label"><i className="mini-icon"><ChartNoAxesColumnIncreasing size={13} /></i> المصاريف</span>
+                <span className="report-label"><i className="mini-icon"><ChartNoAxesColumnIncreasing size={13} /></i> {t('المصاريف')}</span>
                 <span className="report-value">{formatSampleAmount(560)}</span>
               </div>
               <div className="insight-note">
                 <Lightbulb size={14} aria-hidden="true" />
-                <span>باقي لك مبلغ بعد مصاريفك. تعرّف وين يروح قبل خطوتك الجاية.</span>
+                <span>{t('باقي لك مبلغ بعد مصاريفك. تعرّف وين يروح قبل خطوتك الجاية.')}</span>
               </div>
             </article>
-            <div className="floating-stamp" aria-label="بهدوء ووضوح">
-              <span>خطوة بخطوة<br /><strong>على راحتك</strong></span>
+            <div className="floating-stamp" aria-label={t('بهدوء ووضوح')}>
+              <span>{t('خطوة بخطوة')}<br /><strong>{t('على راحتك')}</strong></span>
             </div>
           </div>
-          <div className="scroll-cue" aria-hidden="true">كمّل واكتشف</div>
+          <div className="scroll-cue" aria-hidden="true">{t('كمّل واكتشف')}</div>
         </section>
       </div>
 
@@ -143,37 +186,37 @@ function Home() {
           data-scroll-reveal
         >
           <div className="how-intro">
-            <span className="section-kicker">الفكرة ببساطة</span>
-            <h2 id="how-title">من صورة متفرقة، لفهم يطمّنّك.</h2>
-            <p>كلاريو في بدايته يركز على تبسيط المعلومات المالية الأساسية. خطوة صغيرة، وصورة أوضح.</p>
+            <span className="section-kicker">{t('الفكرة ببساطة')}</span>
+            <h2 id="how-title">{t('من صورة متفرقة، لفهم يطمّنّك.')}</h2>
+            <p>{t('كلاريو في بدايته يركز على تبسيط المعلومات المالية الأساسية. خطوة صغيرة، وصورة أوضح.')}</p>
           </div>
           <div className="steps">
             <article className="step">
-              <span className="step-index">٠١</span>
+              <span className="step-index">{formatLocaleNumber(1, language, 2)}</span>
               <div>
-                <h3>نجمع لك الصورة</h3>
-                <p>تشوف المعلومات المهمة في مكان واحد بدل ما تظل متفرقة في بالك.</p>
+                <h3>{t('نجمع لك الصورة')}</h3>
+                <p>{t('تشوف المعلومات المهمة في مكان واحد بدل ما تظل متفرقة في بالك.')}</p>
               </div>
             </article>
             <article className="step">
-              <span className="step-index">٠٢</span>
+              <span className="step-index">{formatLocaleNumber(2, language, 2)}</span>
               <div>
-                <h3>نشرحها بلغة قريبة</h3>
-                <p>المعنى يجيك بكلام واضح، مو مصطلحات مالية تزيد الحيرة.</p>
+                <h3>{t('نشرحها بلغة قريبة')}</h3>
+                <p>{t('المعنى يجيك بكلام واضح، مو مصطلحات مالية تزيد الحيرة.')}</p>
               </div>
             </article>
             <article className="step">
-              <span className="step-index">٠٣</span>
+              <span className="step-index">{formatLocaleNumber(3, language, 2)}</span>
               <div>
-                <h3>تقرر وأنت أهدى</h3>
-                <p>تفهم وضعك أكثر، وتختار بنفسك وش الخطوة المناسبة لك.</p>
+                <h3>{t('تقرر وأنت أهدى')}</h3>
+                <p>{t('تفهم وضعك أكثر، وتختار بنفسك وش الخطوة المناسبة لك.')}</p>
               </div>
             </article>
             <article className="step">
-              <span className="step-index">٠٤</span>
+              <span className="step-index">{formatLocaleNumber(4, language, 2)}</span>
               <div>
-                <h3>مصمم للمستقلين وأصحاب الأعمال والموظفين</h3>
-                <p>عشان تفهم أرقامك وتختار خطوتك الجاية بوضوح.</p>
+                <h3>{t('مصمم للمستقلين وأصحاب الأعمال والموظفين')}</h3>
+                <p>{t('عشان تفهم أرقامك وتختار خطوتك الجاية بوضوح.')}</p>
               </div>
             </article>
           </div>
@@ -192,7 +235,7 @@ function Home() {
 
       <div className="clario-container public-home-lower">
         <section className="public-home-tools" aria-labelledby="public-home-tools-title">
-          <h2 id="public-home-tools-title">أدوات إضافية</h2>
+          <h2 id="public-home-tools-title">{t('أدوات إضافية')}</h2>
           <div className="public-home-tools-grid">
             <Link
               className="public-home-tool-card"
@@ -203,10 +246,10 @@ function Home() {
                 <BriefcaseBusiness size={20} aria-hidden="true" />
               </span>
               <span className="public-home-tool-copy">
-                <strong>قرار التوظيف</strong>
-                <small>جرّب أثر توظيف شخص على ميزانيتك.</small>
+                <strong>{t('قرار التوظيف')}</strong>
+                <small>{t('جرّب أثر توظيف شخص على ميزانيتك.')}</small>
               </span>
-              <ArrowLeft size={17} aria-hidden="true" />
+              {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
             </Link>
             <Link
               className="public-home-tool-card"
@@ -218,23 +261,37 @@ function Home() {
                 <Goal size={20} aria-hidden="true" />
               </span>
               <span className="public-home-tool-copy">
-                <strong>هدفك المالي الجاي</strong>
-                <small>اختر هدفًا وشوف وش تحتاج له.</small>
+                <strong>{t('هدفك المالي الجاي')}</strong>
+                <small>{t('اختر هدفًا وشوف وش تحتاج له.')}</small>
               </span>
-              <ArrowLeft size={17} aria-hidden="true" />
+              {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
             </Link>
+            <a
+              className="public-home-tool-card"
+              href="#monthly-plan"
+              data-testid="link-public-monthly-plan"
+            >
+              <span className="public-home-tool-icon public-home-tool-icon--plan">
+                <ListChecks size={20} aria-hidden="true" />
+              </span>
+              <span className="public-home-tool-copy">
+                <strong>{t('خطتك هالشهر')}</strong>
+                <small>{t('ثلاث خطوات عملية من واقع كشفك.')}</small>
+              </span>
+              {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
+            </a>
           </div>
         </section>
 
         <div className="section-divider" aria-hidden="true" />
 
-        <aside className="promise" aria-label="وعدنا لك" data-scroll-reveal>
+        <aside className="promise" aria-label={t('وعدنا لك')} data-scroll-reveal>
           <div className="promise-copy">
-            <span className="section-kicker">وعدنا لك</span>
-            <h2>نوضح لك الصورة. ما نقرر عنك.</h2>
+            <span className="section-kicker">{t('وعدنا لك')}</span>
+            <h2>{t('نوضح لك الصورة. ما نقرر عنك.')}</h2>
             <p>
-              كلاريو أداة للفهم والوضوح، مو نصيحة استثمارية ولا بديل عن مختص.
-              نؤمن إن القرار الأفضل يبدأ لما تكون الصورة قدامك.
+              {t('كلاريو أداة للفهم والوضوح، مو نصيحة استثمارية ولا بديل عن مختص.')}
+              {' '}{t('نؤمن إن القرار الأفضل يبدأ لما تكون الصورة قدامك.')}
             </p>
           </div>
           <div className="promise-mark" aria-hidden="true">
@@ -246,14 +303,14 @@ function Home() {
 
         <footer className="footer">
           <div className="footer-main">
-            <a className="clario-logo" href="#top" aria-label="كلاريو، بداية الصفحة" data-testid="link-footer-home">
+            <a className="clario-logo" href="#top" aria-label={t('كلاريو، بداية الصفحة')} data-testid="link-footer-home">
               <ClarioWordmark />
             </a>
             <div className="footer-note">
               <ArrowDown size={13} aria-hidden="true" />
-              بداية أوضح لعلاقة أهدى مع فلوسك.
+              {t('بداية أوضح لعلاقة أهدى مع فلوسك.')}
             </div>
-            <p>كلاريو — خصوصيتك أولاً.</p>
+            <p>{t('كلاريو — خصوصيتك أولاً.')}</p>
           </div>
           <div className="footer-contact" aria-label="Contact information" dir="ltr">
             <a href="mailto:azaou@outlook.com">Email:azaou@outlook.com</a>
@@ -279,7 +336,7 @@ function DashboardOverviewPage() {
 function DashboardAnalysisPage() {
   return (
     <DashboardShell activeRoute="analysis">
-      <div className="clario-page dashboard-service-surface" lang="ar" dir="rtl">
+      <div className="clario-page dashboard-service-surface">
         <StatementExperience />
       </div>
     </DashboardShell>
@@ -289,7 +346,7 @@ function DashboardAnalysisPage() {
 function DashboardHirePage() {
   return (
     <DashboardShell activeRoute="hire">
-      <div className="clario-page dashboard-service-surface" lang="ar" dir="rtl">
+      <div className="clario-page dashboard-service-surface">
         <div className="clario-container">
           <HireSimulator />
         </div>
@@ -301,7 +358,7 @@ function DashboardHirePage() {
 function DashboardGoalPage() {
   return (
     <DashboardShell activeRoute="goal">
-      <div className="clario-page dashboard-service-surface" lang="ar" dir="rtl">
+      <div className="clario-page dashboard-service-surface">
         <div className="clario-container">
           <GoalSaver />
         </div>
@@ -380,16 +437,18 @@ function App() {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <StatementAnalysisProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-            <Router />
-          </WouterRouter>
-        </StatementAnalysisProvider>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <LanguageProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <StatementAnalysisProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+              <Router />
+            </WouterRouter>
+          </StatementAnalysisProvider>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </LanguageProvider>
   );
 }
 

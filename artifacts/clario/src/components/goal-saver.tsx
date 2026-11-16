@@ -1,6 +1,8 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { ArrowLeft, Check, ChevronDown, LoaderCircle, TrendingUp } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronDown, LoaderCircle, TrendingUp } from 'lucide-react';
 import { supabase, supabaseConfigIssue } from '@/lib/supabase';
+import { useLanguage } from '@/components/language-provider';
+import { formatLocaleNumber } from '@/lib/localization';
 import {
   currencies,
   formatArabicNumber,
@@ -79,6 +81,7 @@ function getArabicError(error: unknown, stage: 'auth' | 'goal') {
 }
 
 export default function GoalSaver() {
+  const { language, t } = useLanguage();
   const {
     analysis,
     isSample,
@@ -108,7 +111,7 @@ export default function GoalSaver() {
         ? amount
         : amountInDisplayCurrency === null
         ? ''
-        : formatEditableAmount(amountInDisplayCurrency, currency);
+        : formatEditableAmount(amountInDisplayCurrency, currency, language);
 
   useEffect(() => {
     let active = true;
@@ -169,9 +172,10 @@ export default function GoalSaver() {
           setSavedGoal(loadedGoal);
           setGoalType(loadedGoal.goal_type);
           setAmount(
-            formatEditableAmount(
+              formatEditableAmount(
               loadedGoal.target_amount,
               loadedGoal.currency_code,
+                language,
             ),
           );
           setAmountCurrency(loadedGoal.currency_code);
@@ -188,6 +192,13 @@ export default function GoalSaver() {
       active = false;
     };
   }, []);
+
+  useEffect(() => {
+    const currentAmount = parseLocalizedNumber(amount);
+    if (amount !== '' && Number.isFinite(currentAmount)) {
+      setAmount(formatEditableAmount(currentAmount, amountCurrency, language));
+    }
+  }, [language]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -245,8 +256,9 @@ export default function GoalSaver() {
     }
   }
 
-  const selectedGoalLabel =
-    goalOptions.find((option) => option.value === savedGoal?.goal_type)?.label ?? '';
+  const selectedGoalLabel = t(
+    goalOptions.find((option) => option.value === savedGoal?.goal_type)?.label ?? '',
+  );
   const savedGoalDisplayAmount = savedGoal
     ? convertBetween(
         savedGoal.target_amount,
@@ -278,13 +290,17 @@ export default function GoalSaver() {
         )
       : 0;
   const goalMonthLabel =
-    monthsToGoal === 1
-      ? 'شهر'
-      : monthsToGoal === 2
-        ? 'شهرين'
-        : monthsToGoal !== null && monthsToGoal <= 10
-          ? 'شهور'
-          : 'شهر';
+    language === 'ar'
+      ? monthsToGoal === 1
+        ? 'شهر'
+        : monthsToGoal === 2
+          ? 'شهرين'
+          : monthsToGoal !== null && monthsToGoal <= 10
+            ? 'شهور'
+            : 'شهر'
+      : monthsToGoal === 1
+        ? 'month'
+        : 'months';
 
   return (
     <section
@@ -294,15 +310,13 @@ export default function GoalSaver() {
       data-scroll-reveal
     >
       <div className="goal-copy">
-        <span className="section-kicker">خطوة صغيرة وواضحة</span>
-        <h2 id="goal-title">وش هدفك المالي الجاي؟</h2>
+        <span className="section-kicker">{t('خطوة صغيرة وواضحة')}</span>
+        <h2 id="goal-title">{t('وش هدفك المالي الجاي؟')}</h2>
         <p>
-          اختر هدفاً واحداً وحط المبلغ اللي تبيه. نحفظه لك عشان تكون البداية
-          مرتبة.
+          {t('اختر هدفاً واحداً وحط المبلغ اللي تبيه. نحفظه لك عشان تكون البداية مرتبة.')}
         </p>
         <p className="goal-privacy-note">
-          الحفظ مرتبط بهذا المتصفح حالياً. إذا مسحت بيانات التصفح، ممكن تفقد
-          الوصول لهدفك.
+          {t('الحفظ مرتبط بهذا المتصفح حالياً. إذا مسحت بيانات التصفح، ممكن تفقد الوصول لهدفك.')}
         </p>
         {savedGoal && (
           <div className="saved-goal" data-testid="text-saved-goal">
@@ -310,13 +324,14 @@ export default function GoalSaver() {
               <Check size={16} />
             </span>
             <span>
-              هدفك الحالي: <strong>{selectedGoalLabel}</strong> —{' '}
+              {t('هدفك الحالي:')} <strong>{selectedGoalLabel}</strong> —{' '}
               <strong>
                 {formatStatementMoney(
                   savedGoalDisplayAmount ?? savedGoal.target_amount,
                   savedGoalDisplayAmount === null
                     ? savedGoal.currency_code
                     : currency,
+                  language,
                 )}
               </strong>
             </span>
@@ -332,40 +347,41 @@ export default function GoalSaver() {
               <span className="goal-forecast-icon" aria-hidden="true">
                 <TrendingUp size={17} />
               </span>
-              <span>{isSample ? 'على المثال التوضيحي' : 'على حسب كشفك'}</span>
+              <span>{t(isSample ? 'على المثال التوضيحي' : 'على حسب كشفك')}</span>
             </div>
             {monthsToGoal !== null && monthlySavingsDisplayAmount !== null ? (
               <>
                 <p className="goal-forecast-result">
-                  بهالمعدل توصل هدفك بعد{' '}
+                  {t('بهالمعدل توصل هدفك بعد')}{' '}
                   <strong>
-                    {formatArabicNumber(monthsToGoal)} {goalMonthLabel}
+                    {formatArabicNumber(monthsToGoal, 0, language)} {goalMonthLabel}
                   </strong>
-                  تقريباً.
+                  {` ${t('تقريباً.')}`}
                 </p>
                 <p className="goal-forecast-rate">
-                  إذا ادّخرت{' '}
+                  {t('إذا ادّخرت')}{' '}
                   <strong>
                     {formatStatementMoney(
                       monthlySavingsDisplayAmount,
                       currency,
+                      language,
                     )}
                   </strong>{' '}
-                  كل شهر.
+                  {t('كل شهر.')}
                 </p>
                 <div className="goal-forecast-progress-copy">
-                  <span>ادخار شهر واحد</span>
-                  <strong>{formatArabicNumber(monthlyGoalProgress)}٪ من الهدف</strong>
+                  <span>{t('ادخار شهر واحد')}</span>
+                  <strong>{formatArabicNumber(monthlyGoalProgress, 0, language)}{language === 'ar' ? '٪' : '%'} {t('من الهدف')}</strong>
                 </div>
                 <div
                   className="goal-forecast-progress"
                   data-testid="goal-progress"
                   role="progressbar"
-                  aria-label="نسبة ادخار شهر واحد من الهدف"
+                  aria-label={t('نسبة ادخار شهر واحد من الهدف')}
                   aria-valuemin={0}
                   aria-valuemax={100}
                   aria-valuenow={monthlyGoalProgress}
-                  aria-valuetext={`${formatArabicNumber(monthlyGoalProgress)}٪ من الهدف`}
+                  aria-valuetext={`${formatArabicNumber(monthlyGoalProgress, 0, language)}${language === 'ar' ? '٪' : '%'} ${t('من الهدف')}`}
                 >
                   <span style={{ width: `${monthlyGoalProgress}%` }} />
                 </div>
@@ -373,18 +389,17 @@ export default function GoalSaver() {
             ) : monthlySavingsDisplayAmount === null ||
               savedGoalDisplayAmount === null ? (
               <p className="goal-forecast-message">
-                ننتظر سعر الصرف عشان نحسب المدة بعملة هدفك.
+                {t('ننتظر سعر الصرف عشان نحسب المدة بعملة هدفك.')}
               </p>
             ) : (
               <p className="goal-forecast-message">
-                هذا الكشف ما يبيّن فائضًا شهريًا موجبًا، فما نقدر نقدّر مدة
-                الوصول لهدفك للحين.
+                {t('هذا الكشف ما يبيّن فائضًا شهريًا موجبًا، فما نقدر نقدّر مدة الوصول لهدفك للحين.')}
               </p>
             )}
             <p className="goal-forecast-footnote">
               {isSample
-                ? 'تقدير المثال للتجربة فقط؛ ما يعكس وضعك الحقيقي.'
-                : 'تقدير على وتيرة هذا الكشف، مو على مبلغ محفوظ فعليًا.'}
+                ? t('تقدير المثال للتجربة فقط؛ ما يعكس وضعك الحقيقي.')
+                : t('تقدير على وتيرة هذا الكشف، مو على مبلغ محفوظ فعليًا.')}
             </p>
           </div>
         )}
@@ -392,12 +407,12 @@ export default function GoalSaver() {
 
       <form className="goal-form" onSubmit={handleSubmit} data-testid="form-save-goal">
         <div className="goal-form-heading">
-          <span className="section-kicker">هدف واحد كبداية</span>
-          <span className="goal-count">{formatArabicNumber(1)} / {formatArabicNumber(1)}</span>
+          <span className="section-kicker">{t('هدف واحد كبداية')}</span>
+          <span className="goal-count">{formatArabicNumber(1, 0, language)} / {formatArabicNumber(1, 0, language)}</span>
         </div>
 
         <label className="goal-field">
-          <span>نوع الهدف</span>
+          <span>{t('نوع الهدف')}</span>
           <span className="goal-select-wrap">
             <select
               value={goalType}
@@ -407,7 +422,7 @@ export default function GoalSaver() {
             >
               {goalOptions.map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.label}
+                  {t(option.label)}
                 </option>
               ))}
             </select>
@@ -417,7 +432,7 @@ export default function GoalSaver() {
 
         <div className="goal-form-row">
           <label className="goal-field">
-            <span>المبلغ المستهدف</span>
+            <span>{t('المبلغ المستهدف')}</span>
             <input
               type="text"
               inputMode="decimal"
@@ -427,7 +442,7 @@ export default function GoalSaver() {
                 setAmount(event.target.value);
                 setAmountCurrency(currency);
               }}
-              placeholder="مثال: ٥٬٠٠٠"
+              placeholder={t('مثال: ٥٬٠٠٠')}
               required
               disabled={
                 loading ||
@@ -439,7 +454,7 @@ export default function GoalSaver() {
             />
           </label>
           <label className="goal-field">
-            <span>العملة</span>
+            <span>{t('العملة')}</span>
             <span className="goal-select-wrap">
               <select
                 value={currency}
@@ -449,7 +464,7 @@ export default function GoalSaver() {
               >
                 {currencies.map((currency) => (
                   <option key={currency.value} value={currency.value}>
-                    {currency.label}
+                    {t(currency.label)}
                   </option>
                 ))}
               </select>
@@ -460,7 +475,7 @@ export default function GoalSaver() {
 
         {errorMessage && (
           <p className="goal-message goal-error" role="alert" data-testid="status-goal-error">
-            {errorMessage}
+            {t(errorMessage)}
           </p>
         )}
         {successMessage && (
@@ -471,7 +486,7 @@ export default function GoalSaver() {
             data-testid="status-goal-success"
           >
             <Check size={16} aria-hidden="true" />
-            {successMessage}
+            {t(successMessage)}
           </p>
         )}
 
@@ -484,12 +499,12 @@ export default function GoalSaver() {
           {loading || saving ? (
             <>
               <LoaderCircle size={17} className="goal-spinner" aria-hidden="true" />
-              {loading ? 'لحظة، نجهّز الحفظ' : 'جاري الحفظ'}
+              {t(loading ? 'لحظة، نجهّز الحفظ' : 'جاري الحفظ')}
             </>
           ) : (
             <>
-              {savedGoal ? 'حدّث هدفك' : 'احفظ هدفك'}
-              <ArrowLeft size={16} aria-hidden="true" />
+              {t(savedGoal ? 'حدّث هدفك' : 'احفظ هدفك')}
+              {language === 'ar' ? <ArrowLeft size={16} aria-hidden="true" /> : <ArrowRight size={16} aria-hidden="true" />}
             </>
           )}
         </button>

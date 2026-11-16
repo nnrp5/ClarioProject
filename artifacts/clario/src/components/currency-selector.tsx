@@ -11,6 +11,7 @@ import {
   useStatementAnalysis,
   type CurrencyCode,
 } from '@/components/statement-analysis-provider';
+import { useLanguage } from '@/components/language-provider';
 
 export default function CurrencySelector({
   className = '',
@@ -28,17 +29,18 @@ export default function CurrencySelector({
     isExchangeRateLoading,
     exchangeRateUpdatedAt,
   } = useStatementAnalysis();
+  const { language, t } = useLanguage();
   const selectedCurrency =
     currencies.find((item) => item.value === currency) ?? currencies[0];
   const ratesAvailable = exchangeRateUpdatedAt !== null;
   const title = isExchangeRateLoading
-    ? 'جاري تحديث أسعار الصرف'
+    ? t('جاري تحديث أسعار الصرف')
     : ratesAvailable
-      ? `عملة عرض التطبيق — أسعار تقريبية، آخر تحديث ${new Intl.DateTimeFormat(
-          'ar-KW',
+      ? `${language === 'ar' ? 'عملة عرض التطبيق — أسعار تقريبية، آخر تحديث ' : 'Display currency — approximate rates, last updated '}${new Intl.DateTimeFormat(
+          language === 'ar' ? 'ar-KW' : 'en-KW',
           { dateStyle: 'medium' },
         ).format(exchangeRateUpdatedAt)}`
-      : 'تعذر تحميل أسعار الصرف؛ جرّب تحديث الصفحة';
+      : t('تعذر تحميل أسعار الصرف؛ جرّب تحديث الصفحة');
 
   useEffect(() => {
     if (!isOpen) return;
@@ -125,7 +127,7 @@ export default function CurrencySelector({
           }
         }}
         disabled={!ratesAvailable}
-        aria-label={`عملة عرض التطبيق: ${selectedCurrency.flag} ${currency}`}
+        aria-label={`${t('عملة عرض التطبيق')}: ${selectedCurrency.flag} ${currency}`}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={menuId}
@@ -150,14 +152,14 @@ export default function CurrencySelector({
           className="clario-currency-picker__menu"
         >
           <div className="clario-currency-picker__menu-heading">
-            <strong>عملة العرض</strong>
-            <span>تتغير الأرقام داخل كلاريو</span>
+            <strong>{t('عملة العرض')}</strong>
+            <span>{t('تتغير الأرقام داخل كلاريو')}</span>
           </div>
           <div
             id={menuId}
             className="clario-currency-picker__options"
             role="listbox"
-            aria-label="اختيار عملة العرض"
+            aria-label={t('اختيار عملة العرض')}
           >
             {currencies.map((item, index) => {
               const isSelected = item.value === currency;
@@ -180,7 +182,7 @@ export default function CurrencySelector({
                   </span>
                   <span className="clario-currency-picker__option-copy">
                     <strong>{item.value}</strong>
-                    <small>{item.label}</small>
+                    <small>{t(item.label)}</small>
                   </span>
                   {isSelected && <Check size={17} aria-hidden="true" />}
                 </button>

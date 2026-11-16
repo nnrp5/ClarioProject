@@ -4,6 +4,7 @@ import {
   Sparkles,
   WalletCards,
 } from 'lucide-react';
+import { useLanguage } from '@/components/language-provider';
 import {
   formatEditableAmount,
   formatStatementMoney,
@@ -12,6 +13,7 @@ import {
 } from '@/components/statement-analysis-provider';
 
 export default function HireSimulator() {
+  const { language, t } = useLanguage();
   const {
     analysis,
     isSample,
@@ -42,24 +44,22 @@ export default function HireSimulator() {
       data-scroll-reveal
     >
       <div className="hire-copy">
-        <span className="section-kicker">القرار اللي يفرق</span>
-        <h3 id="hire-title">أقدر أوظف شخص؟</h3>
+        <span className="section-kicker">{t('القرار اللي يفرق')}</span>
+        <h3 id="hire-title">{t('أقدر أوظف شخص؟')}</h3>
         <p>
-          يعتمد قرار التوظيف على كشف حسابك، وفي حال استخدام المثال التجريبي
-          فالحسبة مبنية عليه.
+          {t('يعتمد قرار التوظيف على كشف حسابك، وفي حال استخدام المثال التجريبي فالحسبة مبنية عليه.')}
         </p>
         <div className="hire-trust-note">
           <WalletCards size={16} aria-hidden="true" />
           <span>
-            تقدير مبسّط من هذا الكشف، ولا يشمل تكاليف التوظيف الإضافية أو
-            التزامات ما ظهرت فيه.
+            {t('تقدير مبسّط من هذا الكشف، ولا يشمل تكاليف التوظيف الإضافية أو التزامات ما ظهرت فيه.')}
           </span>
         </div>
       </div>
 
       <div className="hire-calculator">
         <label className="hire-salary-field">
-          <span>الراتب الشهري المتوقع</span>
+          <span>{t('الراتب الشهري المتوقع')}</span>
           <input
             type="text"
             inputMode="decimal"
@@ -69,19 +69,19 @@ export default function HireSimulator() {
             onBlur={(event) => {
               const enteredSalary = parseLocalizedNumber(event.currentTarget.value);
               if (Number.isFinite(enteredSalary) && enteredSalary >= 0) {
-                setMonthlySalary(formatEditableAmount(enteredSalary, currency));
+                setMonthlySalary(formatEditableAmount(enteredSalary, currency, language));
               }
             }}
-            placeholder="مثال: ٦٠٠"
+            placeholder={t('مثال: ٦٠٠')}
             data-testid="input-hire-salary"
           />
         </label>
         <div className="hire-baseline">
-          <span>الفائض الشهري حسب الكشف</span>
+          <span>{t('الفائض الشهري حسب الكشف')}</span>
           <strong>
             {monthlySurplusInDisplayCurrency === null
               ? '—'
-              : formatStatementMoney(monthlySurplusInDisplayCurrency, currency)}
+              : formatStatementMoney(monthlySurplusInDisplayCurrency, currency, language)}
           </strong>
         </div>
         <div
@@ -91,18 +91,18 @@ export default function HireSimulator() {
           data-testid="status-hire-outcome"
         >
           {remainingAfterHire === null ? (
-            <span>أدخل راتبًا لمعرفة أثره على الفائض.</span>
+            <span>{t('أدخل راتبًا لمعرفة أثره على الفائض.')}</span>
           ) : remainingAfterHire >= 0 ? (
             <>
               <span className="hire-outcome-icon" aria-hidden="true">
                 <Check size={17} />
               </span>
               <span>
-                على أرقام الكشف، يبقى تقريبًا{' '}
+                {t('على أرقام الكشف، يبقى تقريبًا')}{' '}
                 <strong>
-                    {formatStatementMoney(remainingAfterHire, currency)}
+                    {formatStatementMoney(remainingAfterHire, currency, language)}
                 </strong>{' '}
-                بعد الراتب كل شهر.
+                {t('بعد الراتب كل شهر.')}
               </span>
             </>
           ) : (
@@ -111,11 +111,11 @@ export default function HireSimulator() {
                 <CircleAlert size={17} />
               </span>
               <span>
-                الراتب يتجاوز الفائض الحالي بـ{' '}
+                {t('الراتب يتجاوز الفائض الحالي بـ')}{' '}
                 <strong>
-                  {formatStatementMoney(Math.abs(remainingAfterHire), currency)}
+                  {formatStatementMoney(Math.abs(remainingAfterHire), currency, language)}
                 </strong>{' '}
-                شهريًا.
+                {t('شهريًا.')}
               </span>
             </>
           )}
@@ -123,7 +123,7 @@ export default function HireSimulator() {
         {isSample && (
           <span className="hire-sample-label">
             <Sparkles size={13} aria-hidden="true" />
-            جرّبها الآن على المثال، أو ارفع كشفك لتحليل أرقامك.
+            {t('جرّبها الآن على المثال، أو ارفع كشفك لتحليل أرقامك.')}
           </span>
         )}
       </div>

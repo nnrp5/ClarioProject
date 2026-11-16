@@ -12,6 +12,12 @@ import {
   sampleStatements,
   type StatementAnalysis,
 } from '@/lib/statement-analysis';
+import { useLanguage } from '@/components/language-provider';
+import {
+  formatLocaleMoney,
+  formatLocaleNumber,
+  type ClarioLanguage,
+} from '@/lib/localization';
 
 export const currencies = [
   { value: 'KWD', label: 'د.ك — دينار كويتي', flag: '🇰🇼' },
@@ -31,15 +37,21 @@ function currencyFractionDigits(currency: CurrencyCode) {
   }).resolvedOptions().maximumFractionDigits;
 }
 
-export function formatArabicNumber(value: number, maximumFractionDigits = 0) {
-  return new Intl.NumberFormat('ar-KW', {
-    maximumFractionDigits,
-  }).format(value);
+export function formatArabicNumber(
+  value: number,
+  maximumFractionDigits = 0,
+  language: ClarioLanguage = 'ar',
+) {
+  return formatLocaleNumber(value, language, maximumFractionDigits);
 }
 
-export function formatEditableAmount(value: number, currency: CurrencyCode) {
+export function formatEditableAmount(
+  value: number,
+  currency: CurrencyCode,
+  language: ClarioLanguage = 'ar',
+) {
   const fractionDigits = currencyFractionDigits(currency);
-  return new Intl.NumberFormat('ar-KW', {
+  return new Intl.NumberFormat(language === 'ar' ? 'ar-KW' : 'en-KW', {
     useGrouping: false,
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
@@ -103,14 +115,12 @@ function readCachedRates(): { rates: ExchangeRates; updatedAt: number } | null {
   }
 }
 
-export function formatStatementMoney(value: number, currency: CurrencyCode) {
-  const fractionDigits = currencyFractionDigits(currency);
-  return new Intl.NumberFormat('ar-KW', {
-    style: 'currency',
-    currency,
-    minimumFractionDigits: fractionDigits,
-    maximumFractionDigits: fractionDigits,
-  }).format(value);
+export function formatStatementMoney(
+  value: number,
+  currency: CurrencyCode,
+  language: ClarioLanguage = 'ar',
+) {
+  return formatLocaleMoney(value, currency, language);
 }
 
 const sampleAnalysis = analyzeTransactions(sampleStatements[0].transactions);
@@ -146,6 +156,7 @@ export function StatementAnalysisProvider({
 }: {
   children: ReactNode;
 }) {
+  const { language } = useLanguage();
   const [analysis, setAnalysis] = useState<StatementAnalysis>(sampleAnalysis);
   const [isSample, setIsSample] = useState(true);
   const [sampleIndex, setSampleIndex] = useState(0);
@@ -158,8 +169,8 @@ export function StatementAnalysisProvider({
   const [exchangeRates, setExchangeRates] = useState<ExchangeRates | null>(null);
   const [exchangeRateUpdatedAt, setExchangeRateUpdatedAt] = useState<number | null>(null);
   const [isExchangeRateLoading, setIsExchangeRateLoading] = useState(true);
-  const [monthlySalary, setMonthlySalary] = useState(
-    formatEditableAmount(600, 'KWD'),
+  const [monthlySalary, setMonthlySalary] = useState(() =>
+    formatEditableAmount(600, 'KWD', language),
   );
 
   useEffect(() => {
@@ -218,6 +229,13 @@ export function StatementAnalysisProvider({
     };
   }, []);
 
+  useEffect(() => {
+    const value = parseLocalizedNumber(monthlySalary);
+    if (Number.isFinite(value)) {
+      setMonthlySalary(formatEditableAmount(value, currency, language));
+    }
+  }, [currency, language]);
+
   const convertBetween = useCallback(
     (amount: number, from: CurrencyCode, to: CurrencyCode) => {
       if (from === to) return amount;
@@ -243,14 +261,14 @@ export function StatementAnalysisProvider({
             nextCurrency,
           );
           if (convertedSalary !== null) {
-            setMonthlySalary(formatEditableAmount(convertedSalary, nextCurrency));
+            setMonthlySalary(formatEditableAmount(convertedSalary, nextCurrency, language));
           }
         }
       }
       setCurrency(nextCurrency);
       localStorage.setItem(currencyPreferenceKey, nextCurrency);
     },
-    [convertBetween, currency, exchangeRates, monthlySalary],
+    [convertBetween, currency, exchangeRates, language, monthlySalary],
   );
 
   async function processFile(file: File) {

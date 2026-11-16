@@ -120,6 +120,9 @@
 .clario-dashboard__home-link:focus-visible { color: var(--dash-orange-soft); outline: none; }
 
 .clario-dashboard__main { min-width: 0; flex: 1; }
+.clario-dashboard[dir="ltr"] .clario-dashboard__welcome-art { right: -23px; left: auto; }
+.clario-dashboard[dir="ltr"] .clario-dashboard__art-dot { right: auto; left: 41px; }
+.clario-dashboard[dir="ltr"] .clario-dashboard__art-label { right: auto; left: 7px; }
 .clario-dashboard__topbar {
   display: flex;
   min-height: 76px;
@@ -129,6 +132,11 @@
   padding: 0 clamp(25px, 5vw, 76px);
   border-bottom: 1px solid rgba(231, 238, 246, .13);
   background: rgba(16, 29, 50, .92);
+}
+.clario-dashboard__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .clario-dashboard__breadcrumb {
   display: flex;
@@ -542,7 +550,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .clario-dashboard__topbar { min-height: 55px; padding-inline: 20px; }
+  .clario-dashboard__topbar { min-height: 55px; padding-inline: 14px; gap: 9px; }
+  .clario-dashboard__top-note { display: none; }
+  .clario-dashboard__breadcrumb { gap: 6px; font-size: 10px; }
+  .clario-dashboard__topbar-actions { gap: 5px; }
+  .clario-dashboard__topbar .clario-currency-picker__trigger { min-width: 68px; padding-inline: 6px; }
+  .clario-dashboard__topbar .clario-language-switcher { min-width: 36px; height: 34px; padding-inline: 6px; }
   .clario-currency-picker--dashboard .clario-currency-picker__trigger { min-width: 90px; height: 34px; }
   .clario-dashboard__content {
     padding: 24px 19px calc(96px + env(safe-area-inset-bottom));

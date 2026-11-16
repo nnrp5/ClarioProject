@@ -8,6 +8,7 @@ import {
 } from 'react';
 import {
   ArrowLeft,
+  ArrowRight,
   Check,
   ChevronDown,
   CircleAlert,
@@ -18,6 +19,8 @@ import {
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
+import { useLanguage } from '@/components/language-provider';
+import MonthlyPlan from '@/components/monthly-plan';
 import { categoryLabel } from '@/lib/statement-analysis';
 import StatementInsights from '@/components/statement-insights';
 import {
@@ -27,6 +30,10 @@ import {
   useStatementAnalysis,
   type CurrencyCode,
 } from '@/components/statement-analysis-provider';
+import {
+  formatLocaleNumber,
+  translateAnalysisText,
+} from '@/lib/localization';
 
 function scoreDescription(score: number | null) {
   if (score === null) return 'ما تكفي بيانات الدخل';
@@ -42,6 +49,7 @@ interface StatementExperienceProps {
 export default function StatementExperience({
   variant = 'standard',
 }: StatementExperienceProps) {
+  const { language, t } = useLanguage();
   const isCompactHome = variant === 'home';
   const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLElement>(null);
@@ -64,22 +72,31 @@ export default function StatementExperience({
   const topCategoryAmount = analysis.categories[0]?.amount ?? 0;
   const formatDisplayMoney = (amount: number) => {
     const converted = convertBetween(amount, statementCurrency, currency);
-    return converted === null ? '—' : formatMoney(converted, currency);
+    return converted === null ? '—' : formatMoney(converted, currency, language);
   };
   const summary = useMemo(() => {
     if (analysis.income <= 0) {
-      return 'ما قدرنا نحدد دخلًا واضحًا من هذا الكشف. راجع تصنيف الإيداعات ثم جرّب مرة ثانية.';
+      return t('ما قدرنا نحدد دخلًا واضحًا من هذا الكشف. راجع تصنيف الإيداعات ثم جرّب مرة ثانية.');
     }
     const savingsPercent = Math.round((analysis.net / analysis.income) * 100);
+    if (language === 'en') {
+      const remainingText = analysis.net >= 0
+        ? `you have ${formatDisplayMoney(analysis.net)} left`
+        : `expenses exceeded income by ${formatDisplayMoney(Math.abs(analysis.net))}`;
+      const categoryText = analysis.categories[0]
+        ? ` Your largest expense category was ${t(categoryLabel(analysis.categories[0].category))}.`
+        : '';
+      return `During this statement period, income was ${formatDisplayMoney(analysis.income)} and expenses were ${formatDisplayMoney(analysis.expenses)}; ${remainingText} (${formatLocaleNumber(savingsPercent, language)}% of income).${categoryText}`;
+    }
     const remainingText =
       analysis.net >= 0
         ? `وبقي لك ${formatDisplayMoney(analysis.net)}`
         : `وتجاوزت مصاريفك دخلك بـ ${formatDisplayMoney(Math.abs(analysis.net))}`;
     const categoryText = analysis.categories[0]
-      ? ` أكبر بند صرف كان ${categoryLabel(analysis.categories[0].category)}.`
+      ? ` أكبر بند صرف كان ${t(categoryLabel(analysis.categories[0].category))}.`
       : '';
-    return `خلال فترة الكشف، دخل ${formatDisplayMoney(analysis.income)} وصُرف ${formatDisplayMoney(analysis.expenses)}؛ ${remainingText} (${formatArabicNumber(savingsPercent)}٪ من الدخل).${categoryText}`;
-  }, [analysis, currency, statementCurrency, convertBetween]);
+    return `خلال فترة الكشف، دخل ${formatDisplayMoney(analysis.income)} وصُرف ${formatDisplayMoney(analysis.expenses)}؛ ${remainingText} (${formatArabicNumber(savingsPercent, 0, language)}٪ من الدخل).${categoryText}`;
+  }, [analysis, currency, statementCurrency, convertBetween, language, t]);
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.currentTarget.files?.[0];
@@ -116,11 +133,10 @@ export default function StatementExperience({
           className={`statement-heading${isCompactHome ? ' statement-heading--visually-hidden' : ''}`}
           data-scroll-reveal
         >
-          <span className="section-kicker">صورة أوضح من كشف واحد</span>
-          <h2 id="statement-title">خلّنا نرتّب أرقامك.</h2>
+          <span className="section-kicker">{t('صورة أوضح من كشف واحد')}</span>
+          <h2 id="statement-title">{t('خلّنا نرتّب أرقامك.')}</h2>
           <p>
-            ارفع كشفًا واحدًا، وشوف ملخصًا مفهومًا ودرجة مبدئية مع أسبابها.
-            تقدر تشوف المثال أولًا قبل ما تختار ملفك.
+            {t('ارفع كشفًا واحدًا، وشوف ملخصًا مفهومًا ودرجة مبدئية مع أسبابها. تقدر تشوف المثال أولًا قبل ما تختار ملفك.')}
           </p>
           {!isCompactHome && (
             <div className="statement-privacy" role="note">
@@ -128,8 +144,7 @@ export default function StatementExperience({
                 <LockKeyhole size={17} />
               </span>
               <span>
-                <strong>كشفك ما يغادر جهازك.</strong> نقرأه داخل المتصفح فقط؛ ما
-                نرفعه لخادم ولا نحفظ الملف. النتيجة ما تبقى بعد إغلاق الصفحة.
+                <strong>{t('كشفك ما يغادر جهازك.')}</strong> {t('نقرأه داخل المتصفح فقط؛ ما نرفعه لخادم ولا نحفظ الملف. النتيجة ما تبقى بعد إغلاق الصفحة.')}
               </span>
             </div>
           )}
@@ -138,7 +153,7 @@ export default function StatementExperience({
         <div className="statement-workspace">
           <section
             className="statement-upload-card"
-            aria-label="رفع كشف حساب"
+            aria-label={t('رفع كشف حساب')}
             data-scroll-reveal
           >
             <div
@@ -155,7 +170,7 @@ export default function StatementExperience({
                 className="statement-file-input"
                 type="file"
                 accept=".pdf,.xlsx,.csv,application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                aria-label="اختر كشف حساب للتحليل"
+                aria-label={t('اختر كشف حساب للتحليل')}
                 onChange={handleFileChange}
               />
               <div className="statement-drop-icon" aria-hidden="true">
@@ -165,44 +180,44 @@ export default function StatementExperience({
                   <FileText size={22} />
                 )}
               </div>
-              <h3>{isProcessing ? 'نقرأ الكشف على جهازك…' : 'ارفع كشف حسابك'}</h3>
-              <p>PDF نصّي، Excel (.xlsx)، أو CSV</p>
+              <h3>{t(isProcessing ? 'نقرأ الكشف على جهازك…' : 'ارفع كشف حسابك')}</h3>
+              <p>{t('PDF نصّي، Excel (.xlsx)، أو CSV')}</p>
               <button
                 type="button"
                 className="statement-select-button"
                 onClick={() => inputRef.current?.click()}
                 disabled={isProcessing}
               >
-                {isProcessing ? 'لحظة واحدة' : 'اختر ملفًا'}
-                {!isProcessing && <ArrowLeft size={15} aria-hidden="true" />}
+                {t(isProcessing ? 'لحظة واحدة' : 'اختر ملفًا')}
+                {!isProcessing && (language === 'ar' ? <ArrowLeft size={15} aria-hidden="true" /> : <ArrowRight size={15} aria-hidden="true" />)}
               </button>
-              <span className="statement-drop-hint">أو اسحب الملف إلى هنا</span>
+              <span className="statement-drop-hint">{t('أو اسحب الملف إلى هنا')}</span>
             </div>
 
             <div
               className={`statement-demo-action${isCompactHome ? ' statement-demo-action--home' : ''}`}
             >
-              <span>ما تبي ترفع ملفك؟</span>
+              <span>{t('ما تبي ترفع ملفك؟')}</span>
               <button
                 type="button"
                 className="statement-demo-button"
                 onClick={handleTrySample}
                 disabled={isProcessing}
-                aria-label="بدّل إلى كشف تجريبي مختلف"
-                title="اضغط لعرض كشف تجريبي آخر"
+                aria-label={t('بدّل إلى كشف تجريبي مختلف')}
+                title={t('اضغط لعرض كشف تجريبي آخر')}
                 data-testid="button-try-sample"
               >
                 <span className="statement-demo-button__icon" aria-hidden="true">
                   <RotateCcw size={16} />
                 </span>
-                <span>جرّب بكشف تجريبي</span>
+                <span>{t('جرّب بكشف تجريبي')}</span>
               </button>
             </div>
 
             <div className="statement-upload-meta">
-              <span>حتى ١٠ ميغابايت</span>
+              <span>{t('حتى ١٠ ميغابايت')}</span>
               <label className="statement-currency">
-                {isSample ? 'عملة المثال' : 'عملة الكشف'}
+                {t(isSample ? 'عملة المثال' : 'عملة الكشف')}
                 <span>
                   <select
                     value={isSample ? currency : statementCurrency}
@@ -211,11 +226,11 @@ export default function StatementExperience({
                         ? setCurrency(event.target.value as CurrencyCode)
                         : setStatementCurrency(event.target.value as CurrencyCode)
                     }
-                    aria-label={isSample ? 'عملة عرض المثال التجريبي' : 'عملة المبالغ في الكشف'}
+                    aria-label={t(isSample ? 'عملة عرض المثال التجريبي' : 'عملة المبالغ في الكشف')}
                   >
                     {currencies.map((item) => (
                       <option key={item.value} value={item.value}>
-                        {item.label}
+                        {t(item.label)}
                       </option>
                     ))}
                   </select>
@@ -230,16 +245,16 @@ export default function StatementExperience({
                   <LockKeyhole size={15} />
                 </span>
                 <span>
-                  <strong>كشفك ما يغادر جهازك.</strong> نقرأه داخل المتصفح فقط ولا نحفظ الملف.
+                  <strong>{t('كشفك ما يغادر جهازك.')}</strong> {t('نقرأه داخل المتصفح فقط ولا نحفظ الملف.')}
                 </span>
               </div>
             )}
 
             {!isSample && !isCompactHome && (
               <div className="statement-sample-row">
-                <span>تقدر ترجع للمثال متى ما بغيت.</span>
+                <span>{t('تقدر ترجع للمثال متى ما بغيت.')}</span>
                 <button type="button" onClick={showNextSample}>
-                  جرّب كشفًا تجريبيًا آخر
+                  {t('جرّب كشفًا تجريبيًا آخر')}
                 </button>
               </div>
             )}
@@ -247,7 +262,7 @@ export default function StatementExperience({
             {errorMessage && (
               <p className="statement-error" role="alert">
                 <CircleAlert size={16} aria-hidden="true" />
-                {errorMessage}
+                {t(errorMessage)}
               </p>
             )}
           </section>
@@ -263,12 +278,12 @@ export default function StatementExperience({
             <div className="statement-result-header">
               <div>
                 <span className="statement-result-kicker">
-                    {isSample ? `بيانات افتراضية · ${sampleName}` : 'نتيجة كشفك'}
+                    {isSample ? `${language === 'ar' ? 'بيانات افتراضية · ' : 'Sample data · '}${t(sampleName)}` : t('نتيجة كشفك')}
                 </span>
-                <h3 id="statement-result-title">ملخصك المالي</h3>
+                <h3 id="statement-result-title">{t('ملخصك المالي')}</h3>
               </div>
               <span className={`statement-source-tag${isSample ? ' is-sample' : ''}`}>
-                {isSample ? 'مثال توضيحي' : 'تحليل محلي'}
+                {t(isSample ? 'مثال توضيحي' : 'تحليل محلي')}
               </span>
             </div>
 
@@ -282,57 +297,57 @@ export default function StatementExperience({
                 }
                 aria-label={
                   analysis.score === null
-                    ? 'لا تتوفر درجة كافية'
-                    : `درجة الصحة المالية ${formatArabicNumber(analysis.score)} من ${formatArabicNumber(100)}`
+                    ? t('لا تتوفر درجة كافية')
+                    : `${t('درجة الصحة المالية')} ${formatArabicNumber(analysis.score, 0, language)} ${language === 'ar' ? 'من' : 'out of'} ${formatArabicNumber(100, 0, language)}`
                 }
               >
                 <div>
                   <strong>
                     {analysis.score === null
                       ? '—'
-                      : formatArabicNumber(analysis.score)}
+                       : formatArabicNumber(analysis.score, 0, language)}
                   </strong>
-                  <span>من {formatArabicNumber(100)}</span>
+                  <span>{language === 'ar' ? 'من' : 'of'} {formatArabicNumber(100, 0, language)}</span>
                 </div>
               </div>
               <div className="statement-score-copy">
-                <span className="statement-score-label">درجة مبدئية</span>
-                <strong>{scoreDescription(analysis.score)}</strong>
+                <span className="statement-score-label">{t('درجة مبدئية')}</span>
+                <strong>{t(scoreDescription(analysis.score))}</strong>
                 <p>
                   {isCompactHome
-                    ? analysis.reasons[0] ?? 'مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.'
-                    : 'مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.'}
+                    ? translateAnalysisText(analysis.reasons[0] ?? 'مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.', language)
+                    : t('مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.')}
                 </p>
               </div>
             </div>
 
             <p className="statement-summary">{summary}</p>
 
-            <div className="statement-metrics" aria-label="ملخص الأرقام">
+            <div className="statement-metrics" aria-label={t('ملخص الأرقام')}>
               <div>
-                <span>الدخل</span>
-                  <strong>{formatDisplayMoney(analysis.income)}</strong>
+                <span>{t('الدخل')}</span>
+                <strong>{formatDisplayMoney(analysis.income)}</strong>
               </div>
               <div>
-                <span>المصاريف</span>
-                  <strong>{formatDisplayMoney(analysis.expenses)}</strong>
+                <span>{t('المصاريف')}</span>
+                <strong>{formatDisplayMoney(analysis.expenses)}</strong>
               </div>
               <div className={analysis.net >= 0 ? 'is-positive' : 'is-negative'}>
-                <span>المتبقي</span>
-                  <strong>{formatDisplayMoney(analysis.net)}</strong>
+                <span>{t('المتبقي')}</span>
+                <strong>{formatDisplayMoney(analysis.net)}</strong>
               </div>
             </div>
 
             <div className="statement-reasons">
               <h4>
                 <Sparkles size={15} aria-hidden="true" />
-                ليش طلعت هالدرجة؟
+                {t('ليش طلعت هالدرجة؟')}
               </h4>
               <ul>
                 {analysis.reasons.map((reason) => (
                   <li key={reason}>
                     <Check size={15} aria-hidden="true" />
-                    <span>{reason}</span>
+                    <span>{translateAnalysisText(reason, language)}</span>
                   </li>
                 ))}
               </ul>
@@ -340,10 +355,10 @@ export default function StatementExperience({
 
             {analysis.categories.length > 0 && (
               <div className="statement-categories">
-                <h4>أبرز المصاريف</h4>
+                <h4>{t('أبرز المصاريف')}</h4>
                 {analysis.categories.slice(0, 3).map((item) => (
                   <div className="statement-category" key={item.category}>
-                    <span>{categoryLabel(item.category)}</span>
+                    <span>{t(categoryLabel(item.category))}</span>
                     <span className="statement-category-track" aria-hidden="true">
                       <i
                         style={{
@@ -360,20 +375,20 @@ export default function StatementExperience({
             {analysis.notices.map((notice) => (
               <p className="statement-notice" key={notice}>
                 <ShieldCheck size={15} aria-hidden="true" />
-                {notice}
+                {t(notice)}
               </p>
             ))}
 
             <details className="statement-transactions">
               <summary>
-                راجع الحركات المقروءة ({formatArabicNumber(analysis.transactions.length)})
+                {t('راجع الحركات المقروءة')} ({formatArabicNumber(analysis.transactions.length, 0, language)})
               </summary>
               <ul>
                 {analysis.transactions.slice(0, 8).map((item, index) => (
                   <li key={`${item.description}-${index}`}>
                     <span>
-                      <strong>{item.description}</strong>
-                      <small>{categoryLabel(item.category)}</small>
+                        <strong>{isSample ? t(item.description) : item.description}</strong>
+                        <small>{t(categoryLabel(item.category))}</small>
                     </span>
                     <b className={item.amount > 0 ? 'is-income' : 'is-expense'}>
                       {item.amount > 0 ? '+' : '−'}
@@ -384,7 +399,9 @@ export default function StatementExperience({
               </ul>
               {analysis.transactions.length > 8 && (
                 <span className="statement-transactions-foot">
-                  أول {formatArabicNumber(8)} حركات من أصل {formatArabicNumber(analysis.transactions.length)}
+                  {language === 'ar'
+                    ? `أول ${formatArabicNumber(8, 0, language)} حركات من أصل ${formatArabicNumber(analysis.transactions.length, 0, language)}`
+                    : `First ${formatLocaleNumber(8, language)} of ${formatLocaleNumber(analysis.transactions.length, language)} transactions`}
                 </span>
               )}
             </details>
@@ -396,14 +413,14 @@ export default function StatementExperience({
                 onClick={showNextSample}
               >
                 <RotateCcw size={14} aria-hidden="true" />
-                امسح النتيجة وارجع للمثال
+                {t('امسح النتيجة وارجع للمثال')}
               </button>
             )}
           </section>
         </div>
 
         <StatementInsights />
-
+        <MonthlyPlan />
       </div>
     </section>
   );

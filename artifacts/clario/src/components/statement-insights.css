@@ -3,7 +3,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   margin-top: 19px;
-  direction: rtl;
+  direction: inherit;
 }
 
 .clario-page .statement-insight-card {
@@ -131,7 +131,7 @@
   font-size: clamp(22px, 3vw, 32px);
   font-weight: 700;
   line-height: 1.2;
-  direction: rtl;
+  direction: inherit;
   unicode-bidi: plaintext;
 }
 
@@ -149,7 +149,7 @@
   color: #c1ccd8;
   font-size: 11px;
   line-height: 1.6;
-  text-align: left;
+  text-align: start;
 }
 
 .clario-page .statement-forecast-summary p b {
