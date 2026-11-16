@@ -622,8 +622,8 @@
   max-width: 520px;
   margin: 0;
   color: #cbd4df;
-  font-size: 13px;
-  line-height: 1.85;
+  font-size: 14px;
+  line-height: 1.95;
 }
 
 .clario-page .hire-trust-note {
@@ -632,8 +632,8 @@
   gap: 8px;
   margin-top: 14px;
   color: #aab7c6;
-  font-size: 10px;
-  line-height: 1.75;
+  font-size: 11px;
+  line-height: 1.85;
 }
 
 .clario-page .hire-trust-note svg { flex: none; color: var(--clario-orange-light); }

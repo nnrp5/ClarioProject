@@ -45,9 +45,8 @@ export default function HireSimulator() {
         <span className="section-kicker">القرار اللي يفرق</span>
         <h3 id="hire-title">أقدر أوظف شخص؟</h3>
         <p>
-          يعتمد قرار التوظيف على الفائض الظاهر في كشف حسابك. وإذا كنت تستخدم
-          المثال التجريبي، فالحسبة مبنية على بياناته. أدخل راتبًا شهريًا وشوف وش
-          يبقى.
+          يعتمد قرار التوظيف على كشف حسابك، وفي حال استخدام المثال التجريبي
+          فالحسبة مبنية عليه.
         </p>
         <div className="hire-trust-note">
           <WalletCards size={16} aria-hidden="true" />

@@ -101,7 +101,6 @@ function Home() {
                 <div className="sun" />
                 <span className="orbit-dot" />
               </div>
-              <span className="orbit-label">من الأرقام إلى الصورة الأوضح</span>
             </div>
             <article className="report-card" aria-label="مثال توضيحي لملخص مالي">
               <div className="report-top">
