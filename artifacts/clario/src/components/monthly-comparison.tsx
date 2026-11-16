@@ -65,14 +65,14 @@ export default function MonthlyComparison({
       : defaultLaterMonth;
   const earlierMonthKey =
     selectedEarlierMonth &&
-    selectedEarlierMonth !== laterMonthKey &&
+    selectedEarlierMonth < laterMonthKey &&
     months.some((month) => month.key === selectedEarlierMonth)
       ? selectedEarlierMonth
       : months.find(
           (month) =>
-            month.key === defaultEarlierMonth && month.key !== laterMonthKey,
+            month.key === defaultEarlierMonth && month.key < laterMonthKey,
         )?.key ??
-        months.find((month) => month.key !== laterMonthKey)?.key ??
+        months.filter((month) => month.key < laterMonthKey).at(-1)?.key ??
         '';
 
   const earlierMonth = months.find((month) => month.key === earlierMonthKey);
@@ -171,7 +171,7 @@ export default function MonthlyComparison({
         <span className="monthly-comparison__toggle-icon" aria-hidden="true">
           <CalendarDays size={18} />
         </span>
-        <span>{t('قارن مع الشهر اللي قبل')}</span>
+        <span>{t('قارن بين أي شهرين')}</span>
         {isOpen ? (
           <ChevronUp size={18} aria-hidden="true" />
         ) : (
@@ -191,6 +191,7 @@ export default function MonthlyComparison({
               {t('مقارنة حسب الحركات المؤرخة')}
             </span>
             <h3>{t('قارن بين شهرين')}</h3>
+            <p>{t('اختر أي شهرين متاحين في كشفك، حتى لو ما كانوا متتالين.')}</p>
           </div>
 
           {months.length >= 2 && (
@@ -208,7 +209,7 @@ export default function MonthlyComparison({
                     <option
                       key={month.key}
                       value={month.key}
-                      disabled={month.key === laterMonthKey}
+                      disabled={month.key >= laterMonthKey}
                     >
                       {monthLabel(month, language)}
                     </option>
@@ -229,7 +230,7 @@ export default function MonthlyComparison({
                     <option
                       key={month.key}
                       value={month.key}
-                      disabled={month.key === earlierMonthKey}
+                      disabled={month.key <= earlierMonthKey}
                     >
                       {monthLabel(month, language)}
                     </option>

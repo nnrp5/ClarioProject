@@ -58,10 +58,12 @@ const englishTranslations: Record<string, string> = {
     'See how hiring someone could affect your budget.',
   'هدفك المالي الجاي': 'Your next financial goal',
   'اختر هدفًا وشوف وش تحتاج له.': 'Choose a goal and see what it takes.',
-  'قارن مع الشهر اللي قبل': 'Compare with last month',
+  'قارن بين أي شهرين': 'Compare any two months',
   'مقارنة المصاريف بين شهرين': 'Compare spending across two months',
   'مقارنة حسب الحركات المؤرخة': 'Comparison based on dated transactions',
   'قارن بين شهرين': 'Compare two months',
+  'اختر أي شهرين متاحين في كشفك، حتى لو ما كانوا متتالين.':
+    'Choose any two months in your statement, even if they are not consecutive.',
   'الشهر الأقدم': 'Earlier month',
   'الشهر الأحدث': 'Later month',
   'نحتاج شهرين مختلفين للمقارنة': 'We need two different months to compare',
