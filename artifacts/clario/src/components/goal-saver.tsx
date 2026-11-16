@@ -424,7 +424,7 @@ export default function GoalSaver() {
                 setAmount(event.target.value);
                 setAmountCurrency(currency);
               }}
-              placeholder="مثال: ٢٥٠٠"
+              placeholder="مثال: ٥٬٠٠٠"
               required
               disabled={
                 loading ||

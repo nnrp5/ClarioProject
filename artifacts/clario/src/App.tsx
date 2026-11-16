@@ -41,7 +41,7 @@ const queryClient = new QueryClient();
 function Home() {
   const { currency, convertBetween } = useStatementAnalysis();
   const formatSampleAmount = (amount: number) => {
-    const converted = convertBetween(amount, 'SAR', currency);
+    const converted = convertBetween(amount, 'KWD', currency);
     return converted === null ? '—' : formatStatementMoney(converted, currency);
   };
 
@@ -111,11 +111,11 @@ function Home() {
               <div className="report-rule" />
               <div className="report-line">
                 <span className="report-label"><i className="mini-icon"><WalletCards size={13} /></i> الدخل</span>
-                <span className="report-value">{formatSampleAmount(12400)}</span>
+                <span className="report-value">{formatSampleAmount(850)}</span>
               </div>
               <div className="report-line">
                 <span className="report-label"><i className="mini-icon"><ChartNoAxesColumnIncreasing size={13} /></i> المصاريف</span>
-                <span className="report-value">{formatSampleAmount(8260)}</span>
+                <span className="report-value">{formatSampleAmount(560)}</span>
               </div>
               <div className="insight-note">
                 <Lightbulb size={14} aria-hidden="true" />

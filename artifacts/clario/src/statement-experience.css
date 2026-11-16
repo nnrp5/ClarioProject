@@ -603,7 +603,7 @@
   grid-template-columns: minmax(0, 1fr) minmax(320px, .9fr);
   align-items: center;
   gap: 32px;
-  margin: 27px 0 78px;
+  margin: 40px 0 78px;
   padding: 27px;
   border: 1px solid rgba(244, 122, 42, .28);
   border-radius: 19px;
@@ -751,7 +751,7 @@
   .clario-page .statement-metrics > div { padding: 9px 7px; }
   .clario-page .statement-metrics strong { font-size: 11px; }
   .clario-page .statement-category { grid-template-columns: minmax(65px, .7fr) minmax(38px, 1fr) minmax(70px, auto); }
-  .clario-page .hire-simulator { grid-template-columns: 1fr; gap: 17px; margin: 16px 0 52px; padding: 19px 16px; }
+  .clario-page .hire-simulator { grid-template-columns: 1fr; gap: 17px; margin: 32px 0 52px; padding: 19px 16px; }
   .clario-page .hire-copy h3 { font-size: 28px; }
   .clario-page .hire-calculator { padding: 15px; }
   .clario-page .hire-outcome { gap: 10px; padding: 14px; font-size: 15px; }
@@ -803,3 +803,62 @@
 .clario-page .goal-form-row {
   gap: var(--clario-layout-gap, 16px);
 }
+
+/* Dark-glass analysis card keeps the score ring and figures as the visual focus. */
+.clario-page .statement-result-card {
+  border-color: rgba(226, 236, 248, .15);
+  background: linear-gradient(145deg, rgba(31, 49, 76, .9), rgba(17, 31, 51, .86));
+  color: #e8edf3;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .05);
+  backdrop-filter: blur(16px);
+}
+.clario-page .statement-result-kicker { color: #ffad71; }
+.clario-page .statement-result-header h3 { color: #f7f9fb; }
+.clario-page .statement-source-tag {
+  border: 1px solid rgba(112, 194, 150, .18);
+  background: rgba(53, 130, 92, .15);
+  color: #bce7cd;
+}
+.clario-page .statement-source-tag.is-sample {
+  border-color: rgba(255, 173, 113, .2);
+  background: rgba(244, 122, 42, .13);
+  color: #ffc08d;
+}
+.clario-page .statement-score-ring {
+  background: conic-gradient(#ff8738 var(--score-angle), rgba(226, 236, 248, .15) var(--score-angle));
+  box-shadow: 0 0 22px rgba(244, 122, 42, .12);
+}
+.clario-page .statement-score-ring > div { background: #172a45; }
+.clario-page .statement-score-ring strong { color: #ffb17b; }
+.clario-page .statement-score-ring span,
+.clario-page .statement-score-label { color: #aebacc; }
+.clario-page .statement-score-copy strong { color: #f4f6f8; }
+.clario-page .statement-score-copy p { color: #b5c1ce; }
+.clario-page .statement-summary {
+  border-color: #f47a2a;
+  background: rgba(7, 17, 30, .28);
+  color: #dbe3ec;
+}
+.clario-page .statement-metrics > div {
+  border-color: rgba(226, 236, 248, .12);
+  background: rgba(255, 255, 255, .035);
+}
+.clario-page .statement-metrics span { color: #aebacc; }
+.clario-page .statement-metrics strong { color: #ffb17b; }
+.clario-page .statement-metrics .is-positive strong { color: #ffb17b; }
+.clario-page .statement-metrics .is-negative strong { color: #ff9a80; }
+.clario-page .statement-reasons h4,
+.clario-page .statement-categories h4 { color: #edf2f7; }
+.clario-page .statement-reasons li { color: #c1ccd8; }
+.clario-page .statement-category { color: #b9c6d4; }
+.clario-page .statement-category strong { color: #f0f4f8; }
+.clario-page .statement-category-track { background: rgba(226, 236, 248, .13); }
+.clario-page .statement-notice { color: #d8c7ad; }
+.clario-page .statement-transactions { border-color: rgba(226, 236, 248, .13); }
+.clario-page .statement-transactions summary { color: #d8e0e9; }
+.clario-page .statement-transactions li { border-color: rgba(226, 236, 248, .1); }
+.clario-page .statement-transactions li strong { color: #e5ebf1; }
+.clario-page .statement-transactions li small,
+.clario-page .statement-transactions-foot { color: #aebacc; }
+.clario-page .statement-transactions li b.is-income { color: #ffb17b; }
+.clario-page .statement-transactions li b.is-expense { color: #c1ccd8; }

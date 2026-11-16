@@ -318,27 +318,30 @@
 .clario-dashboard__services {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 .clario-dashboard__service-card {
   display: flex;
   min-height: 225px;
   flex-direction: column;
   padding: 19px 20px 17px;
-  border: 1px solid #e5e4de;
+  border: 1px solid rgba(226, 236, 248, .14);
   border-radius: 15px;
-  background: var(--dash-card);
+  background: linear-gradient(145deg, rgba(31, 49, 76, .76), rgba(17, 31, 51, .72));
   color: inherit;
   text-decoration: none;
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045);
+  backdrop-filter: blur(12px);
+  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
   animation: clario-dash-rise .55s cubic-bezier(.2,.8,.2,1) both;
 }
 .clario-dashboard__service-card:nth-child(2) { animation-delay: .08s; }
 .clario-dashboard__service-card:nth-child(3) { animation-delay: .16s; }
 .clario-dashboard__service-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(214, 111, 48, .42);
-  box-shadow: 0 13px 28px rgba(29, 42, 62, .08);
+  border-color: rgba(255, 173, 113, .4);
+  background: linear-gradient(145deg, rgba(36, 56, 84, .88), rgba(20, 36, 59, .82));
+  box-shadow: 0 13px 30px rgba(0, 0, 0, .2), 0 0 22px rgba(244, 122, 42, .08);
 }
 .clario-dashboard__service-card:focus-visible {
   outline: 3px solid rgba(244, 122, 42, .45);
@@ -350,7 +353,7 @@
   justify-content: space-between;
 }
 .clario-dashboard__service-number {
-  color: #9aa1a9;
+  color: #aebacc;
   font-family: 'DM Sans', sans-serif;
   font-size: 11px;
 }
@@ -360,22 +363,31 @@
   height: 41px;
   place-items: center;
   border-radius: 12px;
-  background: #f7e9dd;
-  color: #b85d28;
+  border: 1px solid rgba(255, 173, 113, .17);
+  background: rgba(244, 122, 42, .12);
+  color: #ffb17b;
 }
-.clario-dashboard__service-card--hire .clario-dashboard__service-icon { background: #e9edf1; color: #344b69; }
-.clario-dashboard__service-card--goal .clario-dashboard__service-icon { background: #edf0e7; color: #61764d; }
+.clario-dashboard__service-card--hire .clario-dashboard__service-icon {
+  border-color: rgba(173, 199, 230, .16);
+  background: rgba(119, 156, 199, .13);
+  color: #b9d0eb;
+}
+.clario-dashboard__service-card--goal .clario-dashboard__service-icon {
+  border-color: rgba(171, 207, 176, .16);
+  background: rgba(105, 154, 112, .13);
+  color: #b9d9bb;
+}
 .clario-dashboard__service-copy { margin-top: 21px; }
 .clario-dashboard__service-copy h3 {
   margin: 0;
-  color: #1b2b43;
+  color: #f2f5f8;
   font-size: 17px;
   font-weight: 600;
   letter-spacing: -.02em;
 }
 .clario-dashboard__service-copy p {
   margin: 6px 0 0;
-  color: #737d89;
+  color: #b8c4d1;
   font-size: 12px;
   line-height: 1.8;
 }
@@ -385,7 +397,7 @@
   gap: 8px;
   margin-top: auto;
   padding-top: 17px;
-  color: #aa5526;
+  color: #ffb17b;
   font-size: 11px;
   font-weight: 600;
 }
@@ -529,7 +541,7 @@
   .clario-dashboard__welcome-copy { max-width: 73%; }
   .clario-dashboard__welcome h1 { font-size: 29px; }
   .clario-dashboard__services-section { margin-top: 31px; }
-  .clario-dashboard__services { grid-template-columns: 1fr; gap: 10px; }
+  .clario-dashboard__services { grid-template-columns: 1fr; gap: 16px; }
   .clario-dashboard__service-card {
     position: relative;
     min-height: 150px;
@@ -579,6 +591,12 @@
 .clario-dashboard .clario-currency-picker--dashboard,
 .clario-dashboard .clario-currency-picker__trigger {
   border-radius: var(--clario-ui-radius, 16px);
+}
+
+.clario-dashboard__note { margin-top: 40px; }
+
+@media (max-width: 700px) {
+  .clario-dashboard__note { margin-top: 32px; }
 }
 
 .clario-dashboard__services {

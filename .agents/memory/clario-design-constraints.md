@@ -11,8 +11,10 @@ The selected app currency is a display preference, separate from each statement'
 
 Keep displayed numbers in Arabic-Indic digits and use each currency's standard precision (three decimals for KWD). Keep the navy page background consistent between the public site and dashboard, with a subtle lighter-navy gradient and faint orange corner glow. Use consistent 16px corners for cards, buttons, and fields, with even 16px gaps between adjacent cards. Keep the fixed four-item mobile navigation and make the local-only statement privacy promise visible near upload.
 
+On dark Clario pages, prefer translucent lighter-navy glass cards with fine borders over bright white or cream surfaces; use orange to emphasize financial scores and key figures.
+
 Offer multiple labeled, browser-only statement examples and cycle to a different scenario on each demo refresh. Show a country flag beside the currency code in the global currency selector.
 
-**Why:** The user specified Clario's brand, RTL, privacy, page structure, number formatting, gradient, consistent radii, rotating sample examples, and flags in the currency selector. Goal data stores a target but no accumulated savings, so forecasts must not imply an actual saved balance.
+**Why:** The user specified Clario's brand, RTL, privacy, page structure, number formatting, gradient, consistent radii, dark-glass card surfaces, rotating sample examples, and flags in the currency selector. Goal data stores a target but no accumulated savings, so forecasts must not imply an actual saved balance.
 
 **How to apply:** Keep statement processing in browser memory only. Preserve access to all three services from both the public page and dashboard, and keep their dashboard pages separate unless the user changes scope. When adding currency-aware views, retain source amounts and convert only for display. Format user-facing numerals in Arabic and keep shared page backgrounds aligned. Label goal forecasts based on statement surplus as estimates; the progress bar must not imply an actual saved balance unless the user records contributions.
