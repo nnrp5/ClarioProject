@@ -537,8 +537,34 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   border-color: rgba(255, 173, 113, .45);
   background: rgba(7, 17, 30, .4);
 }
-.clario-page .goal-field input::placeholder { color: #91a0b2; }
+.clario-page .goal-field input::placeholder { color: #aebac8; }
 .clario-page .goal-field select option { background: #14233a; color: #f4f6f8; }
+.clario-page .goal-select-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.clario-page .goal-select-wrap select {
+  width: 100%;
+  padding-inline: 14px 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.clario-page .goal-select-chevron {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  color: #b8c4d1;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color .2s ease, transform .2s ease;
+}
+.clario-page .goal-select-wrap:focus-within .goal-select-chevron {
+  color: #ffad71;
+  transform: translateY(-50%) rotate(180deg);
+}
+.clario-page .goal-select-wrap select:disabled + .goal-select-chevron { opacity: .55; }
 .clario-page .goal-field input:focus,
 .clario-page .goal-field select:focus {
   border-color: #ffad71;
@@ -599,17 +625,33 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
 }
 .clario-page .goal-forecast-progress-copy strong { color: #ffb17b; }
 .clario-page .goal-forecast-progress {
-  height: 9px;
-  overflow: hidden;
+  position: relative;
+  height: 8px;
+  overflow: visible;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .13);
+  background: rgba(226, 236, 248, .16);
 }
 .clario-page .goal-forecast-progress > span {
   display: block;
   height: 100%;
+  position: relative;
   border-radius: inherit;
-  background: linear-gradient(90deg, #f47a2a, #ffad71);
+  background: linear-gradient(270deg, #f47a2a, #ffb17b);
   transition: width .45s ease;
+}
+.clario-page .goal-forecast-progress > span::after {
+  position: absolute;
+  top: 50%;
+  right: auto;
+  inset-inline-end: -5px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #172a45;
+  border-radius: 50%;
+  background: #ffb17b;
+  box-shadow: 0 0 0 2px rgba(244, 122, 42, .22);
+  content: '';
+  transform: translateY(-50%);
 }
 .clario-page .goal-forecast-message {
   margin: 13px 0 0;
@@ -619,7 +661,7 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
 }
 .clario-page .goal-forecast-footnote {
   margin: 12px 0 0;
-  color: #b8c3d1;
+  color: #c0cbd7;
   font-size: 11px;
   line-height: 1.7;
 }

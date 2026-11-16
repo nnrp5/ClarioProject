@@ -125,13 +125,20 @@ export function DashboardHome() {
           <div className="clario-dashboard__eyebrow"><span /> مساحة أوضح لقراراتك</div>
           <h1 id="dashboard-welcome-title">هلا بك في كلاريو.</h1>
           <p>وش ودك ترتّب اليوم؟</p>
+            <Link
+              className="clario-dashboard__welcome-cta"
+              href="/dashboard/analysis"
+              data-testid="link-welcome-analysis"
+            >
+              ابدأ بترتيب أرقامك
+              <ArrowLeft size={16} aria-hidden="true" />
+            </Link>
         </div>
         <div className="clario-dashboard__welcome-art" aria-hidden="true">
           <span className="clario-dashboard__art-orbit clario-dashboard__art-orbit--outer" />
           <span className="clario-dashboard__art-orbit clario-dashboard__art-orbit--inner" />
           <span className="clario-dashboard__art-sun" />
           <span className="clario-dashboard__art-dot" />
-          <span className="clario-dashboard__art-label">وضوح، خطوة بخطوة</span>
         </div>
       </section>
 

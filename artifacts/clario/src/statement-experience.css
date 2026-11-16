@@ -831,9 +831,9 @@
 .clario-page .statement-score-ring > div { background: #172a45; }
 .clario-page .statement-score-ring strong { color: #ffb17b; }
 .clario-page .statement-score-ring span,
-.clario-page .statement-score-label { color: #aebacc; }
+.clario-page .statement-score-label { color: #c2ccd8; }
 .clario-page .statement-score-copy strong { color: #f4f6f8; }
-.clario-page .statement-score-copy p { color: #b5c1ce; }
+.clario-page .statement-score-copy p { color: #c3ceda; }
 .clario-page .statement-summary {
   border-color: #f47a2a;
   background: rgba(7, 17, 30, .28);
@@ -843,14 +843,14 @@
   border-color: rgba(226, 236, 248, .12);
   background: rgba(255, 255, 255, .035);
 }
-.clario-page .statement-metrics span { color: #aebacc; }
+.clario-page .statement-metrics span { color: #c2ccd8; }
 .clario-page .statement-metrics strong { color: #ffb17b; }
 .clario-page .statement-metrics .is-positive strong { color: #ffb17b; }
 .clario-page .statement-metrics .is-negative strong { color: #ff9a80; }
 .clario-page .statement-reasons h4,
 .clario-page .statement-categories h4 { color: #edf2f7; }
 .clario-page .statement-reasons li { color: #c1ccd8; }
-.clario-page .statement-category { color: #b9c6d4; }
+.clario-page .statement-category { color: #c4ceda; }
 .clario-page .statement-category strong { color: #f0f4f8; }
 .clario-page .statement-category-track { background: rgba(226, 236, 248, .13); }
 .clario-page .statement-notice { color: #d8c7ad; }
@@ -859,6 +859,8 @@
 .clario-page .statement-transactions li { border-color: rgba(226, 236, 248, .1); }
 .clario-page .statement-transactions li strong { color: #e5ebf1; }
 .clario-page .statement-transactions li small,
-.clario-page .statement-transactions-foot { color: #aebacc; }
+.clario-page .statement-transactions-foot { color: #c0ccd8; }
 .clario-page .statement-transactions li b.is-income { color: #ffb17b; }
 .clario-page .statement-transactions li b.is-expense { color: #c1ccd8; }
+
+.clario-page button:active:not(:disabled) { transform: scale(.985); }

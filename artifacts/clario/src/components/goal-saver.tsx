@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { ArrowLeft, Check, LoaderCircle, TrendingUp } from 'lucide-react';
+import { ArrowLeft, Check, ChevronDown, LoaderCircle, TrendingUp } from 'lucide-react';
 import { supabase, supabaseConfigIssue } from '@/lib/supabase';
 import {
   currencies,
@@ -398,18 +398,21 @@ export default function GoalSaver() {
 
         <label className="goal-field">
           <span>نوع الهدف</span>
-          <select
-            value={goalType}
-            onChange={(event) => setGoalType(event.target.value as GoalType)}
-            disabled={loading || saving || Boolean(errorMessage)}
-            data-testid="select-goal-type"
-          >
-            {goalOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <span className="goal-select-wrap">
+            <select
+              value={goalType}
+              onChange={(event) => setGoalType(event.target.value as GoalType)}
+              disabled={loading || saving || Boolean(errorMessage)}
+              data-testid="select-goal-type"
+            >
+              {goalOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="goal-select-chevron" size={16} aria-hidden="true" />
+          </span>
         </label>
 
         <div className="goal-form-row">
@@ -437,18 +440,21 @@ export default function GoalSaver() {
           </label>
           <label className="goal-field">
             <span>العملة</span>
-            <select
-              value={currency}
-              onChange={(event) => setCurrency(event.target.value as CurrencyCode)}
-              disabled={loading || saving || Boolean(errorMessage)}
-              data-testid="select-goal-currency"
-            >
-              {currencies.map((currency) => (
-                <option key={currency.value} value={currency.value}>
-                  {currency.label}
-                </option>
-              ))}
-            </select>
+            <span className="goal-select-wrap">
+              <select
+                value={currency}
+                onChange={(event) => setCurrency(event.target.value as CurrencyCode)}
+                disabled={loading || saving || Boolean(errorMessage)}
+                data-testid="select-goal-currency"
+              >
+                {currencies.map((currency) => (
+                  <option key={currency.value} value={currency.value}>
+                    {currency.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="goal-select-chevron" size={16} aria-hidden="true" />
+            </span>
           </label>
         </div>
 
