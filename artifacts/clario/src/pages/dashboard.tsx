@@ -31,7 +31,12 @@ export function DashboardShell({ activeRoute, children }: DashboardShellProps) {
   return (
     <div className="clario-dashboard" dir="rtl" lang="ar">
       <aside className="clario-dashboard__sidebar" aria-label="القائمة الجانبية">
-        <Link className="clario-dashboard__brand" href="/dashboard" aria-label="كلاريو، لوحة التحكم">
+        <Link
+          className="clario-dashboard__brand"
+          href="/"
+          aria-label="كلاريو، العودة إلى الموقع"
+          title="العودة إلى الموقع"
+        >
           <span className="clario-dashboard__brand-mark" aria-hidden="true">ك</span>
           <span className="clario-dashboard__brand-word">clario</span>
         </Link>
