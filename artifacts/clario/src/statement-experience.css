@@ -1057,6 +1057,34 @@
 }
 .clario-page.clario-public-home .footer-main { border-top: 0; }
 .clario-public-home .footer { padding-bottom: 23px; }
+.clario-page.clario-public-home .footer-contact {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 4px;
+  color: #aebacc;
+  font-size: 11px;
+  line-height: 1.7;
+  text-align: center;
+}
+.clario-page.clario-public-home .footer-contact a {
+  color: inherit;
+  text-decoration: none;
+  transition: color .18s ease;
+}
+.clario-page.clario-public-home .footer-contact a:hover {
+  color: var(--clario-orange-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.clario-page.clario-public-home .footer-credit {
+  margin: 7px 0 0;
+  color: #8796a9;
+  font-size: 10px;
+  line-height: 1.6;
+  text-align: center;
+}
 
 @media (max-width: 700px) {
   .clario-page .statement-feature--home { padding-top: 12px; }

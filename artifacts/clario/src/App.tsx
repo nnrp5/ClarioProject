@@ -256,6 +256,13 @@ function Home() {
             </div>
             <p>كلاريو — خصوصيتك أولاً.</p>
           </div>
+          <div className="footer-contact" aria-label="Contact information" dir="ltr">
+            <a href="mailto:azaou@outlook.com">Email:azaou@outlook.com</a>
+            <a href="tel:+96550205073">Phone:+965 50205073</a>
+          </div>
+          <p className="footer-credit" dir="ltr">
+            Made by: Abdulaziz ali hamada
+          </p>
         </footer>
       </div>
     </main>
