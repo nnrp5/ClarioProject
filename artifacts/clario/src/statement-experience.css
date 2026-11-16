@@ -984,23 +984,6 @@
   height: 27px;
   border-radius: 8px;
 }
-.clario-page .statement-feature--home .statement-result-card { padding: 16px; }
-.clario-page .statement-feature--home .statement-result-header { margin-bottom: 13px; }
-.clario-page .statement-feature--home .statement-score-row { gap: 13px; margin-bottom: 12px; }
-.clario-page .statement-feature--home .statement-score-ring { width: 74px; height: 74px; }
-.clario-page .statement-feature--home .statement-score-ring > div { width: 60px; height: 60px; }
-.clario-page .statement-feature--home .statement-score-copy p { font-size: 11px; }
-.clario-page .statement-feature--home .statement-summary {
-  display: none;
-}
-.clario-page .statement-feature--home .statement-metrics { gap: 7px; }
-.clario-page .statement-feature--home .statement-metrics > div { padding: 9px; }
-.clario-page .statement-feature--home .statement-metrics strong { font-size: 12px; }
-.clario-page .statement-feature--home .statement-reasons,
-.clario-page .statement-feature--home .statement-transactions { display: none; }
-.clario-page .statement-feature--home .statement-categories { margin-top: 13px; }
-.clario-page .statement-feature--home .statement-category { margin-top: 6px; }
-
 .clario-page.clario-public-home .clario-nav { padding-block: 13px; }
 .clario-page.clario-public-home .section-divider {
   height: 1px;
@@ -1078,8 +1061,7 @@
 @media (max-width: 700px) {
   .clario-page .statement-feature--home { padding-top: 12px; }
   .clario-page .statement-feature--home .statement-workspace { grid-template-columns: 1fr; gap: 14px; }
-  .clario-page .statement-feature--home .statement-upload-card,
-  .clario-page .statement-feature--home .statement-result-card { padding: 16px; }
+  .clario-page .statement-feature--home .statement-upload-card { padding: 16px; }
   .clario-page .statement-feature--home .statement-dropzone { min-height: 245px; }
   .public-home-lower { padding-bottom: 28px; }
   .public-home-tools { margin-top: 12px; }

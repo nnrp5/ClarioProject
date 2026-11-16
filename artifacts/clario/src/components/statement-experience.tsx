@@ -402,7 +402,7 @@ export default function StatementExperience({
           </section>
         </div>
 
-        {!isCompactHome && <StatementInsights />}
+        <StatementInsights />
 
       </div>
     </section>
