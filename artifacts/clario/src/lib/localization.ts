@@ -339,6 +339,8 @@ const englishTranslations: Record<string, string> = {
   'مشتريات منزلية': 'Household shopping',
   'مطعم': 'Restaurant',
   'مصروفات متنوعة': 'Miscellaneous expenses',
+  'موظف بدخل ثابت': 'Employee with a steady income',
+  'موظف بدخل ثابت · ٦ أشهر': 'Employee with a steady income · 6 months',
   'مستقل بدخل متغير': 'Freelancer with variable income',
   'دفعة مشروع أول': 'Project payment 1',
   'دفعة مشروع ثاني': 'Project payment 2',

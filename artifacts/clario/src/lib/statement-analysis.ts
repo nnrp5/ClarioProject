@@ -84,10 +84,30 @@ export const sampleTransactions: StatementTransaction[] = [
   transaction('مصروفات متنوعة', -340, 'other', 2),
 ];
 
+const sixMonthEmployeeTransactions: StatementTransaction[] = [
+  { monthsAgo: 6, shopping: 500, other: 300 },
+  { monthsAgo: 5, shopping: 650, other: 380 },
+  { monthsAgo: 4, shopping: 400, other: 330 },
+  { monthsAgo: 3, shopping: 800, other: 450 },
+  { monthsAgo: 2, shopping: 550, other: 380 },
+  { monthsAgo: 1, shopping: 900, other: 500 },
+]
+  .reverse()
+  .flatMap(({ monthsAgo, shopping, other }) => [
+    transactionInMonth('راتب شهري', 4200, 'payroll', monthsAgo, 27),
+    transactionInMonth('مصروفات متنوعة', -other, 'other', monthsAgo, 24),
+    transactionInMonth('مشتريات منزلية', -shopping, 'shopping', monthsAgo, 20),
+    transactionInMonth('اتصالات وإنترنت', -220, 'utilities', monthsAgo, 16),
+    transactionInMonth('بنزين', -320, 'transport', monthsAgo, 12),
+    transactionInMonth('مطعم', -320, 'food', monthsAgo, 8),
+    transactionInMonth('سوبرماركت', -450, 'food', monthsAgo, 5),
+    transactionInMonth('إيجار السكن', -1050, 'housing', monthsAgo, 1),
+  ]);
+
 export const sampleStatements = [
   {
-    title: 'موظف بدخل ثابت',
-    transactions: sampleTransactions,
+    title: 'موظف بدخل ثابت · ٦ أشهر',
+    transactions: sixMonthEmployeeTransactions,
   },
   {
     title: 'مستقل بدخل متغير',
@@ -127,6 +147,10 @@ export const sampleStatements = [
       transaction('مصروفات متنوعة', -330, 'other', 2),
     ],
   },
+  {
+    title: 'موظف بدخل ثابت',
+    transactions: sampleTransactions,
+  },
 ];
 
 function transaction(
@@ -141,6 +165,21 @@ function transaction(
     amount,
     category,
   };
+}
+
+function transactionInMonth(
+  description: string,
+  amount: number,
+  category: TransactionCategory,
+  monthsAgo: number,
+  dayOfMonth: number,
+): StatementTransaction {
+  const date = new Date();
+  date.setHours(12, 0, 0, 0);
+  date.setDate(1);
+  date.setMonth(date.getMonth() - monthsAgo);
+  date.setDate(dayOfMonth);
+  return { date, description, amount, category };
 }
 
 function sampleDate(daysAgo: number) {
