@@ -301,7 +301,10 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
 }
 .clario-page .hero-copy { max-width: 590px; }
 .clario-page .hero-sample-button {
+  min-height: 48px;
+  padding-inline: 21px;
   font: inherit;
+  font-size: 14px;
   font-weight: 700;
   color: #14233b;
   border: 0;
@@ -345,7 +348,6 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   gap: 12px;
   margin-top: 32px;
 }
-.clario-page .hero-actions > .button-primary { width: min(100%, 320px); }
 .clario-page .button-primary,
 .clario-page .goal-submit {
   border-radius: 13px;
@@ -764,7 +766,7 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .nav-links .clario-currency-picker__flag { font-size: 13px; }
   .clario-page .nav-links .clario-currency-picker__code { font-size: 9px; }
   .clario-page .hero { gap: 4px; padding: 49px 0 42px; }
-  .clario-page .hero-sample-button { min-height: 49px; font-size: 13px; }
+  .clario-page .hero-sample-button { min-height: 45px; padding-inline: 16px; font-size: 12px; }
   .clario-page .hero h1 { margin: 18px 0 14px; font-size: clamp(39px, 10vw, 51px); line-height: 1.38; }
   .clario-page .hero h1 span::after { height: 8px; bottom: 2px; }
   .clario-page .hero-lede { font-size: 15px; line-height: 1.9; }
