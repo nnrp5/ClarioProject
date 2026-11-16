@@ -92,6 +92,10 @@ function Home() {
     });
   }, [isMonthlyPlanOpen]);
 
+  useEffect(() => {
+    setIsMonthlyPlanOpen(false);
+  }, [language]);
+
   return (
     <main className="clario-page clario-public-home" dir={direction} lang={language}>
       <div className="clario-container">
