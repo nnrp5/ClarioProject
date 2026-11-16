@@ -960,16 +960,16 @@
 }
 .public-home-tools-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 .public-home-tool-card {
   display: flex;
   min-width: 0;
-  min-height: 68px;
+  min-height: 96px;
   align-items: center;
-  gap: 12px;
-  padding: 9px 13px;
+  gap: 16px;
+  padding: 17px 20px;
   border: 1px solid rgba(100, 151, 222, .25);
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(36, 68, 117, .78), rgba(22, 43, 75, .84));
@@ -988,8 +988,8 @@
 .public-home-tool-card:focus-visible { outline: 3px solid rgba(255, 173, 113, .5); outline-offset: 3px; }
 .public-home-tool-icon {
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   flex: none;
   place-items: center;
   border: 1px solid rgba(255, 173, 113, .2);
@@ -1003,9 +1003,15 @@
   color: #c0d5ed;
 }
 .public-home-tool-copy { display: grid; min-width: 0; flex: 1; gap: 3px; }
-.public-home-tool-copy strong { color: #f5f7fa; font-size: 13px; font-weight: 600; }
-.public-home-tool-copy small { color: #c4cfdb; font-size: 11px; line-height: 1.55; }
+.public-home-tool-copy strong { color: #f5f7fa; font-size: 16px; font-weight: 600; }
+.public-home-tool-copy small { color: #c4cfdb; font-size: 13px; line-height: 1.55; }
 .public-home-tool-card > svg { flex: none; color: #ffb17b; }
+.clario-page.clario-public-home .promise {
+  margin: 38px 0 46px;
+  padding: 37px 42px;
+  border-radius: 18px;
+}
+.clario-public-home .footer { padding-bottom: 23px; }
 
 @media (max-width: 700px) {
   .clario-page .statement-feature--home { padding-top: 12px; }
@@ -1016,11 +1022,12 @@
   .public-home-lower { padding-bottom: 28px; }
   .public-home-tools { margin-top: 12px; }
   .public-home-tools-grid { gap: 10px; }
-  .public-home-tool-card { min-height: 82px; gap: 9px; padding: 11px; }
-  .public-home-tool-icon { width: 34px; height: 34px; border-radius: 10px; }
-  .public-home-tool-copy strong { font-size: 11px; }
-  .public-home-tool-copy small { font-size: 10px; }
+  .public-home-tool-card { min-height: 88px; gap: 12px; padding: 14px 15px; }
+  .public-home-tool-icon { width: 42px; height: 42px; border-radius: 11px; }
+  .public-home-tool-copy strong { font-size: 14px; }
+  .public-home-tool-copy small { font-size: 11px; }
   .public-home-tool-card > svg { width: 14px; height: 14px; }
+  .clario-page.clario-public-home .promise { margin: 28px 0 35px; padding: 27px 22px; }
 }
 
 @media (max-width: 360px) {

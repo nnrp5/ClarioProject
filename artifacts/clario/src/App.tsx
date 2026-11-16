@@ -13,9 +13,11 @@ import {
   Router as WouterRouter,
 } from 'wouter';
 import {
+  ArrowDown,
   ArrowLeft,
   BriefcaseBusiness,
   ChartNoAxesColumnIncreasing,
+  Check,
   Goal,
   Lightbulb,
   LockKeyhole,
@@ -212,6 +214,34 @@ function Home() {
             </Link>
           </div>
         </section>
+
+        <aside className="promise" aria-label="وعدنا لك" data-scroll-reveal>
+          <div className="promise-copy">
+            <span className="section-kicker">وعدنا لك</span>
+            <h2>نوضح لك الصورة. ما نقرر عنك.</h2>
+            <p>
+              كلاريو أداة للفهم والوضوح، مو نصيحة استثمارية ولا بديل عن مختص.
+              نؤمن إن القرار الأفضل يبدأ لما تكون الصورة قدامك.
+            </p>
+          </div>
+          <div className="promise-mark" aria-hidden="true">
+            <Check strokeWidth={1.5} />
+          </div>
+        </aside>
+
+        <footer className="footer">
+          <div className="footer-main">
+            <a className="clario-logo" href="#top" data-testid="link-footer-home">
+              <span className="clario-mark" aria-hidden="true">ك</span>
+              <span>clario</span>
+            </a>
+            <div className="footer-note">
+              <ArrowDown size={13} aria-hidden="true" />
+              بداية أوضح لعلاقة أهدى مع فلوسك.
+            </div>
+            <p>كلاريو — خصوصيتك أولاً.</p>
+          </div>
+        </footer>
       </div>
     </main>
   );
