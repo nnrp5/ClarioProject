@@ -229,6 +229,8 @@ function Home() {
           </div>
         </aside>
 
+        <div className="public-home-footer-divider" aria-hidden="true" />
+
         <footer className="footer">
           <div className="footer-main">
             <a className="clario-logo" href="#top" data-testid="link-footer-home">

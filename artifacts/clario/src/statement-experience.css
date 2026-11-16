@@ -1010,10 +1010,16 @@
 .public-home-tool-copy small { color: #c4cfdb; font-size: 13px; line-height: 1.55; }
 .public-home-tool-card > svg { flex: none; color: #ffb17b; }
 .clario-page.clario-public-home .promise {
-  margin: 38px 0 46px;
+  margin: 38px 0 0;
   padding: 37px 42px;
   border-radius: 18px;
 }
+.clario-page.clario-public-home .public-home-footer-divider {
+  height: 1px;
+  margin-top: 42px;
+  background: rgba(236, 241, 248, .16);
+}
+.clario-page.clario-public-home .footer-main { border-top: 0; }
 .clario-public-home .footer { padding-bottom: 23px; }
 
 @media (max-width: 700px) {
@@ -1030,7 +1036,8 @@
   .public-home-tool-copy strong { font-size: 14px; }
   .public-home-tool-copy small { font-size: 11px; }
   .public-home-tool-card > svg { width: 14px; height: 14px; }
-  .clario-page.clario-public-home .promise { margin: 28px 0 35px; padding: 27px 22px; }
+  .clario-page.clario-public-home .promise { margin: 28px 0 0; padding: 27px 22px; }
+  .clario-page.clario-public-home .public-home-footer-divider { margin-top: 32px; }
 }
 
 @media (max-width: 360px) {
