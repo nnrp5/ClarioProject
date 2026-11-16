@@ -1,19 +1,25 @@
-import { type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Link } from 'wouter';
 import {
   ArrowLeft,
   ArrowRight,
   BriefcaseBusiness,
+  CalendarRange,
   ChartNoAxesColumnIncreasing,
+  ChevronDown,
+  ChevronUp,
   CircleHelp,
   FileChartColumnIncreasing,
   Goal,
   LayoutDashboard,
+  ListChecks,
   ShieldCheck,
 } from 'lucide-react';
 import CurrencySelector from '@/components/currency-selector';
 import ClarioWordmark from '@/components/clario-wordmark';
 import { LanguageSwitcher, useLanguage } from '@/components/language-provider';
+import MonthlyComparison from '@/components/monthly-comparison';
+import MonthlyPlan from '@/components/monthly-plan';
 import { formatLocaleNumber } from '@/lib/localization';
 import '../../dashboard.css';
 
@@ -132,6 +138,13 @@ const services = [
 
 export function DashboardHome() {
   const { language, t } = useLanguage();
+  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const [isMonthlyPlanOpen, setIsMonthlyPlanOpen] = useState(false);
+
+  useEffect(() => {
+    setIsComparisonOpen(false);
+    setIsMonthlyPlanOpen(false);
+  }, [language]);
 
   return (
     <div className="clario-dashboard__home">
@@ -191,6 +204,76 @@ export function DashboardHome() {
               </span>
             </Link>
           ))}
+        </div>
+      </section>
+
+      <section
+        className="clario-dashboard__tools-section"
+        aria-labelledby="dashboard-tools-title"
+      >
+        <div className="clario-dashboard__section-heading">
+          <div>
+            <span className="clario-dashboard__section-kicker">{t('أدوات إضافية')}</span>
+            <h2 id="dashboard-tools-title">{t('المقارنة والخطة المالية')}</h2>
+          </div>
+        </div>
+        <div className="clario-dashboard__tools">
+          <button
+            type="button"
+            className="clario-dashboard__tool-card"
+            aria-expanded={isComparisonOpen}
+            aria-controls="dashboard-monthly-comparison"
+            onClick={() => setIsComparisonOpen((open) => !open)}
+            data-testid="button-dashboard-monthly-comparison"
+          >
+            <span className="clario-dashboard__tool-icon">
+              <CalendarRange size={20} aria-hidden="true" />
+            </span>
+            <span className="clario-dashboard__tool-copy">
+              <strong>{t('قارن بين أي شهرين')}</strong>
+              <small>{t('مقارنة حسب الحركات المؤرخة')}</small>
+            </span>
+            {isComparisonOpen ? (
+              <ChevronUp size={18} aria-hidden="true" />
+            ) : (
+              <ChevronDown size={18} aria-hidden="true" />
+            )}
+          </button>
+          <button
+            type="button"
+            className="clario-dashboard__tool-card"
+            aria-expanded={isMonthlyPlanOpen}
+            aria-controls="dashboard-monthly-plan"
+            onClick={() => setIsMonthlyPlanOpen((open) => !open)}
+            data-testid="button-dashboard-monthly-plan"
+          >
+            <span className="clario-dashboard__tool-icon">
+              <ListChecks size={20} aria-hidden="true" />
+            </span>
+            <span className="clario-dashboard__tool-copy">
+              <strong>{t('خطتك هالشهر')}</strong>
+              <small>{t('خطوات مقترحة من دخل ومصاريف فترة الكشف.')}</small>
+            </span>
+            {isMonthlyPlanOpen ? (
+              <ChevronUp size={18} aria-hidden="true" />
+            ) : (
+              <ChevronDown size={18} aria-hidden="true" />
+            )}
+          </button>
+        </div>
+        <div
+          className="clario-dashboard__tool-panel"
+          id="dashboard-monthly-comparison"
+          hidden={!isComparisonOpen}
+        >
+          {isComparisonOpen ? <MonthlyComparison /> : null}
+        </div>
+        <div
+          className="clario-dashboard__tool-panel"
+          id="dashboard-monthly-plan"
+          hidden={!isMonthlyPlanOpen}
+        >
+          {isMonthlyPlanOpen ? <MonthlyPlan /> : null}
         </div>
       </section>
 

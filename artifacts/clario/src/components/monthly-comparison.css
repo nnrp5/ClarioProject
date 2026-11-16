@@ -1,10 +1,10 @@
-.clario-page .monthly-comparison {
+:is(.clario-page, .clario-dashboard) .monthly-comparison {
   display: grid;
   gap: 12px;
   margin-block: 28px;
 }
 
-.clario-page .monthly-comparison__toggle {
+:is(.clario-page, .clario-dashboard) .monthly-comparison__toggle {
   display: flex;
   min-height: 58px;
   align-items: center;
@@ -28,9 +28,9 @@
   background: linear-gradient(125deg, rgba(38, 66, 102, .9), rgba(22, 44, 73, .95));
 }
 
-.clario-page .monthly-comparison__toggle:focus-visible,
-.clario-page .monthly-comparison__selectors select:focus-visible,
-.clario-page .monthly-comparison__footer a:focus-visible {
+:is(.clario-page, .clario-dashboard) .monthly-comparison__toggle:focus-visible,
+:is(.clario-page, .clario-dashboard) .monthly-comparison__selectors select:focus-visible,
+:is(.clario-page, .clario-dashboard) .monthly-comparison__footer a:focus-visible {
   outline: 3px solid rgba(255, 173, 113, .68);
   outline-offset: 3px;
 }
@@ -297,7 +297,7 @@
 .monthly-comparison__empty p { margin: 4px 0 0; color: #bdc9d8; font-size: 12px; line-height: 1.6; }
 
 @media (max-width: 640px) {
-  .clario-page .monthly-comparison { margin-block: 22px; }
+  :is(.clario-page, .clario-dashboard) .monthly-comparison { margin-block: 22px; }
   .monthly-comparison__header {
     align-items: stretch;
     flex-direction: column;

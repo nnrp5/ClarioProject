@@ -53,7 +53,9 @@ const englishTranslations: Record<string, string> = {
   'عشان تفهم أرقامك وتختار خطوتك الجاية بوضوح.':
     'Understand your numbers and choose your next step with clarity.',
   'أدوات إضافية': 'More tools',
+  'المقارنة والخطة المالية': 'Comparison and monthly plan',
   'قرار التوظيف': 'Hiring decision',
+  'هدفك المالي': 'Financial goal',
   'جرّب أثر توظيف شخص على ميزانيتك.':
     'See how hiring someone could affect your budget.',
   'هدفك المالي الجاي': 'Your next financial goal',

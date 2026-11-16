@@ -1,4 +1,4 @@
-.clario-page .monthly-plan {
+:is(.clario-page, .clario-dashboard) .monthly-plan {
   margin-top: 18px;
   padding: 23px;
   border: 1px solid rgba(226, 236, 248, .15);
@@ -9,7 +9,7 @@
   color: #f4f7fb;
 }
 
-.clario-page .monthly-plan__header {
+:is(.clario-page, .clario-dashboard) .monthly-plan__header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -17,7 +17,7 @@
   margin-bottom: 17px;
 }
 
-.clario-page .monthly-plan__kicker {
+:is(.clario-page, .clario-dashboard) .monthly-plan__kicker {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -26,7 +26,7 @@
   font-weight: 600;
 }
 
-.clario-page .monthly-plan__header h3 {
+:is(.clario-page, .clario-dashboard) .monthly-plan__header h3 {
   margin: 5px 0 3px;
   color: #f7f8fa;
   font-size: 21px;
@@ -34,14 +34,14 @@
   line-height: 1.45;
 }
 
-.clario-page .monthly-plan__header p {
+:is(.clario-page, .clario-dashboard) .monthly-plan__header p {
   margin: 0;
   color: #c4cfdb;
   font-size: 12px;
   line-height: 1.7;
 }
 
-.clario-page .monthly-plan__badge {
+:is(.clario-page, .clario-dashboard) .monthly-plan__badge {
   flex: none;
   padding: 6px 10px;
   border: 1px solid rgba(120, 163, 140, .32);
@@ -51,13 +51,13 @@
   font-size: 10px;
 }
 
-.clario-page .monthly-plan__badge.is-sample {
+:is(.clario-page, .clario-dashboard) .monthly-plan__badge.is-sample {
   border-color: rgba(244, 122, 42, .34);
   background: rgba(244, 122, 42, .1);
   color: #ffc292;
 }
 
-.clario-page .monthly-plan__steps {
+:is(.clario-page, .clario-dashboard) .monthly-plan__steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
@@ -66,7 +66,7 @@
   list-style: none;
 }
 
-.clario-page .monthly-plan__step {
+:is(.clario-page, .clario-dashboard) .monthly-plan__step {
   display: flex;
   min-width: 0;
   flex-direction: column;
@@ -76,20 +76,20 @@
   background: rgba(11, 25, 44, .42);
 }
 
-.clario-page .monthly-plan__step-top {
+:is(.clario-page, .clario-dashboard) .monthly-plan__step-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 13px;
 }
 
-.clario-page .monthly-plan__number {
+:is(.clario-page, .clario-dashboard) .monthly-plan__number {
   color: #9eacbd;
   font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
 
-.clario-page .monthly-plan__icon {
+:is(.clario-page, .clario-dashboard) .monthly-plan__icon {
   display: grid;
   width: 34px;
   height: 34px;
@@ -100,7 +100,7 @@
   color: #ffb17b;
 }
 
-.clario-page .monthly-plan__step h4 {
+:is(.clario-page, .clario-dashboard) .monthly-plan__step h4 {
   margin: 0 0 7px;
   color: #f4f6f8;
   font-size: 14px;
@@ -108,7 +108,7 @@
   line-height: 1.6;
 }
 
-.clario-page .monthly-plan__step p {
+:is(.clario-page, .clario-dashboard) .monthly-plan__step p {
   flex: 1;
   margin: 0;
   color: #c4cfdb;
@@ -116,7 +116,7 @@
   line-height: 1.8;
 }
 
-.clario-page .monthly-plan__impact {
+:is(.clario-page, .clario-dashboard) .monthly-plan__impact {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -126,19 +126,19 @@
   border-top: 1px solid rgba(226, 236, 248, .12);
 }
 
-.clario-page .monthly-plan__impact span {
+:is(.clario-page, .clario-dashboard) .monthly-plan__impact span {
   color: #aebacc;
   font-size: 10px;
 }
 
-.clario-page .monthly-plan__impact strong {
+:is(.clario-page, .clario-dashboard) .monthly-plan__impact strong {
   color: #ffad71;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.clario-page .monthly-plan__empty {
+:is(.clario-page, .clario-dashboard) .monthly-plan__empty {
   margin: 0;
   padding: 19px;
   border: 1px dashed rgba(226, 236, 248, .18);
@@ -148,7 +148,7 @@
   text-align: center;
 }
 
-.clario-page .monthly-plan__disclaimer {
+:is(.clario-page, .clario-dashboard) .monthly-plan__disclaimer {
   display: flex;
   align-items: flex-start;
   gap: 7px;
@@ -158,20 +158,20 @@
   line-height: 1.7;
 }
 
-.clario-page .monthly-plan__disclaimer svg {
+:is(.clario-page, .clario-dashboard) .monthly-plan__disclaimer svg {
   flex: none;
   margin-top: 2px;
   color: #8ec2a4;
 }
 
 @media (max-width: 760px) {
-  .clario-page .monthly-plan__steps { grid-template-columns: 1fr; }
-  .clario-page .monthly-plan__step { padding: 14px; }
-  .clario-page .monthly-plan__step-top { margin-bottom: 9px; }
+  :is(.clario-page, .clario-dashboard) .monthly-plan__steps { grid-template-columns: 1fr; }
+  :is(.clario-page, .clario-dashboard) .monthly-plan__step { padding: 14px; }
+  :is(.clario-page, .clario-dashboard) .monthly-plan__step-top { margin-bottom: 9px; }
 }
 
 @media (max-width: 520px) {
-  .clario-page .monthly-plan { padding: 17px; }
-  .clario-page .monthly-plan__header { flex-direction: column; gap: 9px; }
-  .clario-page .monthly-plan__header h3 { font-size: 19px; }
+  :is(.clario-page, .clario-dashboard) .monthly-plan { padding: 17px; }
+  :is(.clario-page, .clario-dashboard) .monthly-plan__header { flex-direction: column; gap: 9px; }
+  :is(.clario-page, .clario-dashboard) .monthly-plan__header h3 { font-size: 19px; }
 }
