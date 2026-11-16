@@ -193,9 +193,9 @@ export default function StatementInsights() {
             <span className="statement-insight-kicker">آخر ٤ أسابيع من الكشف</span>
             <h3>متى تصرف أكثر؟</h3>
           </div>
-          <span className={`statement-insight-badge${isSample ? ' is-sample' : ''}`}>
-            {isSample ? 'مثال توضيحي' : 'من كشفك'}
-          </span>
+          {!isSample && (
+            <span className="statement-insight-badge">من كشفك</span>
+          )}
         </header>
 
         {weeklySpending.state === 'ready' ? (
