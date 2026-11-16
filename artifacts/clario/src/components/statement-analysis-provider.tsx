@@ -10,6 +10,7 @@ import {
   analyzeTransactions,
   parseStatementFile,
   sampleStatements,
+  statementFileErrorMessage,
   type StatementAnalysis,
 } from '@/lib/statement-analysis';
 import { useLanguage } from '@/components/language-provider';
@@ -279,11 +280,7 @@ export function StatementAnalysisProvider({
       setAnalysis(analyzeTransactions(parsed.transactions, parsed.notices));
       setIsSample(false);
     } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'ما قدرنا نقرأ الملف. جرّب كشفًا نصيًا أو Excel/CSV.',
-      );
+      setErrorMessage(statementFileErrorMessage(error));
     } finally {
       setIsProcessing(false);
     }

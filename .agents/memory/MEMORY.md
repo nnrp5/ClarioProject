@@ -1,1 +1,1 @@
-- [Clario design constraints](clario-design-constraints.md) — Preserve the navy/orange RTL brand, the hero-to-compact-services homepage flow, separate dashboard views, and local-only statements.
+- [Clario design constraints](clario-design-constraints.md) — Preserve the navy/orange RTL design, separate dashboard views, local-only statements, and the plan’s explicit opt-in.

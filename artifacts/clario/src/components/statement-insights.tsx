@@ -200,7 +200,7 @@ export default function StatementInsights() {
             <h3>{t('متى تصرف أكثر؟')}</h3>
           </div>
           {!isSample && (
-            <span className="statement-insight-badge">من كشفك</span>
+            <span className="statement-insight-badge">{t('من كشفك')}</span>
           )}
         </header>
 

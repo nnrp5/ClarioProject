@@ -44,6 +44,29 @@ export type StatementAnalysis = {
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const MAX_PDF_PAGES = 50;
 
+export const statementFileErrors = {
+  tooLarge: 'حجم الملف أكبر من 10 ميغابايت. جرّب كشفًا أصغر.',
+  unsupportedType:
+    'نوع الملف غير مدعوم. استخدم PDF نصيًا أو Excel بصيغة .xlsx أو CSV.',
+  insufficientTransactions:
+    'ما قدرنا نتعرف على حركات كافية. جرّب كشفًا نصيًا أو صدّره إلى Excel أو CSV.',
+  missingColumns:
+    'ما لقينا أعمدة التاريخ والوصف والمبلغ. رتّب الكشف بعناوين واضحة ثم جرّب مرة ثانية.',
+  tooManyPages: 'الكشف أطول من 50 صفحة. جرّب نسخة أقصر أو صدّره إلى Excel.',
+  unreadable: 'ما قدرنا نقرأ الملف. جرّب كشفًا نصيًا أو Excel/CSV.',
+} as const;
+
+const knownStatementFileErrors: ReadonlySet<string> = new Set(
+  Object.values(statementFileErrors),
+);
+
+export function statementFileErrorMessage(error: unknown): string {
+  const message = error instanceof Error ? error.message : '';
+  return knownStatementFileErrors.has(message)
+    ? message
+    : statementFileErrors.unreadable;
+}
+
 const incomeTerms = [
   'salary', 'payroll', 'income', 'deposit', 'refund', 'credit', 'received',
   'راتب', 'دخل', 'ايداع', 'وارد', 'مبيعات', 'استرداد', 'مكافاه', 'تحويل وارد',
@@ -268,7 +291,7 @@ export function analyzeTransactions(
 
 export async function parseStatementFile(file: File): Promise<ParsedStatement> {
   if (file.size > MAX_FILE_BYTES) {
-    throw new Error('حجم الملف أكبر من 10 ميغابايت. جرّب كشفًا أصغر.');
+    throw new Error(statementFileErrors.tooLarge);
   }
 
   const extension = file.name.split('.').pop()?.toLowerCase();
@@ -283,13 +306,11 @@ export async function parseStatementFile(file: File): Promise<ParsedStatement> {
   } else if (extension === 'pdf') {
     parsed = await parsePdf(file);
   } else {
-    throw new Error('نوع الملف غير مدعوم. استخدم PDF نصيًا أو Excel بصيغة .xlsx أو CSV.');
+    throw new Error(statementFileErrors.unsupportedType);
   }
 
   if (parsed.transactions.length < 2) {
-    throw new Error(
-      'ما قدرنا نتعرف على حركات كافية. جرّب كشفًا نصيًا أو صدّره إلى Excel أو CSV.',
-    );
+    throw new Error(statementFileErrors.insufficientTransactions);
   }
   return parsed;
 }
@@ -297,9 +318,7 @@ export async function parseStatementFile(file: File): Promise<ParsedStatement> {
 function parseRows(rows: unknown[][]): ParsedStatement {
   const header = findHeader(rows);
   if (!header) {
-    throw new Error(
-      'ما لقينا أعمدة التاريخ والوصف والمبلغ. رتّب الكشف بعناوين واضحة ثم جرّب مرة ثانية.',
-    );
+    throw new Error(statementFileErrors.missingColumns);
   }
 
   const transactions: StatementTransaction[] = [];
@@ -464,7 +483,7 @@ async function parsePdf(file: File): Promise<ParsedStatement> {
   try {
     const document = await loadingTask.promise;
     if (document.numPages > MAX_PDF_PAGES) {
-      throw new Error('الكشف أطول من 50 صفحة. جرّب نسخة أقصر أو صدّره إلى Excel.');
+      throw new Error(statementFileErrors.tooManyPages);
     }
 
     const lines: string[] = [];

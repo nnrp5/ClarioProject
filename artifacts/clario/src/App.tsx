@@ -310,7 +310,7 @@ function Home() {
             id="home-monthly-plan"
             hidden={!isMonthlyPlanOpen}
           >
-            <MonthlyPlan />
+            {isMonthlyPlanOpen ? <MonthlyPlan /> : null}
           </div>
         </section>
 

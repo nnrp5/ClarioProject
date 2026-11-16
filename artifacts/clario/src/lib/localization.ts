@@ -316,6 +316,8 @@ const englishTranslations: Record<string, string> = {
   'ريال عُماني': 'Omani rial',
   'حجم الملف أكبر من 10 ميغابايت. جرّب كشفًا أصغر.':
     'The file is larger than 10 MB. Try a smaller statement.',
+  'ما قدرنا نقرأ الملف. جرّب كشفًا نصيًا أو Excel/CSV.':
+    'We could not read the file. Try a text-based statement, Excel, or CSV.',
   'نوع الملف غير مدعوم. استخدم PDF نصيًا أو Excel بصيغة .xlsx أو CSV.':
     'This file type is not supported. Use a text-based PDF, Excel (.xlsx), or CSV.',
   'ما قدرنا نتعرف على حركات كافية. جرّب كشفًا نصيًا أو صدّره إلى Excel أو CSV.':
@@ -365,6 +367,7 @@ const englishTranslations: Record<string, string> = {
   'خطتك هالشهر': 'Your plan this month',
   'خطوات مقترحة من دخل ومصاريف فترة الكشف.':
     'Suggested steps based on income and expenses during this statement period.',
+  'من كشفك': 'From your statement',
   'مبنية على كشفك': 'Based on your statement',
   'راجع الاشتراك المتكرر': 'Review the recurring subscription',
   'توفير محتمل بالشهر': 'Potential monthly savings',
