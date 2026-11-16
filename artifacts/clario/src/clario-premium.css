@@ -301,32 +301,11 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
 }
 .clario-page .hero-copy { max-width: 590px; }
 .clario-page .hero-sample-button {
-  display: inline-flex;
-  min-height: 45px;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  margin-bottom: 18px;
-  padding: 0 16px;
-  border: 1px solid rgba(255, 177, 123, .5);
-  border-radius: 13px;
-  background: linear-gradient(135deg, #f47a2a, #ff9b55);
-  color: #14233b;
   font: inherit;
-  font-size: 13px;
   font-weight: 700;
-  box-shadow: 0 8px 22px rgba(244, 122, 42, .2);
+  color: #14233b;
+  border: 0;
   cursor: pointer;
-  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
-}
-.clario-page .hero-sample-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(244, 122, 42, .28);
-  filter: brightness(1.04);
-}
-.clario-page .hero-sample-button:focus-visible {
-  outline: 3px solid rgba(255, 177, 123, .75);
-  outline-offset: 3px;
 }
 .clario-page .hero-sample-button:disabled { cursor: wait; opacity: .7; }
 .clario-page .eyebrow {
@@ -360,7 +339,13 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   font-size: 17px;
   line-height: 1.95;
 }
-.clario-page .hero-actions { gap: 19px; margin-top: 32px; }
+.clario-page .hero-actions {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+.clario-page .hero-actions > .button-primary { width: min(100%, 320px); }
 .clario-page .button-primary,
 .clario-page .goal-submit {
   border-radius: 13px;
@@ -779,11 +764,11 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .nav-links .clario-currency-picker__flag { font-size: 13px; }
   .clario-page .nav-links .clario-currency-picker__code { font-size: 9px; }
   .clario-page .hero { gap: 4px; padding: 49px 0 42px; }
-  .clario-page .hero-sample-button { min-height: 43px; margin-bottom: 15px; font-size: 12px; }
+  .clario-page .hero-sample-button { min-height: 49px; font-size: 13px; }
   .clario-page .hero h1 { margin: 18px 0 14px; font-size: clamp(39px, 10vw, 51px); line-height: 1.38; }
   .clario-page .hero h1 span::after { height: 8px; bottom: 2px; }
   .clario-page .hero-lede { font-size: 15px; line-height: 1.9; }
-  .clario-page .hero-actions { flex-wrap: wrap; gap: 12px 15px; margin-top: 22px; }
+  .clario-page .hero-actions { flex-wrap: nowrap; gap: 11px; margin-top: 22px; }
   .clario-page .button-primary { min-height: 49px; padding-inline: 18px; font-size: 13px; }
   .clario-page .text-link { font-size: 13px; }
   .clario-page .hero-privacy-badge { margin-top: 15px; padding: 8px 10px; font-size: 12px; }

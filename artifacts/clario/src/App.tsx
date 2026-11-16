@@ -28,7 +28,6 @@ import {
   Goal,
   Lightbulb,
   LockKeyhole,
-  ListChecks,
   Menu,
   Sparkles,
   WalletCards,
@@ -106,18 +105,7 @@ function Home() {
 
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-copy">
-            <button
-              type="button"
-              className="hero-sample-button reveal"
-              onClick={handleHeroSample}
-              disabled={isProcessing}
-              aria-label={t('جرّب بكشف تجريبي')}
-              data-testid="button-hero-try-sample"
-            >
-              <Sparkles size={16} aria-hidden="true" />
-              {t('جرّب بكشف تجريبي')}
-            </button>
-            <div className="eyebrow reveal">{t('فلوسك، بسوالف واضحة')}</div>
+            <div className="eyebrow reveal">{t('فلوسك بشكل أوضح')}</div>
             <h1 className="reveal delay-1" id="hero-title">
               {t('قراراتك المالية')}<br />
               {t('تصير ')}<span>{t('أوضح وأسهل.')}</span>
@@ -129,6 +117,17 @@ function Home() {
               <a className="button-primary" href="#analysis" data-testid="link-explore-capabilities">
                 {t('ارفع كشفك وشوف النتيجة')}{language === 'ar' ? <ArrowLeft size={16} aria-hidden="true" /> : <ArrowRight size={16} aria-hidden="true" />}
               </a>
+              <button
+                type="button"
+                className="button-primary hero-sample-button"
+                onClick={handleHeroSample}
+                disabled={isProcessing}
+                aria-label={t('جرّب بكشف تجريبي')}
+                data-testid="button-hero-try-sample"
+              >
+                <Sparkles size={16} aria-hidden="true" />
+                {t('جرّب بكشف تجريبي')}
+              </button>
               <a className="text-link" href="#how" data-testid="link-learn-more">{t('عن كلاريو')}</a>
             </div>
             <div className="hero-privacy-badge reveal delay-2">
@@ -266,20 +265,6 @@ function Home() {
               </span>
               {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
             </Link>
-            <a
-              className="public-home-tool-card"
-              href="#monthly-plan"
-              data-testid="link-public-monthly-plan"
-            >
-              <span className="public-home-tool-icon public-home-tool-icon--plan">
-                <ListChecks size={20} aria-hidden="true" />
-              </span>
-              <span className="public-home-tool-copy">
-                <strong>{t('خطتك هالشهر')}</strong>
-                <small>{t('ثلاث خطوات عملية من واقع كشفك.')}</small>
-              </span>
-              {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
-            </a>
           </div>
         </section>
 

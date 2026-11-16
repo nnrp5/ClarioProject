@@ -10,7 +10,7 @@ const englishTranslations: Record<string, string> = {
   'لوحة التحكم': 'Dashboard',
   'Switch to English': 'Switch to English',
   'التبديل إلى العربية': 'Switch to Arabic',
-  'فلوسك، بسوالف واضحة': 'Your money, explained clearly',
+  'فلوسك بشكل أوضح': 'Your money, made clearer',
   'قراراتك المالية': 'Your financial decisions',
   'تصير ': 'become ',
   'أوضح وأسهل.': 'clearer and easier.',
