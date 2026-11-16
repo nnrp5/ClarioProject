@@ -67,17 +67,6 @@
   background: #14223a;
 }
 
-.clario-page .statement-card-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 17px;
-  color: #e5eaf0;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.clario-page .statement-upload-icon,
 .clario-page .statement-drop-icon {
   display: grid;
   flex: none;
@@ -86,20 +75,14 @@
   background: rgba(244, 122, 42, .13);
 }
 
-.clario-page .statement-upload-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
-}
-
 .clario-page .statement-dropzone {
   position: relative;
   display: flex;
-  min-height: 294px;
+  min-height: 320px;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 21px;
+  justify-content: flex-start;
+  padding: 26px 21px 20px;
   border: 1px dashed rgba(214, 225, 238, .34);
   border-radius: 15px;
   background: rgba(8, 19, 34, .26);
@@ -243,29 +226,46 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 13px;
-  color: #aebacc;
-  font-size: 11px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 155, 85, .36);
+  border-radius: 13px;
+  background: rgba(244, 122, 42, .07);
+  color: #f2c5a5;
+  font-size: 12px;
 }
 
 .clario-page .statement-currency {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  color: #f2c5a5;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.clario-page .statement-currency > span { position: relative; display: inline-flex; }
+.clario-page .statement-currency > span {
+  position: relative;
+  display: inline-flex;
+  flex: 1;
+  min-width: 0;
+}
 
 .clario-page .statement-currency select {
-  max-width: 166px;
-  padding: 6px 26px 6px 9px;
-  border: 1px solid rgba(236, 241, 248, .19);
-  border-radius: 8px;
+  width: 100%;
+  max-width: 240px;
+  min-height: 42px;
+  padding: 8px 29px 8px 12px;
+  border: 1px solid rgba(236, 241, 248, .25);
+  border-radius: 11px;
   appearance: none;
   background: #1a2b45;
   color: #e8edf3;
   font: inherit;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .clario-page .statement-currency svg {
@@ -753,10 +753,10 @@
   .clario-page .statement-privacy { gap: 9px; margin-top: 16px; padding: 12px; font-size: 13px; }
   .clario-page .statement-workspace { grid-template-columns: 1fr; gap: 13px; }
   .clario-page .statement-upload-card { padding: 16px; }
-  .clario-page .statement-dropzone { min-height: 215px; padding: 18px; }
-  .clario-page .statement-upload-meta { font-size: 10px; }
-  .clario-page .statement-currency { gap: 5px; }
-  .clario-page .statement-currency select { max-width: 148px; }
+  .clario-page .statement-dropzone { min-height: 255px; padding: 22px 18px; }
+  .clario-page .statement-upload-meta { gap: 8px; padding: 9px; font-size: 10px; }
+  .clario-page .statement-currency { gap: 7px; font-size: 11px; }
+  .clario-page .statement-currency select { max-width: 150px; min-height: 40px; font-size: 11px; }
   .clario-page .statement-sample-row { align-items: flex-start; font-size: 10px; }
   .clario-page .statement-result-card { padding: 17px; }
   .clario-page .statement-metrics > div { padding: 9px 7px; }
@@ -899,55 +899,89 @@
   flex-direction: column;
   padding: 16px;
 }
-.clario-page .statement-feature--home .statement-dropzone { min-height: 170px; padding: 11px; }
-.clario-page .statement-feature--home .statement-drop-icon {
-  width: 36px;
-  height: 36px;
-  margin-bottom: 6px;
-  border-radius: 11px;
+.clario-page .statement-feature--home .statement-dropzone {
+  min-height: 245px;
+  justify-content: flex-start;
+  padding: 20px 14px 16px;
 }
-.clario-page .statement-feature--home .statement-dropzone h3 { font-size: 15px; }
-.clario-page .statement-feature--home .statement-dropzone p { margin: 3px 0 8px; font-size: 10px; }
-.clario-page .statement-feature--home .statement-select-button { min-height: 33px; padding-inline: 12px; font-size: 12px; }
-.clario-page .statement-feature--home .statement-drop-hint { margin-top: 6px; font-size: 10px; }
-.clario-page .statement-feature--home .statement-upload-meta { margin-top: 6px; font-size: 10px; }
+.clario-page .statement-feature--home .statement-drop-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 10px;
+  border-radius: 13px;
+}
+.clario-page .statement-feature--home .statement-dropzone h3 { font-size: 17px; }
+.clario-page .statement-feature--home .statement-dropzone p { margin: 6px 0 12px; font-size: 12px; }
+.clario-page .statement-feature--home .statement-select-button { min-height: 42px; padding-inline: 16px; font-size: 13px; }
+.clario-page .statement-feature--home .statement-drop-hint { margin-top: 9px; font-size: 11px; }
+.clario-page .statement-feature--home .statement-upload-meta {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 155, 85, .36);
+  border-radius: 13px;
+  background: rgba(244, 122, 42, .07);
+  color: #f2c5a5;
+  font-size: 12px;
+}
 .clario-page .statement-feature--home .statement-upload-meta > span { display: none; }
+.clario-page .statement-feature--home .statement-currency {
+  width: 100%;
+  justify-content: space-between;
+  gap: 12px;
+  color: #f2c5a5;
+  font-size: 12px;
+  font-weight: 600;
+}
+.clario-page .statement-feature--home .statement-currency > span { flex: 1; min-width: 0; }
+.clario-page .statement-feature--home .statement-currency select {
+  width: 100%;
+  max-width: none;
+  min-height: 42px;
+  padding: 8px 29px 8px 12px;
+  border-color: rgba(236, 241, 248, .25);
+  border-radius: 11px;
+  font-size: 12px;
+}
 .clario-page .statement-feature--home .statement-privacy--inline {
   max-width: none;
   align-items: center;
   gap: 9px;
-  margin-top: 7px;
-  padding: 6px 8px;
-  border-color: rgba(244, 122, 42, .2);
-  border-radius: 12px;
-  background: rgba(244, 122, 42, .055);
-  color: #dce4ec;
-  font-size: 9px;
-  line-height: 1.55;
+  margin-top: 10px;
+  padding: 11px 12px;
+  border-color: rgba(244, 122, 42, .28);
+  border-radius: 13px;
+  background: rgba(244, 122, 42, .075);
+  color: #e4ebf2;
+  font-size: 13px;
+  line-height: 1.8;
 }
 .clario-page .statement-feature--home .statement-privacy--inline .statement-privacy-icon {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   border-radius: 8px;
 }
 .clario-page .statement-feature--home .statement-demo-action--home {
   flex-direction: row;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 10px;
-  padding-top: 10px;
-  font-size: 11px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(244, 122, 42, .34);
+  border-radius: 13px;
+  background: rgba(244, 122, 42, .08);
+  color: #f4d2ba;
+  font-size: 12px;
 }
 .clario-page .statement-feature--home .statement-demo-action--home .statement-demo-button {
-  min-height: 42px;
+  min-height: 44px;
   gap: 8px;
   padding-inline: 12px;
   border-radius: 12px;
   font-size: 12px;
 }
 .clario-page .statement-feature--home .statement-demo-button__icon {
-  width: 25px;
-  height: 25px;
+  width: 27px;
+  height: 27px;
   border-radius: 8px;
 }
 .clario-page .statement-feature--home .statement-result-card { padding: 16px; }
@@ -968,8 +1002,9 @@
 .clario-page .statement-feature--home .statement-category { margin-top: 6px; }
 
 .clario-page.clario-public-home .clario-nav { padding-block: 13px; }
-.clario-page.clario-public-home .how-section {
-  border-bottom: 1px solid rgba(236, 241, 248, .14);
+.clario-page.clario-public-home .section-divider {
+  height: 1px;
+  background: rgba(248, 250, 252, .22);
 }
 .public-home-lower { padding-bottom: 38px; }
 .public-home-tools { margin-top: 12px; }
@@ -1045,7 +1080,7 @@
   .clario-page .statement-feature--home .statement-workspace { grid-template-columns: 1fr; gap: 14px; }
   .clario-page .statement-feature--home .statement-upload-card,
   .clario-page .statement-feature--home .statement-result-card { padding: 16px; }
-  .clario-page .statement-feature--home .statement-dropzone { min-height: 170px; }
+  .clario-page .statement-feature--home .statement-dropzone { min-height: 245px; }
   .public-home-lower { padding-bottom: 28px; }
   .public-home-tools { margin-top: 12px; }
   .public-home-tools-grid { gap: 10px; }

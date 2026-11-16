@@ -17,7 +17,6 @@ import {
   RotateCcw,
   ShieldCheck,
   Sparkles,
-  Upload,
 } from 'lucide-react';
 import { categoryLabel } from '@/lib/statement-analysis';
 import {
@@ -141,13 +140,6 @@ export default function StatementExperience({
             aria-label="رفع كشف حساب"
             data-scroll-reveal
           >
-            <div className="statement-card-eyebrow">
-              <span className="statement-upload-icon" aria-hidden="true">
-                <Upload size={19} />
-              </span>
-              <span>ملف واحد يكفي للبداية</span>
-            </div>
-
             <div
               className={`statement-dropzone${isDragging ? ' is-dragging' : ''}${isProcessing ? ' is-busy' : ''}`}
               onDragOver={(event) => {
@@ -184,25 +176,26 @@ export default function StatementExperience({
                 {!isProcessing && <ArrowLeft size={15} aria-hidden="true" />}
               </button>
               <span className="statement-drop-hint">أو اسحب الملف إلى هنا</span>
-              {!isCompactHome && (
-                <div className="statement-demo-action">
-                  <span>ما تبي ترفع ملفك؟</span>
-                  <button
-                    type="button"
-                    className="statement-demo-button"
-                    onClick={handleTrySample}
-                    disabled={isProcessing}
-                    aria-label="بدّل إلى كشف تجريبي مختلف"
-                    title="اضغط لعرض كشف تجريبي آخر"
-                    data-testid="button-try-sample"
-                  >
-                    <span className="statement-demo-button__icon" aria-hidden="true">
-                      <RotateCcw size={16} />
-                    </span>
-                    <span>جرّب بكشف تجريبي</span>
-                  </button>
-                </div>
-              )}
+            </div>
+
+            <div
+              className={`statement-demo-action${isCompactHome ? ' statement-demo-action--home' : ''}`}
+            >
+              <span>ما تبي ترفع ملفك؟</span>
+              <button
+                type="button"
+                className="statement-demo-button"
+                onClick={handleTrySample}
+                disabled={isProcessing}
+                aria-label="بدّل إلى كشف تجريبي مختلف"
+                title="اضغط لعرض كشف تجريبي آخر"
+                data-testid="button-try-sample"
+              >
+                <span className="statement-demo-button__icon" aria-hidden="true">
+                  <RotateCcw size={16} />
+                </span>
+                <span>جرّب بكشف تجريبي</span>
+              </button>
             </div>
 
             <div className="statement-upload-meta">
@@ -238,26 +231,6 @@ export default function StatementExperience({
                 <span>
                   <strong>كشفك ما يغادر جهازك.</strong> نقرأه داخل المتصفح فقط ولا نحفظ الملف.
                 </span>
-              </div>
-            )}
-
-            {isCompactHome && (
-              <div className="statement-demo-action statement-demo-action--home">
-                <span>ما تبي ترفع ملفك؟</span>
-                <button
-                  type="button"
-                  className="statement-demo-button"
-                  onClick={handleTrySample}
-                  disabled={isProcessing}
-                    aria-label="بدّل إلى كشف تجريبي مختلف"
-                    title="اضغط لعرض كشف تجريبي آخر"
-                  data-testid="button-try-sample"
-                >
-                    <span className="statement-demo-button__icon" aria-hidden="true">
-                      <RotateCcw size={16} />
-                    </span>
-                    <span>جرّب بكشف تجريبي</span>
-                </button>
               </div>
             )}
 

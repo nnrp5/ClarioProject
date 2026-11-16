@@ -132,6 +132,10 @@ function Home() {
       </div>
 
       <div className="clario-container">
+        <div className="section-divider" aria-hidden="true" />
+      </div>
+
+      <div className="clario-container">
         <section
           className="how-section"
           id="how"
@@ -176,7 +180,15 @@ function Home() {
         </section>
       </div>
 
+      <div className="clario-container">
+        <div className="section-divider" aria-hidden="true" />
+      </div>
+
       <StatementExperience variant="home" />
+
+      <div className="clario-container">
+        <div className="section-divider" aria-hidden="true" />
+      </div>
 
       <div className="clario-container public-home-lower">
         <section className="public-home-tools" aria-labelledby="public-home-tools-title">
@@ -214,6 +226,8 @@ function Home() {
           </div>
         </section>
 
+        <div className="section-divider" aria-hidden="true" />
+
         <aside className="promise" aria-label="وعدنا لك" data-scroll-reveal>
           <div className="promise-copy">
             <span className="section-kicker">وعدنا لك</span>
@@ -228,7 +242,7 @@ function Home() {
           </div>
         </aside>
 
-        <div className="public-home-footer-divider" aria-hidden="true" />
+        <div className="section-divider public-home-footer-divider" aria-hidden="true" />
 
         <footer className="footer">
           <div className="footer-main">
