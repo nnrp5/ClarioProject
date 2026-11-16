@@ -1017,6 +1017,17 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045);
   transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
 }
+.public-home-tools button.public-home-tool-card {
+  width: 100%;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.public-home-plan-panel {
+  margin-top: 16px;
+  scroll-margin-top: 24px;
+}
+.public-home-plan-panel[hidden] { display: none; }
 .public-home-tool-card:hover {
   transform: translateY(-2px);
   border-color: rgba(255, 173, 113, .42);

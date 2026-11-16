@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import CurrencySelector from '@/components/currency-selector';
 import { ErrorBoundary } from '@/components/error-boundary';
@@ -28,12 +28,14 @@ import {
   Goal,
   Lightbulb,
   LockKeyhole,
+  ListChecks,
   Menu,
   Sparkles,
   WalletCards,
 } from 'lucide-react';
 import GoalSaver from '@/components/goal-saver';
 import HireSimulator from '@/components/hire-simulator';
+import MonthlyPlan from '@/components/monthly-plan';
 import {
   formatStatementMoney,
   StatementAnalysisProvider,
@@ -56,6 +58,7 @@ function Home() {
     showNextSample,
   } = useStatementAnalysis();
   const { language, direction, t } = useLanguage();
+  const [isMonthlyPlanOpen, setIsMonthlyPlanOpen] = useState(false);
   const formatSampleAmount = (amount: number) => {
     const converted = convertBetween(amount, 'KWD', currency);
     return converted === null
@@ -77,6 +80,17 @@ function Home() {
       result?.focus({ preventScroll: true });
     }, 80);
   }
+
+  useEffect(() => {
+    if (!isMonthlyPlanOpen) return;
+    const plan = document.getElementById('monthly-plan');
+    plan?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      block: 'start',
+    });
+  }, [isMonthlyPlanOpen]);
 
   return (
     <main className="clario-page clario-public-home" dir={direction} lang={language}>
@@ -233,7 +247,11 @@ function Home() {
       </div>
 
       <div className="clario-container public-home-lower">
-        <section className="public-home-tools" aria-labelledby="public-home-tools-title">
+        <section
+          className="public-home-tools"
+          id="public-home-tools"
+          aria-labelledby="public-home-tools-title"
+        >
           <h2 id="public-home-tools-title">{t('أدوات إضافية')}</h2>
           <div className="public-home-tools-grid">
             <Link
@@ -265,6 +283,30 @@ function Home() {
               </span>
               {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
             </Link>
+            <button
+              type="button"
+              className="public-home-tool-card"
+              aria-expanded={isMonthlyPlanOpen}
+              aria-controls="home-monthly-plan"
+              onClick={() => setIsMonthlyPlanOpen((open) => !open)}
+              data-testid="button-public-monthly-plan"
+            >
+              <span className="public-home-tool-icon">
+                <ListChecks size={20} aria-hidden="true" />
+              </span>
+              <span className="public-home-tool-copy">
+                <strong>{t('خطتك هالشهر')}</strong>
+                <small>{t('ثلاث خطوات عملية من واقع كشفك.')}</small>
+              </span>
+              {language === 'ar' ? <ArrowLeft size={17} aria-hidden="true" /> : <ArrowRight size={17} aria-hidden="true" />}
+            </button>
+          </div>
+          <div
+            className="public-home-plan-panel"
+            id="home-monthly-plan"
+            hidden={!isMonthlyPlanOpen}
+          >
+            <MonthlyPlan />
           </div>
         </section>
 

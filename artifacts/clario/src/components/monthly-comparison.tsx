@@ -36,7 +36,11 @@ function deltaTone(delta: number, kind: MetricKind) {
   return (delta > 0) === positiveIsGood ? 'good' : 'bad';
 }
 
-export default function MonthlyComparison() {
+export default function MonthlyComparison({
+  isHome = false,
+}: {
+  isHome?: boolean;
+}) {
   const { language, t } = useLanguage();
   const {
     analysis,
@@ -333,10 +337,12 @@ export default function MonthlyComparison() {
             </div>
 
             <footer className="monthly-comparison__footer">
-              <a href="#monthly-plan">
-                {t('شوف خطتك هالشهر')}
-                <ArrowUp size={14} aria-hidden="true" />
-              </a>
+              {isHome && (
+                <a href="#public-home-tools">
+                  {t('اذهب للأدوات الإضافية')}
+                  <ArrowUp size={14} aria-hidden="true" />
+                </a>
+              )}
               <p>
                 <Info size={14} aria-hidden="true" />
                 {t('الدخل والسكن مستبعدان من فروقات الفئات.')}

@@ -78,6 +78,7 @@ const englishTranslations: Record<string, string> = {
   'المقارنة مبنية على الحركات الموجودة في كل شهر وقد يكون أحدهما جزئيًا.':
     'This comparison uses the transactions in each month; either month may be partial.',
   'شوف خطتك هالشهر': 'View your plan this month',
+  'اذهب للأدوات الإضافية': 'Go to additional tools',
   'ثابت': 'Unchanged',
   'أكثر': 'more',
   'أقل': 'less',
