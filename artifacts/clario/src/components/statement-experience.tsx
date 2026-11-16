@@ -52,6 +52,7 @@ export default function StatementExperience({
     isProcessing,
     errorMessage,
     currency,
+    setCurrency,
     statementCurrency,
     setStatementCurrency,
     convertBetween,
@@ -191,12 +192,14 @@ export default function StatementExperience({
                     className="statement-demo-button"
                     onClick={handleTrySample}
                     disabled={isProcessing}
-                    aria-label="اعرض كشفاً تجريبياً جديداً"
-                    title="بدّل المثال التجريبي"
+                    aria-label="بدّل إلى كشف تجريبي مختلف"
+                    title="اضغط لعرض كشف تجريبي آخر"
                     data-testid="button-try-sample"
                   >
-                    <RotateCcw size={15} aria-hidden="true" />
-                    جرّب بكشف تجريبي
+                    <span className="statement-demo-button__icon" aria-hidden="true">
+                      <RotateCcw size={16} />
+                    </span>
+                    <span>جرّب بكشف تجريبي</span>
                   </button>
                 </div>
               )}
@@ -208,12 +211,13 @@ export default function StatementExperience({
                 {isSample ? 'عملة المثال' : 'عملة الكشف'}
                 <span>
                   <select
-                    value={statementCurrency}
+                    value={isSample ? currency : statementCurrency}
                     onChange={(event) =>
-                      setStatementCurrency(event.target.value as CurrencyCode)
+                      isSample
+                        ? setCurrency(event.target.value as CurrencyCode)
+                        : setStatementCurrency(event.target.value as CurrencyCode)
                     }
-                    disabled={isSample}
-                    aria-label="العملة الأصلية للمبالغ في الكشف"
+                    aria-label={isSample ? 'عملة عرض المثال التجريبي' : 'عملة المبالغ في الكشف'}
                   >
                     {currencies.map((item) => (
                       <option key={item.value} value={item.value}>
@@ -245,12 +249,14 @@ export default function StatementExperience({
                   className="statement-demo-button"
                   onClick={handleTrySample}
                   disabled={isProcessing}
-                  aria-label="اعرض كشفاً تجريبياً جديداً"
-                  title="بدّل المثال التجريبي"
+                    aria-label="بدّل إلى كشف تجريبي مختلف"
+                    title="اضغط لعرض كشف تجريبي آخر"
                   data-testid="button-try-sample"
                 >
-                  <RotateCcw size={14} aria-hidden="true" />
-                  جرّب بكشف تجريبي
+                    <span className="statement-demo-button__icon" aria-hidden="true">
+                      <RotateCcw size={16} />
+                    </span>
+                    <span>جرّب بكشف تجريبي</span>
                 </button>
               </div>
             )}
