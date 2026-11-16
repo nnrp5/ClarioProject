@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import CurrencySelector from '@/components/currency-selector';
+import ClarioWordmark from '@/components/clario-wordmark';
 import '../../dashboard.css';
 
 type DashboardRoute = 'overview' | 'analysis' | 'hire' | 'goal';
@@ -37,8 +38,7 @@ export function DashboardShell({ activeRoute, children }: DashboardShellProps) {
           aria-label="كلاريو، العودة إلى الموقع"
           title="العودة إلى الموقع"
         >
-          <span className="clario-dashboard__brand-mark" aria-hidden="true">ك</span>
-          <span className="clario-dashboard__brand-word">clario</span>
+          <ClarioWordmark />
         </Link>
 
         <div className="clario-dashboard__side-caption">مساحتك المالية</div>

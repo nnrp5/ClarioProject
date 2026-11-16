@@ -38,27 +38,11 @@
   display: inline-flex;
   width: fit-content;
   align-items: center;
-  gap: 11px;
+  gap: 0;
   padding: 0 10px;
   color: var(--dash-text);
-  text-decoration: none;
-}
-.clario-dashboard__brand-mark {
-  display: grid;
-  width: 37px;
-  height: 37px;
-  place-items: center;
-  border-radius: 12px;
-  background: var(--dash-orange);
-  color: var(--dash-ink-deep);
-  font-size: 20px;
-  font-weight: 700;
-}
-.clario-dashboard__brand-word {
-  font-family: 'DM Sans', sans-serif;
   font-size: 25px;
-  font-weight: 700;
-  letter-spacing: -.06em;
+  text-decoration: none;
 }
 .clario-dashboard__side-caption {
   margin: 55px 12px 13px;
@@ -518,8 +502,7 @@
     padding: 12px 18px 10px;
   }
   .clario-dashboard__brand { padding: 0 2px 10px; }
-  .clario-dashboard__brand-mark { width: 32px; height: 32px; font-size: 18px; }
-  .clario-dashboard__brand-word { font-size: 22px; }
+  .clario-dashboard__brand { font-size: 22px; }
   .clario-dashboard__side-caption,
   .clario-dashboard__sidebar-bottom { display: none; }
   .clario-dashboard__nav {

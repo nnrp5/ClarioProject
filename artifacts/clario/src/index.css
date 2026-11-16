@@ -276,8 +276,31 @@
 .clario-page { overflow: hidden; background: #0f172a; color: #f8fafc; }
 .clario-container { width: min(1240px, calc(100% - 64px)); margin-inline: auto; }
 .clario-nav { height: 88px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(248,250,252,.14); }
-.clario-logo { display: inline-flex; align-items: center; gap: 11px; color: #f8fafc; text-decoration: none; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 25px; letter-spacing: -.06em; }
-.clario-mark { display: grid; place-items: center; width: 35px; height: 35px; color: #0f172a; background: #f97316; border-radius: 12px 12px 12px 4px; font-size: 20px; line-height: 1; }
+.clario-logo { display: inline-flex; align-items: center; color: #f8fafc; text-decoration: none; font-size: 25px; }
+.clario-wordmark {
+  position: relative;
+  display: inline-block;
+  padding-bottom: .12em;
+  color: #f8fafc;
+  font-family: 'DM Sans', sans-serif;
+  font-size: inherit;
+  font-weight: 800;
+  letter-spacing: -.075em;
+  line-height: 1.12;
+  white-space: nowrap;
+}
+.clario-wordmark::after {
+  position: absolute;
+  right: .04em;
+  bottom: 0;
+  width: 42%;
+  height: .075em;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, #f97316 42%, #ff9a54);
+  content: '';
+  transform: skewX(-28deg);
+}
+.clario-wordmark__initial { color: #ff9a54; }
 .nav-links { display: flex; align-items: center; gap: 34px; }
 .nav-links a { color: #cbd5e1; text-decoration: none; font-size: 14px; transition: color .2s ease; }
 .nav-links a:hover { color: #fb923c; }
@@ -377,7 +400,6 @@
   .clario-container { width: calc(100% - 38px); }
   .clario-nav { height: 71px; }
   .clario-logo { font-size: 23px; }
-  .clario-mark { width: 32px; height: 32px; }
   .nav-links { gap: 16px; }
   .nav-links a { font-size: 12px; }
   .nav-links a:first-child { display: none; }

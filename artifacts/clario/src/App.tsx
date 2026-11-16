@@ -4,6 +4,7 @@ import CurrencySelector from '@/components/currency-selector';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import ClarioWordmark from '@/components/clario-wordmark';
 import NotFound from '@/pages/not-found';
 import {
   Link,
@@ -52,8 +53,7 @@ function Home() {
       <div className="clario-container">
         <header className="clario-nav" data-testid="header-navigation">
           <a className="clario-logo" href="/" aria-label="كلاريو، بداية الصفحة" data-testid="link-home">
-            <span className="clario-mark" aria-hidden="true">ك</span>
-            <span>clario</span>
+            <ClarioWordmark />
           </a>
           <nav className="nav-links" aria-label="التنقل الرئيسي">
             <a href="#analysis" data-testid="link-statement-analysis">حلّل كشفك</a>
@@ -246,9 +246,8 @@ function Home() {
 
         <footer className="footer">
           <div className="footer-main">
-            <a className="clario-logo" href="#top" data-testid="link-footer-home">
-              <span className="clario-mark" aria-hidden="true">ك</span>
-              <span>clario</span>
+            <a className="clario-logo" href="#top" aria-label="كلاريو، بداية الصفحة" data-testid="link-footer-home">
+              <ClarioWordmark />
             </a>
             <div className="footer-note">
               <ArrowDown size={13} aria-hidden="true" />

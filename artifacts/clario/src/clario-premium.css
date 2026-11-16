@@ -46,17 +46,10 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   border-bottom-color: var(--clario-line);
 }
 .clario-page .clario-logo {
-  gap: 10px;
-  letter-spacing: -.055em;
+  gap: 0;
   transition: opacity .2s ease, transform .2s ease;
 }
 .clario-page .clario-logo:hover { opacity: .88; transform: translateY(-1px); }
-.clario-page .clario-mark {
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
-  background: var(--clario-orange);
-}
 .clario-page .nav-links { gap: 8px; }
 .clario-page .nav-links a {
   padding: 9px 14px;
@@ -705,7 +698,6 @@ html.clario-motion-ready [data-scroll-reveal].is-revealed {
   .clario-page .clario-container { width: calc(100% - 36px); }
   .clario-page .clario-nav { height: 69px; }
   .clario-page .clario-logo { font-size: 22px; }
-  .clario-page .clario-mark { width: 32px; height: 32px; }
   .clario-page .nav-links { gap: 2px; }
   .clario-page .nav-links a { padding: 8px 10px; font-size: 11px; }
   .clario-page .nav-links a:first-child { display: inline-flex; }
