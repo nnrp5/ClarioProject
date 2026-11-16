@@ -35,7 +35,14 @@ function scoreDescription(score: number | null) {
   return 'يحتاج انتباه';
 }
 
-export default function StatementExperience() {
+interface StatementExperienceProps {
+  variant?: 'standard' | 'home';
+}
+
+export default function StatementExperience({
+  variant = 'standard',
+}: StatementExperienceProps) {
+  const isCompactHome = variant === 'home';
   const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLElement>(null);
   const {
@@ -99,27 +106,32 @@ export default function StatementExperience() {
 
   return (
     <section
-      className="statement-feature"
+      className={`statement-feature${isCompactHome ? ' statement-feature--home' : ''}`}
       id="analysis"
       aria-labelledby="statement-title"
     >
       <div className="clario-container">
-        <div className="statement-heading" data-scroll-reveal>
+        <div
+          className={`statement-heading${isCompactHome ? ' statement-heading--visually-hidden' : ''}`}
+          data-scroll-reveal
+        >
           <span className="section-kicker">صورة أوضح من كشف واحد</span>
           <h2 id="statement-title">خلّنا نرتّب أرقامك.</h2>
           <p>
             ارفع كشفًا واحدًا، وشوف ملخصًا مفهومًا ودرجة مبدئية مع أسبابها.
             تقدر تشوف المثال أولًا قبل ما تختار ملفك.
           </p>
-          <div className="statement-privacy" role="note">
-            <span className="statement-privacy-icon" aria-hidden="true">
-              <LockKeyhole size={17} />
-            </span>
-            <span>
-              <strong>كشفك ما يغادر جهازك.</strong> نقرأه داخل المتصفح فقط؛ ما
-              نرفعه لخادم ولا نحفظ الملف. النتيجة ما تبقى بعد إغلاق الصفحة.
-            </span>
-          </div>
+          {!isCompactHome && (
+            <div className="statement-privacy" role="note">
+              <span className="statement-privacy-icon" aria-hidden="true">
+                <LockKeyhole size={17} />
+              </span>
+              <span>
+                <strong>كشفك ما يغادر جهازك.</strong> نقرأه داخل المتصفح فقط؛ ما
+                نرفعه لخادم ولا نحفظ الملف. النتيجة ما تبقى بعد إغلاق الصفحة.
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="statement-workspace">
@@ -171,21 +183,23 @@ export default function StatementExperience() {
                 {!isProcessing && <ArrowLeft size={15} aria-hidden="true" />}
               </button>
               <span className="statement-drop-hint">أو اسحب الملف إلى هنا</span>
-              <div className="statement-demo-action">
-                <span>ما تبي ترفع ملفك؟</span>
-                <button
-                  type="button"
-                  className="statement-demo-button"
-                  onClick={handleTrySample}
-                  disabled={isProcessing}
-                  aria-label="اعرض كشفاً تجريبياً جديداً"
-                  title="بدّل المثال التجريبي"
-                  data-testid="button-try-sample"
-                >
-                  <RotateCcw size={15} aria-hidden="true" />
-                  جرّب بكشف تجريبي
-                </button>
-              </div>
+              {!isCompactHome && (
+                <div className="statement-demo-action">
+                  <span>ما تبي ترفع ملفك؟</span>
+                  <button
+                    type="button"
+                    className="statement-demo-button"
+                    onClick={handleTrySample}
+                    disabled={isProcessing}
+                    aria-label="اعرض كشفاً تجريبياً جديداً"
+                    title="بدّل المثال التجريبي"
+                    data-testid="button-try-sample"
+                  >
+                    <RotateCcw size={15} aria-hidden="true" />
+                    جرّب بكشف تجريبي
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="statement-upload-meta">
@@ -212,7 +226,36 @@ export default function StatementExperience() {
               </label>
             </div>
 
-            {!isSample && (
+            {isCompactHome && (
+              <div className="statement-privacy statement-privacy--inline" role="note">
+                <span className="statement-privacy-icon" aria-hidden="true">
+                  <LockKeyhole size={15} />
+                </span>
+                <span>
+                  <strong>كشفك ما يغادر جهازك.</strong> نقرأه داخل المتصفح فقط ولا نحفظ الملف.
+                </span>
+              </div>
+            )}
+
+            {isCompactHome && (
+              <div className="statement-demo-action statement-demo-action--home">
+                <span>ما تبي ترفع ملفك؟</span>
+                <button
+                  type="button"
+                  className="statement-demo-button"
+                  onClick={handleTrySample}
+                  disabled={isProcessing}
+                  aria-label="اعرض كشفاً تجريبياً جديداً"
+                  title="بدّل المثال التجريبي"
+                  data-testid="button-try-sample"
+                >
+                  <RotateCcw size={14} aria-hidden="true" />
+                  جرّب بكشف تجريبي
+                </button>
+              </div>
+            )}
+
+            {!isSample && !isCompactHome && (
               <div className="statement-sample-row">
                 <span>تقدر ترجع للمثال متى ما بغيت.</span>
                 <button type="button" onClick={showNextSample}>
@@ -275,7 +318,11 @@ export default function StatementExperience() {
               <div className="statement-score-copy">
                 <span className="statement-score-label">درجة مبدئية</span>
                 <strong>{scoreDescription(analysis.score)}</strong>
-                <p>مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.</p>
+                <p>
+                  {isCompactHome
+                    ? analysis.reasons[0] ?? 'مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.'
+                    : 'مبنية على نسبة المتبقي من الدخل في هذا الكشف فقط.'}
+                </p>
               </div>
             </div>
 

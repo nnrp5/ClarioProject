@@ -864,3 +864,169 @@
 .clario-page .statement-transactions li b.is-expense { color: #c1ccd8; }
 
 .clario-page button:active:not(:disabled) { transform: scale(.985); }
+
+.clario-page .statement-feature--home {
+  padding: 20px 0 0;
+  border-top: 0;
+}
+.clario-page .statement-feature--home .statement-heading--visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  margin: -1px;
+}
+.clario-page .statement-feature--home .statement-workspace {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 18px;
+}
+.clario-page .statement-feature--home .statement-upload-card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
+.clario-page .statement-feature--home .statement-dropzone { min-height: 170px; padding: 11px; }
+.clario-page .statement-feature--home .statement-drop-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: 6px;
+  border-radius: 11px;
+}
+.clario-page .statement-feature--home .statement-dropzone h3 { font-size: 15px; }
+.clario-page .statement-feature--home .statement-dropzone p { margin: 3px 0 8px; font-size: 10px; }
+.clario-page .statement-feature--home .statement-select-button { min-height: 33px; padding-inline: 12px; font-size: 12px; }
+.clario-page .statement-feature--home .statement-drop-hint { margin-top: 6px; font-size: 10px; }
+.clario-page .statement-feature--home .statement-upload-meta { margin-top: 6px; font-size: 10px; }
+.clario-page .statement-feature--home .statement-upload-meta > span { display: none; }
+.clario-page .statement-feature--home .statement-privacy--inline {
+  max-width: none;
+  align-items: center;
+  gap: 9px;
+  margin-top: 7px;
+  padding: 6px 8px;
+  border-color: rgba(244, 122, 42, .2);
+  border-radius: 12px;
+  background: rgba(244, 122, 42, .055);
+  color: #dce4ec;
+  font-size: 9px;
+  line-height: 1.55;
+}
+.clario-page .statement-feature--home .statement-privacy--inline .statement-privacy-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 8px;
+}
+.clario-page .statement-feature--home .statement-demo-action--home {
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 7px;
+  padding-top: 7px;
+  font-size: 9px;
+}
+.clario-page .statement-feature--home .statement-demo-action--home .statement-demo-button {
+  min-height: 29px;
+  padding-inline: 8px;
+  font-size: 9px;
+}
+.clario-page .statement-feature--home .statement-result-card { padding: 16px; }
+.clario-page .statement-feature--home .statement-result-header { margin-bottom: 13px; }
+.clario-page .statement-feature--home .statement-score-row { gap: 13px; margin-bottom: 12px; }
+.clario-page .statement-feature--home .statement-score-ring { width: 74px; height: 74px; }
+.clario-page .statement-feature--home .statement-score-ring > div { width: 60px; height: 60px; }
+.clario-page .statement-feature--home .statement-score-copy p { font-size: 11px; }
+.clario-page .statement-feature--home .statement-summary {
+  display: none;
+}
+.clario-page .statement-feature--home .statement-metrics { gap: 7px; }
+.clario-page .statement-feature--home .statement-metrics > div { padding: 9px; }
+.clario-page .statement-feature--home .statement-metrics strong { font-size: 12px; }
+.clario-page .statement-feature--home .statement-reasons,
+.clario-page .statement-feature--home .statement-transactions { display: none; }
+.clario-page .statement-feature--home .statement-categories { margin-top: 13px; }
+.clario-page .statement-feature--home .statement-category { margin-top: 6px; }
+
+.clario-page.clario-public-home .clario-nav { padding-block: 13px; }
+.public-home-lower { padding-bottom: 38px; }
+.public-home-tools { margin-top: 12px; }
+.public-home-tools h2 {
+  margin: 0 0 8px;
+  color: #ffad71;
+  font-size: 12px;
+  font-weight: 600;
+}
+.public-home-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.public-home-tool-card {
+  display: flex;
+  min-width: 0;
+  min-height: 68px;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 13px;
+  border: 1px solid rgba(100, 151, 222, .25);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(36, 68, 117, .78), rgba(22, 43, 75, .84));
+  color: #eef3f8;
+  text-decoration: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .045);
+  transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+.public-home-tool-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 173, 113, .42);
+  background: linear-gradient(135deg, rgba(40, 74, 124, .88), rgba(24, 47, 81, .92));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .18);
+}
+.public-home-tool-card:active { transform: scale(.985); }
+.public-home-tool-card:focus-visible { outline: 3px solid rgba(255, 173, 113, .5); outline-offset: 3px; }
+.public-home-tool-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  border: 1px solid rgba(255, 173, 113, .2);
+  border-radius: 12px;
+  background: rgba(244, 122, 42, .13);
+  color: #ffb17b;
+}
+.public-home-tool-icon--hire {
+  border-color: rgba(182, 207, 238, .16);
+  background: rgba(118, 157, 204, .13);
+  color: #c0d5ed;
+}
+.public-home-tool-copy { display: grid; min-width: 0; flex: 1; gap: 3px; }
+.public-home-tool-copy strong { color: #f5f7fa; font-size: 13px; font-weight: 600; }
+.public-home-tool-copy small { color: #c4cfdb; font-size: 11px; line-height: 1.55; }
+.public-home-tool-card > svg { flex: none; color: #ffb17b; }
+
+@media (max-width: 700px) {
+  .clario-page .statement-feature--home { padding-top: 12px; }
+  .clario-page .statement-feature--home .statement-workspace { grid-template-columns: 1fr; gap: 14px; }
+  .clario-page .statement-feature--home .statement-upload-card,
+  .clario-page .statement-feature--home .statement-result-card { padding: 16px; }
+  .clario-page .statement-feature--home .statement-dropzone { min-height: 170px; }
+  .public-home-lower { padding-bottom: 28px; }
+  .public-home-tools { margin-top: 12px; }
+  .public-home-tools-grid { gap: 10px; }
+  .public-home-tool-card { min-height: 82px; gap: 9px; padding: 11px; }
+  .public-home-tool-icon { width: 34px; height: 34px; border-radius: 10px; }
+  .public-home-tool-copy strong { font-size: 11px; }
+  .public-home-tool-copy small { font-size: 10px; }
+  .public-home-tool-card > svg { width: 14px; height: 14px; }
+}
+
+@media (max-width: 360px) {
+  .public-home-tools-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-home-tool-card { transition: none; }
+}

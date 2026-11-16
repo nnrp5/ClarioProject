@@ -13,10 +13,10 @@ import {
   Router as WouterRouter,
 } from 'wouter';
 import {
-  ArrowDown,
   ArrowLeft,
+  BriefcaseBusiness,
   ChartNoAxesColumnIncreasing,
-  Check,
+  Goal,
   Lightbulb,
   LockKeyhole,
   Menu,
@@ -46,10 +46,10 @@ function Home() {
   };
 
   return (
-    <main className="clario-page" dir="rtl" lang="ar">
+    <main className="clario-page clario-public-home" dir="rtl" lang="ar">
       <div className="clario-container">
         <header className="clario-nav" data-testid="header-navigation">
-          <a className="clario-logo" href="#top" aria-label="كلاريو، بداية الصفحة" data-testid="link-home">
+          <a className="clario-logo" href="/" aria-label="كلاريو، بداية الصفحة" data-testid="link-home">
             <span className="clario-mark" aria-hidden="true">ك</span>
             <span>clario</span>
           </a>
@@ -128,7 +128,6 @@ function Home() {
           </div>
           <div className="scroll-cue" aria-hidden="true">كمّل واكتشف</div>
         </section>
-
       </div>
 
       <div className="clario-container">
@@ -140,33 +139,33 @@ function Home() {
         >
           <div className="how-intro">
             <span className="section-kicker">الفكرة ببساطة</span>
-            <h2 id="how-title">من صورة متفرقة، لفهم يطمنّك.</h2>
+            <h2 id="how-title">من صورة متفرقة، لفهم يطمّنّك.</h2>
             <p>كلاريو في بدايته يركز على تبسيط المعلومات المالية الأساسية. خطوة صغيرة، وصورة أوضح.</p>
           </div>
           <div className="steps">
             <article className="step">
-               <span className="step-index">٠١</span>
+              <span className="step-index">٠١</span>
               <div>
                 <h3>نجمع لك الصورة</h3>
                 <p>تشوف المعلومات المهمة في مكان واحد بدل ما تظل متفرقة في بالك.</p>
               </div>
             </article>
             <article className="step">
-               <span className="step-index">٠٢</span>
+              <span className="step-index">٠٢</span>
               <div>
                 <h3>نشرحها بلغة قريبة</h3>
                 <p>المعنى يجيك بكلام واضح، مو مصطلحات مالية تزيد الحيرة.</p>
               </div>
             </article>
             <article className="step">
-               <span className="step-index">٠٣</span>
+              <span className="step-index">٠٣</span>
               <div>
                 <h3>تقرر وأنت أهدى</h3>
                 <p>تفهم وضعك أكثر، وتختار بنفسك وش الخطوة المناسبة لك.</p>
               </div>
             </article>
             <article className="step">
-               <span className="step-index">٠٤</span>
+              <span className="step-index">٠٤</span>
               <div>
                 <h3>مصمم للمستقلين وأصحاب الأعمال والموظفين</h3>
                 <p>عشان تفهم أرقامك وتختار خطوتك الجاية بوضوح.</p>
@@ -176,30 +175,43 @@ function Home() {
         </section>
       </div>
 
-      <StatementExperience />
+      <StatementExperience variant="home" />
 
-      <div className="clario-container">
-        <HireSimulator />
-        <GoalSaver />
-
-        <aside className="promise" aria-label="مبادئ كلاريو" data-scroll-reveal>
-          <div className="promise-copy">
-            <span className="section-kicker">وعدنا لك</span>
-            <h2>نوضح لك الصورة. ما نقرر عنك.</h2>
-            <p>كلاريو أداة للفهم والوضوح، مو نصيحة استثمارية ولا بديل عن مختص. نؤمن إن القرار الأفضل يبدأ لما تكون الصورة قدامك.</p>
+      <div className="clario-container public-home-lower">
+        <section className="public-home-tools" aria-labelledby="public-home-tools-title">
+          <h2 id="public-home-tools-title">أدوات إضافية</h2>
+          <div className="public-home-tools-grid">
+            <Link
+              className="public-home-tool-card"
+              href="/dashboard/hire"
+              data-testid="link-public-hire"
+            >
+              <span className="public-home-tool-icon public-home-tool-icon--hire">
+                <BriefcaseBusiness size={20} aria-hidden="true" />
+              </span>
+              <span className="public-home-tool-copy">
+                <strong>قرار التوظيف</strong>
+                <small>جرّب أثر توظيف شخص على ميزانيتك.</small>
+              </span>
+              <ArrowLeft size={17} aria-hidden="true" />
+            </Link>
+            <Link
+              className="public-home-tool-card"
+              href="/dashboard/goal"
+              id="goal"
+              data-testid="link-public-goal"
+            >
+              <span className="public-home-tool-icon public-home-tool-icon--goal">
+                <Goal size={20} aria-hidden="true" />
+              </span>
+              <span className="public-home-tool-copy">
+                <strong>هدفك المالي الجاي</strong>
+                <small>اختر هدفًا وشوف وش تحتاج له.</small>
+              </span>
+              <ArrowLeft size={17} aria-hidden="true" />
+            </Link>
           </div>
-          <div className="promise-mark" aria-hidden="true"><Check strokeWidth={1.5} /></div>
-        </aside>
-
-        <footer className="footer">
-          <div className="footer-main">
-            <a className="clario-logo" href="#top" data-testid="link-footer-home">
-              <span className="clario-mark" aria-hidden="true">ك</span><span>clario</span>
-            </a>
-            <div className="footer-note"><ArrowDown size={13} aria-hidden="true" /> بداية أوضح لعلاقة أهدى مع فلوسك.</div>
-            <p>كلاريو — نفهمها معك.</p>
-          </div>
-        </footer>
+        </section>
       </div>
     </main>
   );
