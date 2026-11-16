@@ -58,6 +58,29 @@ const englishTranslations: Record<string, string> = {
     'See how hiring someone could affect your budget.',
   'هدفك المالي الجاي': 'Your next financial goal',
   'اختر هدفًا وشوف وش تحتاج له.': 'Choose a goal and see what it takes.',
+  'قارن مع الشهر اللي قبل': 'Compare with last month',
+  'مقارنة المصاريف بين شهرين': 'Compare spending across two months',
+  'مقارنة حسب الحركات المؤرخة': 'Comparison based on dated transactions',
+  'قارن بين شهرين': 'Compare two months',
+  'الشهر الأقدم': 'Earlier month',
+  'الشهر الأحدث': 'Later month',
+  'نحتاج شهرين مختلفين للمقارنة': 'We need two different months to compare',
+  'ارفع كشفًا فيه معاملات مؤرخة من شهرين مختلفين لتظهر المقارنة.':
+    'Upload a statement with dated transactions from two different months to see a comparison.',
+  'تعذر تحويل العملة المختارة لعرض المقارنة.':
+    'The selected currency could not be converted for this comparison.',
+  'وين تغير صرفك؟': 'Where did your spending change?',
+  'ما ظهر فرق واضح في فئات الصرف المتغيرة.':
+    'There was no clear change in flexible spending categories.',
+  'لا توجد إيداعات مسجلة': 'No deposits recorded',
+  'الدخل والسكن مستبعدان من فروقات الفئات.':
+    'Income and housing are excluded from category changes.',
+  'المقارنة مبنية على الحركات الموجودة في كل شهر وقد يكون أحدهما جزئيًا.':
+    'This comparison uses the transactions in each month; either month may be partial.',
+  'شوف خطتك هالشهر': 'View your plan this month',
+  'ثابت': 'Unchanged',
+  'أكثر': 'more',
+  'أقل': 'less',
   'وعدنا لك': 'Our promise',
   'نوضح لك الصورة. ما نقرر عنك.': 'We make things clearer. You decide.',
   'كلاريو أداة للفهم والوضوح، مو نصيحة استثمارية ولا بديل عن مختص.':

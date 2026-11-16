@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import MonthlyPlan from '@/components/monthly-plan';
+import MonthlyComparison from '@/components/monthly-comparison';
 import { categoryLabel } from '@/lib/statement-analysis';
 import StatementInsights from '@/components/statement-insights';
 import {
@@ -420,6 +421,7 @@ export default function StatementExperience({
         </div>
 
         <StatementInsights />
+        <MonthlyComparison />
         <MonthlyPlan />
       </div>
     </section>
