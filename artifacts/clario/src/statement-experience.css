@@ -950,6 +950,9 @@
 .clario-page .statement-feature--home .statement-category { margin-top: 6px; }
 
 .clario-page.clario-public-home .clario-nav { padding-block: 13px; }
+.clario-page.clario-public-home .how-section {
+  border-bottom: 1px solid rgba(236, 241, 248, .14);
+}
 .public-home-lower { padding-bottom: 38px; }
 .public-home-tools { margin-top: 12px; }
 .public-home-tools h2 {
