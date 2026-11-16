@@ -1,0 +1,199 @@
+.clario-page .statement-insights {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 19px;
+  direction: rtl;
+}
+
+.clario-page .statement-insight-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid rgba(214, 225, 238, .15);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(244, 122, 42, .075), transparent 42%),
+    #101e34;
+  color: #f4f7fb;
+}
+
+.clario-page .statement-insight-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 45px;
+}
+
+.clario-page .statement-insight-kicker {
+  display: block;
+  margin-bottom: 5px;
+  color: #aebacc;
+  font-size: 11px;
+}
+
+.clario-page .statement-insight-header h3 {
+  margin: 0;
+  color: #f5f7fa;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.clario-page .statement-insight-badge {
+  flex: none;
+  padding: 5px 9px;
+  border: 1px solid rgba(214, 225, 238, .16);
+  border-radius: 999px;
+  background: rgba(214, 225, 238, .06);
+  color: #c8d4e1;
+  font-size: 10px;
+}
+
+.clario-page .statement-insight-badge.is-sample {
+  border-color: rgba(244, 122, 42, .3);
+  color: #ffc292;
+}
+
+.clario-page .statement-insight-chart {
+  width: 100%;
+  height: 174px;
+  margin-top: 10px;
+  direction: ltr;
+}
+
+.clario-page .statement-insight-note {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(68, 152, 109, .24);
+  border-radius: 13px;
+  background: rgba(68, 152, 109, .11);
+  color: #dce7e1;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.clario-page .statement-insight-note svg {
+  flex: none;
+  color: #88c3a3;
+}
+
+.clario-page .statement-insight-note strong {
+  color: #a7d8bb;
+  font-weight: 600;
+}
+
+.clario-page .statement-insight-empty {
+  display: grid;
+  min-height: 205px;
+  place-items: center;
+  margin-top: 12px;
+  padding: 20px;
+  border: 1px dashed rgba(214, 225, 238, .2);
+  border-radius: 14px;
+  color: #c1ccd8;
+  font-size: 13px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.clario-page .statement-insight-forecast-icon {
+  display: grid;
+  width: 37px;
+  height: 37px;
+  flex: none;
+  place-items: center;
+  border: 1px solid rgba(68, 152, 109, .32);
+  border-radius: 12px;
+  background: rgba(68, 152, 109, .13);
+  color: #88c3a3;
+}
+
+.clario-page .statement-forecast-summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 13px;
+}
+
+.clario-page .statement-forecast-summary > div {
+  display: grid;
+  gap: 4px;
+}
+
+.clario-page .statement-forecast-summary strong {
+  color: #88c3a3;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.2;
+  direction: rtl;
+  unicode-bidi: plaintext;
+}
+
+.clario-page .statement-forecast-summary strong.is-negative {
+  color: #f59a98;
+}
+
+.clario-page .statement-forecast-summary span {
+  color: #c1ccd8;
+  font-size: 11px;
+}
+
+.clario-page .statement-forecast-summary p {
+  margin: 0;
+  color: #c1ccd8;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.clario-page .statement-forecast-summary p b {
+  color: #e7edf4;
+  font-weight: 600;
+}
+
+.clario-page .statement-insight-chart--forecast {
+  height: 155px;
+  margin-top: 8px;
+}
+
+.clario-page .statement-forecast-disclaimer {
+  margin: 4px 0 0;
+  color: #aebacc;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+@media (max-width: 760px) {
+  .clario-page .statement-insights {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    margin-top: 14px;
+  }
+
+  .clario-page .statement-insight-card {
+    padding: 17px;
+    border-radius: 16px;
+  }
+
+  .clario-page .statement-insight-chart {
+    height: 180px;
+  }
+
+  .clario-page .statement-insight-chart--forecast {
+    height: 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clario-page .statement-insights *,
+  .clario-page .statement-insights *::before,
+  .clario-page .statement-insights *::after {
+    transition-duration: .01ms !important;
+  }
+}

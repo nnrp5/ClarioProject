@@ -74,14 +74,14 @@ const headerAliases = {
 };
 
 export const sampleTransactions: StatementTransaction[] = [
-  transaction('راتب شهري', 4200, 'payroll'),
-  transaction('إيجار السكن', -1050, 'housing'),
-  transaction('سوبرماركت', -450, 'food'),
-  transaction('بنزين', -320, 'transport'),
-  transaction('اتصالات وإنترنت', -220, 'utilities'),
-  transaction('مشتريات منزلية', -600, 'shopping'),
-  transaction('مطعم', -320, 'food'),
-  transaction('مصروفات متنوعة', -340, 'other'),
+  transaction('راتب شهري', 4200, 'payroll', 27),
+  transaction('إيجار السكن', -1050, 'housing', 24),
+  transaction('سوبرماركت', -450, 'food', 19),
+  transaction('بنزين', -320, 'transport', 16),
+  transaction('اتصالات وإنترنت', -220, 'utilities', 12),
+  transaction('مشتريات منزلية', -600, 'shopping', 6),
+  transaction('مطعم', -320, 'food', 4),
+  transaction('مصروفات متنوعة', -340, 'other', 2),
 ];
 
 export const sampleStatements = [
@@ -92,39 +92,39 @@ export const sampleStatements = [
   {
     title: 'مستقل بدخل متغير',
     transactions: [
-      transaction('دفعة مشروع أول', 1800, 'payroll'),
-      transaction('دفعة مشروع ثاني', 1350, 'payroll'),
-      transaction('إيجار السكن', -850, 'housing'),
-      transaction('اشتراك أدوات العمل', -310, 'business'),
-      transaction('مشتريات البقالة', -380, 'food'),
-      transaction('تنقلات', -240, 'transport'),
-      transaction('اتصالات وإنترنت', -150, 'utilities'),
-      transaction('مصروفات متنوعة', -100, 'other'),
+      transaction('دفعة مشروع أول', 1800, 'payroll', 27),
+      transaction('دفعة مشروع ثاني', 1350, 'payroll', 20),
+      transaction('إيجار السكن', -850, 'housing', 24),
+      transaction('اشتراك أدوات العمل', -310, 'business', 17),
+      transaction('مشتريات البقالة', -380, 'food', 12),
+      transaction('تنقلات', -240, 'transport', 9),
+      transaction('اتصالات وإنترنت', -150, 'utilities', 4),
+      transaction('مصروفات متنوعة', -100, 'other', 2),
     ],
   },
   {
     title: 'مشروع بمبيعات ومصاريف',
     transactions: [
-      transaction('مبيعات المتجر', 4700, 'payroll'),
-      transaction('مبيعات إلكترونية', 2550, 'payroll'),
-      transaction('رواتب الفريق', -2100, 'payroll'),
-      transaction('إيجار المحل', -900, 'housing'),
-      transaction('شراء بضاعة', -1550, 'business'),
-      transaction('خدمات توصيل', -320, 'transport'),
-      transaction('خدمات واتصالات', -240, 'utilities'),
-      transaction('تسويق', -400, 'business'),
+      transaction('مبيعات المتجر', 4700, 'payroll', 27),
+      transaction('مبيعات إلكترونية', 2550, 'payroll', 19),
+      transaction('رواتب الفريق', -2100, 'payroll', 25),
+      transaction('إيجار المحل', -900, 'housing', 23),
+      transaction('شراء بضاعة', -1550, 'business', 16),
+      transaction('خدمات توصيل', -320, 'transport', 12),
+      transaction('خدمات واتصالات', -240, 'utilities', 8),
+      transaction('تسويق', -400, 'business', 2),
     ],
   },
   {
     title: 'شهر مصاريفه عالية',
     transactions: [
-      transaction('راتب شهري', 2600, 'payroll'),
-      transaction('إيجار السكن', -900, 'housing'),
-      transaction('مشتريات البقالة', -530, 'food'),
-      transaction('تنقلات', -340, 'transport'),
-      transaction('خدمات واتصالات', -200, 'utilities'),
-      transaction('مشتريات منزلية', -610, 'shopping'),
-      transaction('مصروفات متنوعة', -330, 'other'),
+      transaction('راتب شهري', 2600, 'payroll', 27),
+      transaction('إيجار السكن', -900, 'housing', 24),
+      transaction('مشتريات البقالة', -530, 'food', 18),
+      transaction('تنقلات', -340, 'transport', 14),
+      transaction('خدمات واتصالات', -200, 'utilities', 8),
+      transaction('مشتريات منزلية', -610, 'shopping', 5),
+      transaction('مصروفات متنوعة', -330, 'other', 2),
     ],
   },
 ];
@@ -133,8 +133,21 @@ function transaction(
   description: string,
   amount: number,
   category: TransactionCategory,
+  daysAgo?: number,
 ): StatementTransaction {
-  return { date: null, description, amount, category };
+  return {
+    date: daysAgo === undefined ? null : sampleDate(daysAgo),
+    description,
+    amount,
+    category,
+  };
+}
+
+function sampleDate(daysAgo: number) {
+  const date = new Date();
+  date.setUTCHours(12, 0, 0, 0);
+  date.setUTCDate(date.getUTCDate() - daysAgo);
+  return date;
 }
 
 export function analyzeTransactions(

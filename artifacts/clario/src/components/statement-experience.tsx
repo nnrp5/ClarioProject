@@ -19,6 +19,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { categoryLabel } from '@/lib/statement-analysis';
+import StatementInsights from '@/components/statement-insights';
 import {
   currencies,
   formatArabicNumber,
@@ -400,6 +401,8 @@ export default function StatementExperience({
             )}
           </section>
         </div>
+
+        {!isCompactHome && <StatementInsights />}
 
       </div>
     </section>
